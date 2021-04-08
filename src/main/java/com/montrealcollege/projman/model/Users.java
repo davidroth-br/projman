@@ -4,6 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "USERS")
@@ -11,49 +14,56 @@ public class Users {
 
     @Id
     @Column(name = "ID")
-    private Integer id;
-    @Column(name = "USER_NAME")
-    private String userName;
-    @Column(name = "PASSWORD")
-    private String password;
+    private Long id;
+//    @Column(name = "USER_NAME")
+//    @NotNull(message="Please enter a user name.")
+//    private String userName;
+//    @Column(name = "PASSWORD")
+//    @NotNull(message="Please enter a password.")
+//    private String password;
     @Column(name = "FIRST_NAME")
+    @NotNull(message="Please enter a first name.")
     private String firstName;
     @Column(name = "LAST_NAME")
+    @NotNull(message="Please enter a last name.")
     private String lastName;
     @Column(name = "EMAIL")
+    @Email(message = "Please enter a valid email address.")
     private String email;
     @Column(name = "PHONE")
+    @Pattern(regexp= "\\(\\d{3} \\)\\d{3}-\\d{4}", message="Please enter a valid phone number.")
     private String phone;
     @Column(name = "ROLE")
+    @NotNull(message="Please enter a role")
     private String role;
     @Column(name = "PROJECTS")
     private Integer projects;
     @Column(name = "TASKS")
     private Integer tasks;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+//    public String getUserName() {
+//        return userName;
+//    }
+//
+//    public void setUserName(String userName) {
+//        this.userName = userName;
+//    }
+//
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
 
     public String getFirstName() {
         return firstName;
