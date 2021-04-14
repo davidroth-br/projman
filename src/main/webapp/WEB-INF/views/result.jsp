@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="f" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -7,6 +7,8 @@
     <title>Result</title>
 </head>
 <body>
-<h1>The ${projectName} project was successfully created!</h1>
+<%@include file="_menu.jsp"%>
+
+<h1>${userName} is now a user!</h1>
 </body>
 </html>

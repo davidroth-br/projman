@@ -22,7 +22,7 @@ public class Projects {
     @Column(name = "END_DATE")
     private Date endDate;
     @Column(name = "LEADER_ID")
-    private Integer leaderId;
+    private Long leaderId;
 
     public Integer getId() {
         return id;
@@ -64,11 +64,11 @@ public class Projects {
         this.endDate = endDate;
     }
 
-    public Integer getLeaderId() {
+    public Long getLeaderId() {
         return leaderId;
     }
 
-    public void setLeaderId(Integer leaderId) {
+    public void setLeaderId(Long leaderId) {
         this.leaderId = leaderId;
     }
 

@@ -1,9 +1,9 @@
 package com.montrealcollege.projman.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -13,6 +13,12 @@ import javax.validation.constraints.Pattern;
 public class Users {
 
     @Id
+    @GenericGenerator(name="usrs_seq", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {@org.hibernate.annotations.Parameter(name = "USERS_SEQ", value = "SEQUENCE")}
+    )
+    @GeneratedValue(generator = "USERS_SEQ")
+//    @GenericGenerator(name = "gen", strategy = "foreign", parameters = @Parameter(name = "property", value = "appUser"))
+//    @GeneratedValue(generator = "gen")
     @Column(name = "ID")
     private Long id;
 //    @Column(name = "USER_NAME")
@@ -21,6 +27,12 @@ public class Users {
 //    @Column(name = "PASSWORD")
 //    @NotNull(message="Please enter a password.")
 //    private String password;
+    @Column(name = "USER_NAME", length = 36, nullable = false)
+    private String userName;
+    @Column(name = "ENCRYPTED_PASSWORD", length = 128, nullable = false)
+    private String encryptedPassword;
+    @Column(name = "ENABLED", length = 1, nullable = false)
+    private boolean enabled;
     @Column(name = "FIRST_NAME")
     @NotNull(message="Please enter a first name.")
     private String firstName;
@@ -31,15 +43,19 @@ public class Users {
     @Email(message = "Please enter a valid email address.")
     private String email;
     @Column(name = "PHONE")
-    @Pattern(regexp= "\\(\\d{3} \\)\\d{3}-\\d{4}", message="Please enter a valid phone number.")
+    @Pattern(regexp= "\\(\\d{3}\\) \\d{3}-\\d{4}", message="Please enter a valid phone number. (999) 999-9999")
     private String phone;
-    @Column(name = "ROLE")
-    @NotNull(message="Please enter a role")
-    private String role;
+//    @Column(name = "ROLE")
+//    @NotNull(message="Please enter a role")
+//    private String role;
     @Column(name = "PROJECTS")
     private Integer projects;
     @Column(name = "TASKS")
     private Integer tasks;
+
+//    @OneToOne
+//    @PrimaryKeyJoinColumn
+//    private AppUser appUser;
 
     public Long getId() {
         return id;
@@ -49,21 +65,29 @@ public class Users {
         this.id = id;
     }
 
-//    public String getUserName() {
-//        return userName;
-//    }
-//
-//    public void setUserName(String userName) {
-//        this.userName = userName;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getEncryptedPassword() {
+        return encryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -97,14 +121,6 @@ public class Users {
         this.phone = phone;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public Integer getProjects() {
         return projects;
     }
@@ -120,4 +136,12 @@ public class Users {
     public void setTasks(Integer tasks) {
         this.tasks = tasks;
     }
+
+//    public AppUser getAppUser() {
+//        return appUser;
+//    }
+//
+//    public void setAppUser(AppUser appUser) {
+//        this.appUser = appUser;
+//    }
 }

@@ -20,7 +20,7 @@ public class UsersController {
     @Autowired
     private UsersService service;
 
-    @GetMapping("/form")
+    @GetMapping("/new")
     public String showForm(Model model) {
         model.addAttribute("user", new Users());
         model.addAttribute("userList", service.showUsers());
@@ -33,14 +33,14 @@ public class UsersController {
         return "allUsers";
     }
 
-//    @PostMapping("/validate")
-//    public String validateForm(@ModelAttribute("user") @Valid Users user,
-//                               BindingResult errors, Model model) {
-//        if (errors.hasErrors()) {
-//            return "login";
-//        }
-//        service.addUser(user);
-//        model.addAttribute("userName", user.getUserName());
-//        return "welcome";
-//    }
+    @PostMapping("/validate")
+    public String validateForm(@ModelAttribute("user") @Valid Users user,
+                               BindingResult errors, Model model) {
+        if (errors.hasErrors()) {
+            return "newUser";
+        }
+        service.addUser(user);
+        model.addAttribute("userName", user.getUserName());
+        return "result";
+    }
 }

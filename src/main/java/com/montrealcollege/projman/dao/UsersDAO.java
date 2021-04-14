@@ -6,9 +6,12 @@ import java.util.List;
 
 public interface UsersDAO {
 
+    Users findUserAccount(String userName);
+
     void createUser(Users user);
 
-    List<Users> listUsers();
+//    List<Users> listUsers();
+    List<Object[]> listUsers();
 
     Users displayUser(Integer id);
 

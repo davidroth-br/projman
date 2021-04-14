@@ -1,8 +1,10 @@
 package com.montrealcollege.projman.service;
 
 import com.montrealcollege.projman.dao.AppRoleDAO;
-import com.montrealcollege.projman.dao.AppUserDAO;
-import com.montrealcollege.projman.model.AppUser;
+//import com.montrealcollege.projman.dao.AppUserDAO;
+import com.montrealcollege.projman.dao.UsersDAOImpl;
+//import com.montrealcollege.projman.model.AppUser;
+import com.montrealcollege.projman.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,24 +21,24 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private AppUserDAO appUserDAO;
+    private UsersDAOImpl usersDAO;
 
     @Autowired
     private AppRoleDAO appRoleDAO;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        AppUser appUser = this.appUserDAO.findUserAccount(userName);
+        Users user = this.usersDAO.findUserAccount(userName);
 
-        if (appUser == null) {
+        if (user == null) {
             System.out.println("User not found! " + userName);
             throw new UsernameNotFoundException("User " + userName + " was not found in the database");
         }
 
-        System.out.println("Found User: " + appUser);
+        System.out.println("Found User: " + user);
 
         // [ROLE_USER, ROLE_ADMIN,..]
-        List<String> roleNames = this.appRoleDAO.getRoleNames(appUser.getUserId());
+        List<String> roleNames = this.appRoleDAO.getRoleNames(user.getId());
 
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
         if (roleNames != null) {
@@ -47,8 +49,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
         }
 
-        UserDetails userDetails = (UserDetails) new User(appUser.getUserName(), //
-                appUser.getEncrytedPassword(), grantList);
+        UserDetails userDetails = (UserDetails) new User(user.getUserName(),
+                user.getEncryptedPassword(), grantList);
 
         return userDetails;
     }

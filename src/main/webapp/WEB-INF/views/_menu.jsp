@@ -8,7 +8,8 @@
             <a href="<c:url value="/welcome"/>">Home</a> |
             <a href="<c:url value="/userInfo"/>">User Info</a> |
             <a href="<c:url value="/admin"/>">Admin</a> |
-            <a href="<c:url value="/logout"/>">Logout</a>
+            <a href="<c:url value="/logout"/>">Logout</a> |
+            <a href="<c:url value="/users/new"/>">Add User</a> |
         </c:when>
         <c:otherwise>
             <a href="<c:url value="/login"/>">Login</a>
