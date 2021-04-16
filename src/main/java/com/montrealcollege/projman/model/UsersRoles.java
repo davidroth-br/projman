@@ -3,10 +3,10 @@ package com.montrealcollege.projman.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "USER_ROLE",
-        uniqueConstraints = {@UniqueConstraint(name = "USER_ROLE_UK", columnNames = {"USER_ID", "ROLE_ID"})}
+@Table(name = "USERS_ROLES",
+        uniqueConstraints = {@UniqueConstraint(name = "USERS_ROLES_UK", columnNames = {"USER_ID", "ROLE_ID"})}
 )
-public class UserRole {
+public class UsersRoles {
 
     @Id
     @GeneratedValue
@@ -19,7 +19,7 @@ public class UserRole {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROLE_ID", nullable = false)
-    private AppRole appRole;
+    private Roles role;
 
     public Long getId() {
         return id;
@@ -37,12 +37,12 @@ public class UserRole {
         this.user = user;
     }
 
-    public AppRole getAppRole() {
-        return appRole;
+    public Roles getRole() {
+        return role;
     }
 
-    public void setAppRole(AppRole appRole) {
-        this.appRole = appRole;
+    public void setRole(Roles role) {
+        this.role = role;
     }
 
 }

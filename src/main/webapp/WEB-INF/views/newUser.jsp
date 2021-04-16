@@ -44,21 +44,14 @@
       <th>Phone</th>
     </tr>
     <c:forEach items="${userList}" var="user">
-      <c:set var="id" value="${user[0]}"/>
-      <c:set var="name" value="${user[1]}"/>
-      <c:set var="password" value="${user[2]}"/>
-      <c:set var="firstName" value="${user[3]}"/>
-      <c:set var="lastName" value="${user[4]}"/>
-      <c:set var="email" value="${user[5]}"/>
-      <c:set var="phone" value="${user[6]}"/>
       <tr>
-        <td>${id}</td>
-        <td>${name}</td>
-        <td>${password}</td>
-        <td>${firstName}</td>
-        <td>${lastName}</td>
-        <td>${email}</td>
-        <td>${phone}</td>
+        <td>${user.id}</td>
+        <td>${user.userName}</td>
+        <td>${user.encryptedPassword}</td>
+        <td>${user.firstName}</td>
+        <td>${user.lastName}</td>
+        <td>${user.email}</td>
+        <td>${user.phone}</td>
       </tr>
     </c:forEach>
   </table>

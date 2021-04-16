@@ -10,8 +10,8 @@ public interface UsersDAO {
 
     void createUser(Users user);
 
-//    List<Users> listUsers();
-    List<Object[]> listUsers();
+    List<Users> listUsers();
+
 
     Users displayUser(Integer id);
 

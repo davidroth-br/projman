@@ -1,7 +1,6 @@
 package com.montrealcollege.projman.model;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -17,16 +16,8 @@ public class Users {
             parameters = {@org.hibernate.annotations.Parameter(name = "USERS_SEQ", value = "SEQUENCE")}
     )
     @GeneratedValue(generator = "USERS_SEQ")
-//    @GenericGenerator(name = "gen", strategy = "foreign", parameters = @Parameter(name = "property", value = "appUser"))
-//    @GeneratedValue(generator = "gen")
     @Column(name = "ID")
     private Long id;
-//    @Column(name = "USER_NAME")
-//    @NotNull(message="Please enter a user name.")
-//    private String userName;
-//    @Column(name = "PASSWORD")
-//    @NotNull(message="Please enter a password.")
-//    private String password;
     @Column(name = "USER_NAME", length = 36, nullable = false)
     private String userName;
     @Column(name = "ENCRYPTED_PASSWORD", length = 128, nullable = false)
@@ -45,17 +36,10 @@ public class Users {
     @Column(name = "PHONE")
     @Pattern(regexp= "\\(\\d{3}\\) \\d{3}-\\d{4}", message="Please enter a valid phone number. (999) 999-9999")
     private String phone;
-//    @Column(name = "ROLE")
-//    @NotNull(message="Please enter a role")
-//    private String role;
     @Column(name = "PROJECTS")
     private Integer projects;
     @Column(name = "TASKS")
     private Integer tasks;
-
-//    @OneToOne
-//    @PrimaryKeyJoinColumn
-//    private AppUser appUser;
 
     public Long getId() {
         return id;
@@ -137,11 +121,4 @@ public class Users {
         this.tasks = tasks;
     }
 
-//    public AppUser getAppUser() {
-//        return appUser;
-//    }
-//
-//    public void setAppUser(AppUser appUser) {
-//        this.appUser = appUser;
-//    }
 }

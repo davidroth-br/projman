@@ -1,10 +1,8 @@
 package com.montrealcollege.projman.dao;
 
-//import com.montrealcollege.projman.model.AppUser;
 import com.montrealcollege.projman.model.Users;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +11,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -22,7 +19,6 @@ import java.util.List;
 public class UsersDAOImpl implements UsersDAO {
 
     @PersistenceContext
-//    @Autowired
     private EntityManager entityManager;
 
     public Users findUserAccount(String userName) {
@@ -45,22 +41,14 @@ public class UsersDAOImpl implements UsersDAO {
     }
 
     @Override
-    public List<Object[]> listUsers() {
+    public List<Users> listUsers() {
         Session session = entityManager.unwrap(Session.class);
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Object[]> criteria = builder.createQuery(Object[].class);
+        CriteriaQuery<Users> criteria = builder.createQuery(Users.class);
         Root<Users> usersRoot = criteria.from(Users.class);
-//        Join<AppUser, Users> usersRoot = appUserRoot.join("users");
-        criteria.multiselect(usersRoot.get("id"),
-                usersRoot.get("userName"),
-                usersRoot.get("encryptedPassword"),
-                usersRoot.get("firstName"),
-                usersRoot.get("lastName"),
-                usersRoot.get("email"),
-                usersRoot.get("phone")
-        );
+        criteria.select(usersRoot);
 
-        Query<Object[]> query = session.createQuery(criteria);
+        Query<Users> query = session.createQuery(criteria);
         return query.list();
     }
 

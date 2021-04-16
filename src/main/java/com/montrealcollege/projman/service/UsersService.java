@@ -17,7 +17,7 @@ public class UsersService {
             usersDAO.createUser(user);
         }
 //        public List<Users> showUsers() {
-        public List<Object[]> showUsers() {
+        public List<Users> showUsers() {
             return usersDAO.listUsers();
         }
     

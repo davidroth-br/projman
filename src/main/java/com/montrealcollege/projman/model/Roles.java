@@ -3,8 +3,8 @@ package com.montrealcollege.projman.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "APP_ROLE", uniqueConstraints = {@UniqueConstraint(name = "APP_ROLE_UK", columnNames = "ROLE_NAME")})
-public class AppRole {
+@Table(name = "ROLES", uniqueConstraints = {@UniqueConstraint(name = "ROLES_UK", columnNames = "ROLE_NAME")})
+public class Roles {
 
     @Id
     @GeneratedValue
