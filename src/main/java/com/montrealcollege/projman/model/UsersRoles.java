@@ -1,5 +1,7 @@
 package com.montrealcollege.projman.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +11,10 @@ import javax.persistence.*;
 public class UsersRoles {
 
     @Id
-    @GeneratedValue
+    @GenericGenerator(name="ur_seq", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {@org.hibernate.annotations.Parameter(name = "USERS_ROLES_SEQ", value = "SEQUENCE")}
+    )
+    @GeneratedValue(generator = "USERS_ROLES_SEQ")
     @Column(name = "ID", nullable = false)
     private Long id;
 

@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -18,26 +19,37 @@ public class Users {
     @GeneratedValue(generator = "USERS_SEQ")
     @Column(name = "ID")
     private Long id;
+
     @Column(name = "USER_NAME", length = 36, nullable = false)
+    @NotBlank(message="Please enter a user name.")
     private String userName;
+
     @Column(name = "ENCRYPTED_PASSWORD", length = 128, nullable = false)
+    @NotBlank(message="Please enter a password.")
     private String encryptedPassword;
+
     @Column(name = "ENABLED", length = 1, nullable = false)
     private boolean enabled;
+
     @Column(name = "FIRST_NAME")
-    @NotNull(message="Please enter a first name.")
+    @NotBlank(message="Please enter a first name.")
     private String firstName;
+
     @Column(name = "LAST_NAME")
-    @NotNull(message="Please enter a last name.")
+    @NotBlank(message="Please enter a last name.")
     private String lastName;
+
     @Column(name = "EMAIL")
     @Email(message = "Please enter a valid email address.")
     private String email;
+
     @Column(name = "PHONE")
-    @Pattern(regexp= "\\(\\d{3}\\) \\d{3}-\\d{4}", message="Please enter a valid phone number. (999) 999-9999")
+    @Pattern(regexp= "\\(\\d{3}\\) \\d{3}-\\d{4}|", message="Please enter a valid phone number. (999) 999-9999")
     private String phone;
+
     @Column(name = "PROJECTS")
     private Integer projects;
+
     @Column(name = "TASKS")
     private Integer tasks;
 

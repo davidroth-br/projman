@@ -13,10 +13,10 @@ public class UsersService {
         @Autowired
         UsersDAO usersDAO;
 
-        public void addUser(Users user) {
-            usersDAO.createUser(user);
+        public void addUser(Users user, Long role) {
+            usersDAO.createUser(user, role);
         }
-//        public List<Users> showUsers() {
+
         public List<Users> showUsers() {
             return usersDAO.listUsers();
         }

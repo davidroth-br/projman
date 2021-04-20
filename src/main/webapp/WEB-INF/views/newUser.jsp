@@ -10,24 +10,26 @@
 <%@include file="_menu.jsp" %>
 
 <f:form method="post" action="validate" modelAttribute="user">
-<%--  Project Id: <f:input path="id"/> <f:errors path="id"/>--%>
-<%--  <br><br>--%>
+
   User Name: <f:input path="userName"/> <f:errors path="userName"/>
   <br><br>
-  Password: <f:input path="encryptedPassword"/> <f:errors path="encryptedPassword"/>
+  Password: <f:input path="encryptedPassword" type="password"/> <f:errors path="encryptedPassword"/>
   <br><br>
   First Name: <f:input path="firstName"/> <f:errors path="firstName"/>
   <br><br>
   Last Name: <f:input path="lastName"/> <f:errors path="lastName"/>
   <br><br>
-  Email: <f:input path="email"/> <f:errors path="email"/>
+  Email: <f:input path="email" type="email"/> <f:errors path="email"/>
   <br><br>
-  Phone: <f:input path="phone"/> <f:errors path="phone"/>
+  Phone: <f:input path="phone" type="tel" placeholder="(999) 999-9999" /> <f:errors path="phone"/>
   <br><br>
-<%--  Project: <f:input path="projects"/> <f:errors path="projects"/>--%>
-<%--  <br><br>--%>
-<%--  Task: <f:input path="tasks"/> <f:errors path="tasks"/>--%>
-<%--  <br><br>--%>
+  Role:
+  User <input name="role" type="radio" value="2" checked>
+  <br>
+  Admin <input name="role" type="radio" value="1">
+  <br><br>
+  Enabled <input name="enabled" type="checkbox" checked>
+  <br><br>
   <input type="submit"/>
   <br><br>
 </f:form>
@@ -38,6 +40,7 @@
       <th>Id</th>
       <th>User Name</th>
       <th>Password</th>
+      <th>Enabled</th>
       <th>First Name</th>
       <th>Last Name</th>
       <th>Email</th>
@@ -48,6 +51,7 @@
         <td>${user.id}</td>
         <td>${user.userName}</td>
         <td>${user.encryptedPassword}</td>
+        <td>${user.enabled}</td>
         <td>${user.firstName}</td>
         <td>${user.lastName}</td>
         <td>${user.email}</td>

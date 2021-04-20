@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
@@ -17,9 +16,7 @@
         Login Failed!!!<br />
         Reason :
         <c:if test="${sessionScope != null and sessionScope['SPRING_SECURITY_LAST_EXCEPTION'] != null}">
-            <span>"${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message}">
-                Static summary
-            </span>
+            <span>"${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message}"</span>
         </c:if>
     </div>
 </c:if>

@@ -30,15 +30,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         if (user == null) {
             System.out.println("User not found! " + userName);
-            throw new UsernameNotFoundException("User " + userName + " was not found in the database");
+            throw new UsernameNotFoundException(userName + " was not found in the database");
         }
 
-        System.out.println("Found User: " + user);
+        System.out.println("Found User: " + userName);
 
         // [ROLE_USER, ROLE_ADMIN,..]
         List<String> roleNames = this.rolesDAO.getRoleNames(user.getId());
 
-        List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> grantList = new ArrayList<>();
         if (roleNames != null) {
             for (String role : roleNames) {
                 // ROLE_USER, ROLE_ADMIN,..
@@ -47,9 +47,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
         }
 
-        UserDetails userDetails = (UserDetails) new User(user.getUserName(),
-                user.getEncryptedPassword(), grantList);
-
-        return userDetails;
+        return new User(user.getUserName(), user.getEncryptedPassword(), user.isEnabled(),
+                true, true, true, grantList);
     }
 }
