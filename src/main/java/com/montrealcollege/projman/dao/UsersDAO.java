@@ -8,12 +8,12 @@ public interface UsersDAO {
 
     Users findUserAccount(String userName);
 
-    void createUser(Users user, Long role);
+//    void createUser(Users user, Long role);
+    void createUser(Users user, Long roleId);
 
     List<Users> listUsers();
 
-
-    Users displayUser(Integer id);
+    Users displayUser(Long id);
 
     void updateUser(Users user);
 

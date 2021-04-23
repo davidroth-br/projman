@@ -33,32 +33,5 @@
   <input type="submit"/>
   <br><br>
 </f:form>
-<h3>Project List</h3>
-<c:if test="${!empty userList}">
-  <table>
-    <tr>
-      <th>Id</th>
-      <th>User Name</th>
-      <th>Password</th>
-      <th>Enabled</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-      <th>Phone</th>
-    </tr>
-    <c:forEach items="${userList}" var="user">
-      <tr>
-        <td>${user.id}</td>
-        <td>${user.userName}</td>
-        <td>${user.encryptedPassword}</td>
-        <td>${user.enabled}</td>
-        <td>${user.firstName}</td>
-        <td>${user.lastName}</td>
-        <td>${user.email}</td>
-        <td>${user.phone}</td>
-      </tr>
-    </c:forEach>
-  </table>
-</c:if>
 </body>
 </html>

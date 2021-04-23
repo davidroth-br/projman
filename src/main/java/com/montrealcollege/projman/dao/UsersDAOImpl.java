@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -37,9 +38,11 @@ public class UsersDAOImpl implements UsersDAO {
 
     @Override
     public void createUser(Users user, Long roleId) {
+//    public void createUser(Users user) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         Roles role = new Roles();
+
         role.setRoleId(roleId);
         if (roleId == 1L)
             role.setRoleName("ROLE_ADMIN");
@@ -49,6 +52,8 @@ public class UsersDAOImpl implements UsersDAO {
         UsersRoles userRole = new UsersRoles();
         userRole.setUser(user);
         userRole.setRole(role);
+
+//        user.getRolesSet().add(role);
 
         entityManager.getTransaction().begin();
         entityManager.persist(user);
@@ -62,15 +67,26 @@ public class UsersDAOImpl implements UsersDAO {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Users> criteria = builder.createQuery(Users.class);
         Root<Users> usersRoot = criteria.from(Users.class);
-        criteria.select(usersRoot);
+//        Join<Users, Roles> rolesRoot = usersRoot.join(usersRoot.get("id"));
+        criteria.select(usersRoot).orderBy(
+                builder.asc(usersRoot.get("firstName")),
+                builder.asc(usersRoot.get("lastName"))
+        );
 
         TypedQuery<Users> query = entityManager.createQuery(criteria);
         return query.getResultList();
     }
 
     @Override
-    public Users displayUser(Integer id) {
-        return null;
+    public Users displayUser(Long id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Users> criteria = builder.createQuery(Users.class);
+        Root<Users> usersRoot = criteria.from(Users.class);
+        criteria.select(usersRoot).where(builder.equal(usersRoot.get("id"), id));
+
+        TypedQuery<Users> query = entityManager.createQuery(criteria);
+        return query.getSingleResult();
     }
 
     @Override

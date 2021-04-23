@@ -10,15 +10,22 @@ import java.util.List;
 @Service
 public class UsersService {
 
-        @Autowired
-        UsersDAO usersDAO;
+    @Autowired
+    UsersDAO usersDAO;
 
-        public void addUser(Users user, Long role) {
+            public void addUser(Users user, Long role) {
             usersDAO.createUser(user, role);
         }
+//    public void addUser(Users user) {
+//        usersDAO.createUser(user);
+//    }
 
-        public List<Users> showUsers() {
-            return usersDAO.listUsers();
-        }
-    
+    public List<Users> showUsers() {
+        return usersDAO.listUsers();
+    }
+
+    public Users getUserById(Long id) {
+        return usersDAO.displayUser(id);
+    }
+
 }

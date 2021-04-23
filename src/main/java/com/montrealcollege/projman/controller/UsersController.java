@@ -23,14 +23,13 @@ public class UsersController {
     @GetMapping("/new")
     public String showForm(Model model) {
         model.addAttribute("user", new Users());
-        model.addAttribute("userList", service.showUsers());
         return "newUser";
     }
 
     @GetMapping("/list")
     public String showAllUsers(Model model) {
         model.addAttribute("userList", service.showUsers());
-        return "allUsers";
+        return "userList";
     }
 
     @PostMapping("/validate")
@@ -45,8 +44,23 @@ public class UsersController {
         user.setEncryptedPassword(encryptPassword(user.getEncryptedPassword()));
         user.setEnabled(!(enabled == null));
 
+        Roles roles = new Roles();
+        roles.setRoleId(role);
+
         service.addUser(user, role);
-        model.addAttribute("userName", user.getUserName());
-        return "result";
+//        service.addUser(user);
+        model.addAttribute("newUser", user.getFirstName() + " "+ user.getLastName());
+        model.addAttribute("newUserName", user.getUserName());
+        model.addAttribute("userList", service.showUsers());
+        return "userList";
     }
+
+    @GetMapping("/edit/{id}")
+    public String editUser(@PathVariable Long id,
+                           @ModelAttribute("user") Users user, Model model) {
+        model.addAttribute("user", service.getUserById(id));
+
+        return "editUser";
+    }
+
 }

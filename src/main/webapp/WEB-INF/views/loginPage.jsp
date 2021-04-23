@@ -6,7 +6,7 @@
     <title>Login</title>
 </head>
 <body>
-<%@include file="_menu.jsp" %>
+<%--<%@include file="_menu.jsp" %>--%>
 
 <h1>Login</h1>
 

@@ -9,7 +9,8 @@
 <body>
 <%@include file="_menu.jsp" %>
 
-<h2>Message : ${message}</h2>
+<h2>Welcome ${userName}!</h2>
+
 
 </body>
 </html>

@@ -7,6 +7,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -44,7 +46,8 @@ public class Users {
     private String email;
 
     @Column(name = "PHONE")
-    @Pattern(regexp= "\\(\\d{3}\\) \\d{3}-\\d{4}|", message="Please enter a valid phone number. (999) 999-9999")
+    @Pattern(regexp= "\\(\\d{3}\\) \\d{3}-\\d{4}|",
+            message="Please enter a valid phone number. (999) 999-9999")
     private String phone;
 
     @Column(name = "PROJECTS")
@@ -52,6 +55,13 @@ public class Users {
 
     @Column(name = "TASKS")
     private Integer tasks;
+
+//    @ManyToMany()
+//    @JoinTable(name = "USERS_ROLES",
+//            joinColumns = {@JoinColumn(name = "id")},
+//            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+//    )
+//    private Set<Roles> rolesSet = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -133,4 +143,11 @@ public class Users {
         this.tasks = tasks;
     }
 
+//    public Set<Roles> getRolesSet() {
+//        return rolesSet;
+//    }
+//
+//    public void setRolesSet(Set<Roles> rolesSet) {
+//        this.rolesSet = rolesSet;
+//    }
 }
