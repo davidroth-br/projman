@@ -1,15 +1,12 @@
 package com.montrealcollege.projman.dao;
 
-import com.montrealcollege.projman.model.Roles;
 import com.montrealcollege.projman.model.Users;
-import com.montrealcollege.projman.model.UsersRoles;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -24,40 +21,41 @@ public class UsersDAOImpl implements UsersDAO {
     public Users findUserAccount(String userName) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            String sql = "Select e from " + Users.class.getName() + " e "
-                    + " Where e.userName = :userName ";
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Users> criteria = builder.createQuery(Users.class);
+            Root<Users> usersRoot = criteria.from(Users.class);
+            criteria.select(usersRoot).where(builder.equal(usersRoot.get("userName"), userName));
 
-            javax.persistence.Query query = entityManager.createQuery(sql, Users.class);
-            query.setParameter("userName", userName);
+            TypedQuery<Users> query = entityManager.createQuery(criteria);
+            return query.getSingleResult();
 
-            return (Users) query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
 
     @Override
-    public void createUser(Users user, Long roleId) {
-//    public void createUser(Users user) {
+//    public void createUser(Users user, Long roleId) {
+    public void createUser(Users user) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        Roles role = new Roles();
-
-        role.setRoleId(roleId);
-        if (roleId == 1L)
-            role.setRoleName("ROLE_ADMIN");
-        else
-            role.setRoleName("ROLE_USER");
-
-        UsersRoles userRole = new UsersRoles();
-        userRole.setUser(user);
-        userRole.setRole(role);
+//        Roles role = new Roles();
+//
+//        role.setRoleId(roleId);
+//        if (roleId == 1L)
+//            role.setRoleName("ROLE_ADMIN");
+//        else
+//            role.setRoleName("ROLE_USER");
+//
+//        UsersRoles userRole = new UsersRoles();
+//        userRole.setUser(user);
+//        userRole.setRole(role);
 
 //        user.getRolesSet().add(role);
 
         entityManager.getTransaction().begin();
         entityManager.persist(user);
-        entityManager.persist(userRole);
+//        entityManager.persist(userRole);
         entityManager.getTransaction().commit();
     }
 

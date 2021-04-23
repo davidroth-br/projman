@@ -47,8 +47,8 @@ public class UsersController {
         Roles roles = new Roles();
         roles.setRoleId(role);
 
-        service.addUser(user, role);
-//        service.addUser(user);
+//        service.addUser(user, role);
+        service.addUser(user);
         model.addAttribute("newUser", user.getFirstName() + " "+ user.getLastName());
         model.addAttribute("newUserName", user.getUserName());
         model.addAttribute("userList", service.showUsers());

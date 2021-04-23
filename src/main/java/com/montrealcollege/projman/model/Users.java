@@ -56,12 +56,12 @@ public class Users {
     @Column(name = "TASKS")
     private Integer tasks;
 
-//    @ManyToMany()
-//    @JoinTable(name = "USERS_ROLES",
-//            joinColumns = {@JoinColumn(name = "id")},
-//            inverseJoinColumns = {@JoinColumn(name = "role_id")}
-//    )
-//    private Set<Roles> rolesSet = new HashSet<>();
+    @ManyToMany()
+    @JoinTable(name = "USERS_ROLES",
+            joinColumns = {@JoinColumn(name = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
+    private Set<Roles> roles = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -143,11 +143,11 @@ public class Users {
         this.tasks = tasks;
     }
 
-//    public Set<Roles> getRolesSet() {
-//        return rolesSet;
-//    }
-//
-//    public void setRolesSet(Set<Roles> rolesSet) {
-//        this.rolesSet = rolesSet;
-//    }
+    public Set<Roles> getRolesSet() {
+        return roles;
+    }
+
+    public void setRolesSet(Set<Roles> rolesSet) {
+        this.roles = rolesSet;
+    }
 }
