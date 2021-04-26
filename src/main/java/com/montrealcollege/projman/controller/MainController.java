@@ -2,14 +2,12 @@ package com.montrealcollege.projman.controller;
 
 import com.montrealcollege.projman.utils.WebUtils;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
-import java.util.Collection;
 
 @Controller
 public class MainController {
@@ -18,15 +16,6 @@ public class MainController {
     public String welcomePage(Model model, Principal principal) {
 
         // After user login successfully.
-
-//        Collection<GrantedAuthority> grantList = loggedInUser.getAuthorities();
-//        String authority;
-//
-//        if (grantList.toString().contains("ROLE_ADMIN")) authority = "ROLE_ADMIN";
-//        else authority = "ROLE_USER";
-//
-//        model.addAttribute("authority", authority);
-
         User loggedInUser = (User) ((Authentication) principal).getPrincipal();
         model.addAttribute("userName", loggedInUser.getUsername());
         model.addAttribute("title", "Welcome");

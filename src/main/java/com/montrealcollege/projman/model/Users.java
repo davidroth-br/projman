@@ -1,11 +1,11 @@
 package com.montrealcollege.projman.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +16,7 @@ public class Users {
 
     @Id
     @GenericGenerator(name="usrs_seq", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {@org.hibernate.annotations.Parameter(name = "USERS_SEQ", value = "SEQUENCE")}
+            parameters = {@Parameter(name = "USERS_SEQ", value = "SEQUENCE")}
     )
     @GeneratedValue(generator = "USERS_SEQ")
     @Column(name = "ID")
@@ -58,10 +58,13 @@ public class Users {
 
     @ManyToMany()
     @JoinTable(name = "USERS_ROLES",
-            joinColumns = {@JoinColumn(name = "id")},
+            joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private Set<Roles> roles = new HashSet<>();
+
+    @OneToOne(mappedBy = "leader")
+    private Projects project;
 
     public Long getId() {
         return id;
@@ -143,11 +146,19 @@ public class Users {
         this.tasks = tasks;
     }
 
-    public Set<Roles> getRolesSet() {
+    public Set<Roles> getRoles() {
         return roles;
     }
 
-    public void setRolesSet(Set<Roles> rolesSet) {
-        this.roles = rolesSet;
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
+
+    public Projects getProject() {
+        return project;
+    }
+
+    public void setProject(Projects project) {
+        this.project = project;
     }
 }

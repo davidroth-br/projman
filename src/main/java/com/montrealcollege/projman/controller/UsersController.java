@@ -44,12 +44,13 @@ public class UsersController {
         user.setEncryptedPassword(encryptPassword(user.getEncryptedPassword()));
         user.setEnabled(!(enabled == null));
 
-        Roles roles = new Roles();
-        roles.setRoleId(role);
+        Roles newRole = new Roles();
+        newRole.setRoleId(role);
 
-//        service.addUser(user, role);
+        user.getRoles().add(newRole);
+
         service.addUser(user);
-        model.addAttribute("newUser", user.getFirstName() + " "+ user.getLastName());
+        model.addAttribute("newUser", user.getFirstName() + " " + user.getLastName());
         model.addAttribute("newUserName", user.getUserName());
         model.addAttribute("userList", service.showUsers());
         return "userList";

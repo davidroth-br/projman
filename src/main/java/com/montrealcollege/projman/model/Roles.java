@@ -16,7 +16,7 @@ public class Roles {
     @Column(name = "ROLE_NAME", length = 30, nullable = false)
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.PERSIST)
     private Set<Users> users = new HashSet<>();
 
     public Long getRoleId() {

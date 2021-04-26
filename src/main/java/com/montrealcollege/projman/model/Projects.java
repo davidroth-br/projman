@@ -1,9 +1,6 @@
 package com.montrealcollege.projman.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -21,8 +18,12 @@ public class Projects {
     private Date startDate;
     @Column(name = "END_DATE")
     private Date endDate;
-    @Column(name = "LEADER_ID")
-    private Long leaderId;
+//    @Column(name = "LEADER_ID")
+//    private Long leaderId;
+
+    @OneToOne //(cascade = CascadeType.ALL)
+    @JoinColumn(name = "LEADER_ID", referencedColumnName = "ID")
+    private Users leader;
 
     public Integer getId() {
         return id;
@@ -64,12 +65,20 @@ public class Projects {
         this.endDate = endDate;
     }
 
-    public Long getLeaderId() {
-        return leaderId;
+//    public Long getLeaderId() {
+//        return leaderId;
+//    }
+//
+//    public void setLeaderId(Long leaderId) {
+//        this.leaderId = leaderId;
+//    }
+
+    public Users getLeader() {
+        return leader;
     }
 
-    public void setLeaderId(Long leaderId) {
-        this.leaderId = leaderId;
+    public void setLeader(Users leader) {
+        this.leader = leader;
     }
 
     @Override
@@ -80,7 +89,7 @@ public class Projects {
                 ", description='" + description + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", leaderId=" + leaderId +
+//                ", leaderId=" + leaderId +
                 '}';
     }
 }
