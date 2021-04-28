@@ -13,9 +13,6 @@ public class UsersService {
     @Autowired
     UsersDAO usersDAO;
 
-//            public void addUser(Users user, Long role) {
-//            usersDAO.createUser(user, role);
-//        }
     public void addUser(Users user) {
         usersDAO.createUser(user);
     }
@@ -28,4 +25,7 @@ public class UsersService {
         return usersDAO.displayUser(id);
     }
 
+    public void editUser(Users user) {
+        usersDAO.updateUser(user);
+    }
 }

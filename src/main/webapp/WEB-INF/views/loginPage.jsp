@@ -26,7 +26,7 @@
     <table>
         <tr>
             <td><label for='username'>User:</label></td>
-            <td><input id='username' type='text' name='username' value='' /></td>
+            <td><input id='username' type='text' name='username' value='' autofocus /></td>
         </tr>
         <tr>
             <td><label for='password'>Password:</label></td>

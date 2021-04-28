@@ -9,7 +9,6 @@ public interface UsersDAO {
     Users findUserAccount(String userName);
 
     void createUser(Users user);
-//    void createUser(Users user, Long roleId);
 
     List<Users> listUsers();
 

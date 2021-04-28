@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.checkPassword;
 import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.encryptPassword;
 
 @Controller
@@ -32,21 +33,24 @@ public class UsersController {
         return "userList";
     }
 
-    @PostMapping("/validate")
-    public String validateForm(@RequestParam("role") Long role,
-                               @RequestParam(value = "enabled", required = false) String enabled,
-                               @ModelAttribute("user") @Valid Users user,
-                               BindingResult errors, Model model) {
+    @PostMapping("/validateNew")
+    public String validateNewUser(@RequestParam("role") Long role,
+                                  @RequestParam("passCheck") String passCheck,
+                                  @ModelAttribute("user") @Valid Users user,
+                                  BindingResult errors, Model model) {
         if (errors.hasErrors()) {
             return "newUser";
         }
 
+        if (!user.getEncryptedPassword().equals(passCheck)) {
+            model.addAttribute("isNotMatch", true);
+            return "newUser";
+        }
+
         user.setEncryptedPassword(encryptPassword(user.getEncryptedPassword()));
-        user.setEnabled(!(enabled == null));
 
         Roles newRole = new Roles();
         newRole.setRoleId(role);
-
         user.getRoles().add(newRole);
 
         service.addUser(user);
@@ -59,9 +63,62 @@ public class UsersController {
     @GetMapping("/edit/{id}")
     public String editUser(@PathVariable Long id,
                            @ModelAttribute("user") Users user, Model model) {
-        model.addAttribute("user", service.getUserById(id));
+
+        Users usr = service.getUserById(id);
+        model.addAttribute("user", usr);
+
+        setRoleAttributes(usr.getRoles().iterator().next().getRoleId(), model);
+
+        if (usr.isEnabled()) {
+            model.addAttribute("chk", "checked");
+        }
 
         return "editUser";
     }
 
+    @PostMapping("/validateEdit/{id}")
+    public String validateEdit(@PathVariable Long id,
+                               @RequestParam("role") Long role,
+                               @RequestParam("currentPassword") String currentPassword,
+                               //@RequestParam("passCheck") String passCheck,
+                               @ModelAttribute("user") @Valid Users user,
+                               BindingResult errors, Model model) {
+
+        if (errors.hasErrors()) {
+            setRoleAttributes(role, model);
+            return "editUser";
+        }
+
+        if (!currentPassword.equals("") && !checkPassword(currentPassword, user.getEncryptedPassword())) {
+            setRoleAttributes(role, model);
+            model.addAttribute("isNotPassword", true);
+            return "editUser";
+        }
+//        if (!user.getEncryptedPassword().equals(passCheck)) {
+//            model.addAttribute("isNotMatch", true);
+//            return "editUser";
+//        }
+
+        user.setId(id);
+
+        Roles newRole = new Roles();
+        newRole.setRoleId(role);
+        user.getRoles().clear();
+        user.getRoles().add(newRole);
+
+        service.editUser(user);
+
+        model.addAttribute("userList", service.showUsers());
+        return "userList";
+    }
+
+    private void setRoleAttributes(@RequestParam("role") Long role, Model model) {
+        if (role == 1) {
+            model.addAttribute("roleAdm", "checked");
+            model.addAttribute("roleUser", "");
+        } else {
+            model.addAttribute("roleAdm", "");
+            model.addAttribute("roleUser", "checked");
+        }
+    }
 }

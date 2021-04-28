@@ -8,13 +8,17 @@
 </head>
 <body>
 <%@include file="_menu.jsp" %>
-
-<f:form method="post" action="validate" modelAttribute="user">
-
+<f:form method="POST" action="${pageContext.request.contextPath}/users/validateEdit/${user.id}" modelAttribute="user">
   User Name: <f:input path="userName" value="${user.userName}"/> <f:errors path="userName"/>
   <br><br>
-<%--  Password: <f:input path="encryptedPassword" type="password"/> <f:errors path="encryptedPassword"/>--%>
-<%--  <br><br>--%>
+  <f:input path="encryptedPassword" value="${user.encryptedPassword}" type="hidden"/>
+  Current Password: <input name="currentPassword" type="password">
+  <c:if test="${isNotPassword}">
+    Incorrect password. Please try again.
+  </c:if>
+  <br><br>
+<%--  Repeat Password: <input name="passCheck" type="password"/> <c:if test="${isNotMatch}">Passwords did not match</c:if>--%>
+  <br><br>
   First Name: <f:input path="firstName" value="${user.firstName}"/> <f:errors path="firstName"/>
   <br><br>
   Last Name: <f:input path="lastName" value="${user.lastName}"/> <f:errors path="lastName"/>
@@ -25,14 +29,14 @@
   <br><br>
   Role:
   <br>
-  User <input name="role" type="radio" value="2" checked>
+  User <input name="role" type="radio" value="2" ${roleUser}>
   <br>
-  Admin <input name="role" type="radio" value="1">
+  Admin <input name="role" type="radio" value="1" ${roleAdm}>
   <br><br>
-  Enabled <input name="enabled" type="checkbox" checked>
+  Enabled
+  <f:checkbox path="enabled" checked="${chk}" />
   <br><br>
   <input type="submit"/>
-  <br><br>
 </f:form>
 </body>
 </html>

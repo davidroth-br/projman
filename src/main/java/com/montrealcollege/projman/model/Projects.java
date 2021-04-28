@@ -18,10 +18,8 @@ public class Projects {
     private Date startDate;
     @Column(name = "END_DATE")
     private Date endDate;
-//    @Column(name = "LEADER_ID")
-//    private Long leaderId;
 
-    @OneToOne //(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "LEADER_ID", referencedColumnName = "ID")
     private Users leader;
 
@@ -64,14 +62,6 @@ public class Projects {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
-//    public Long getLeaderId() {
-//        return leaderId;
-//    }
-//
-//    public void setLeaderId(Long leaderId) {
-//        this.leaderId = leaderId;
-//    }
 
     public Users getLeader() {
         return leader;

@@ -39,13 +39,8 @@ public class UsersDAOImpl implements UsersDAO {
     public void createUser(Users user) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        System.out.println(user.getId());
-
         entityManager.getTransaction().begin();
         entityManager.persist(user);
-
-        System.out.println(user.getId());
-
         entityManager.getTransaction().commit();
     }
 
@@ -78,7 +73,11 @@ public class UsersDAOImpl implements UsersDAO {
 
     @Override
     public void updateUser(Users user) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
+        entityManager.getTransaction().begin();
+        entityManager.merge(user);
+        entityManager.getTransaction().commit();
     }
 
     @Override

@@ -9,11 +9,13 @@
 <body>
 <%@include file="_menu.jsp" %>
 
-<f:form method="post" action="validate" modelAttribute="user">
+<f:form method="POST" action="validateNew" modelAttribute="user">
 
-  User Name: <f:input path="userName"/> <f:errors path="userName"/>
+  User Name: <f:input path="userName"/> <f:errors path="userName" />
   <br><br>
   Password: <f:input path="encryptedPassword" type="password"/> <f:errors path="encryptedPassword"/>
+  <br><br>
+  Repeat Password: <input name="passCheck" type="password"/> <c:if test="${isNotMatch}">Passwords did not match</c:if>
   <br><br>
   First Name: <f:input path="firstName"/> <f:errors path="firstName"/>
   <br><br>
@@ -28,7 +30,7 @@
   <br>
   Admin <input name="role" type="radio" value="1">
   <br><br>
-  Enabled <input name="enabled" type="checkbox" checked>
+  Enabled <f:checkbox path="enabled" checked="checked" />
   <br><br>
   <input type="submit"/>
   <br><br>

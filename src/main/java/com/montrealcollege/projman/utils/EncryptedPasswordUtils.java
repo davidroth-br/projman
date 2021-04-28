@@ -15,4 +15,10 @@ public class EncryptedPasswordUtils {
 //
 //        System.out.println("Encrypted Password: " + encryptedPassword);
 //    }
+
+    public static boolean checkPassword(String raw, String encoded) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        String encoded = encoder.encode(password);
+        return encoder.matches(raw, encoded);
+    }
 }
