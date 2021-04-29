@@ -33,11 +33,12 @@
         <td>${user.userName}</td>
         <td>${user.email}</td>
         <td>${user.phone}</td>
-        <td>
-          <c:forEach items="${user.roles.toArray()}" var="role" varStatus="status">
-            ${fn:substring(role.roleName, 5, fn:length(role.roleName))} ${not status.last ? '/' : ''}
-          </c:forEach>
+        <td>${fn:substring(user.roles.toArray()[0].roleName, 5, fn:length(user.roles.toArray()[0].roleName))}
+<%--          <c:forEach items="${user.roles.toArray()}" var="role" varStatus="status">--%>
+<%--            ${fn:substring(role.roleName, 5, fn:length(role.roleName))} ${not status.last ? '/' : ''}--%>
+<%--          </c:forEach>--%>
         <td>${user.enabled}</td>
+        <td><a href="<c:url value="/users/newPass/${user.id}"/>">Change Password</a></td>
         <td><a href="<c:url value="/users/edit/${user.id}"/>">Edit</a></td>
       </tr>
     </c:forEach>

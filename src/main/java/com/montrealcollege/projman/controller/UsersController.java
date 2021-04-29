@@ -69,18 +69,11 @@ public class UsersController {
 
         setRoleAttributes(usr.getRoles().iterator().next().getRoleId(), model);
 
-        if (usr.isEnabled()) {
-            model.addAttribute("chk", "checked");
-        }
-
         return "editUser";
     }
 
-    @PostMapping("/validateEdit/{id}")
-    public String validateEdit(@PathVariable Long id,
-                               @RequestParam("role") Long role,
-                               @RequestParam("currentPassword") String currentPassword,
-                               //@RequestParam("passCheck") String passCheck,
+    @PostMapping("/validateEdit")
+    public String validateEdit(@RequestParam("role") Long role,
                                @ModelAttribute("user") @Valid Users user,
                                BindingResult errors, Model model) {
 
@@ -88,18 +81,6 @@ public class UsersController {
             setRoleAttributes(role, model);
             return "editUser";
         }
-
-        if (!currentPassword.equals("") && !checkPassword(currentPassword, user.getEncryptedPassword())) {
-            setRoleAttributes(role, model);
-            model.addAttribute("isNotPassword", true);
-            return "editUser";
-        }
-//        if (!user.getEncryptedPassword().equals(passCheck)) {
-//            model.addAttribute("isNotMatch", true);
-//            return "editUser";
-//        }
-
-        user.setId(id);
 
         Roles newRole = new Roles();
         newRole.setRoleId(role);
@@ -112,7 +93,7 @@ public class UsersController {
         return "userList";
     }
 
-    private void setRoleAttributes(@RequestParam("role") Long role, Model model) {
+    private void setRoleAttributes(Long role, Model model) {
         if (role == 1) {
             model.addAttribute("roleAdm", "checked");
             model.addAttribute("roleUser", "");
@@ -120,5 +101,41 @@ public class UsersController {
             model.addAttribute("roleAdm", "");
             model.addAttribute("roleUser", "checked");
         }
+    }
+
+    @GetMapping("/newPass/{id}")
+    public String editPassword(@PathVariable Long id,
+                               @ModelAttribute("user") Users user, Model model) {
+
+        Users usr = service.getUserById(id);
+        model.addAttribute("user", usr);
+
+        setRoleAttributes(usr.getRoles().iterator().next().getRoleId(), model);
+
+        return "changePassword";
+    }
+
+    @PostMapping("/validateNewPass")
+    public String validatePassword(@RequestParam("currentPassword") String currentPassword,
+                                   @RequestParam("newPassword") String newPassword,
+                                   @RequestParam("passCheck") String passCheck,
+                                   @ModelAttribute("user") Users user, Model model) {
+
+        if (!currentPassword.equals("") && !checkPassword(currentPassword, user.getEncryptedPassword())) {
+            model.addAttribute("isNotPassword", true);
+            return "changePassword";
+        }
+        if (!newPassword.equals(passCheck)) {
+            model.addAttribute("isNotMatch", true);
+            return "changePassword";
+        }
+        Users usr = service.getUserById(user.getId());
+        user.setRoles(usr.getRoles());
+        user.setEncryptedPassword(encryptPassword(newPassword));
+
+        service.editUser(user);
+
+        model.addAttribute("userList", service.showUsers());
+        return "userList";
     }
 }

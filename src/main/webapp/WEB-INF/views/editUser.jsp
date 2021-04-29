@@ -8,16 +8,8 @@
 </head>
 <body>
 <%@include file="_menu.jsp" %>
-<f:form method="POST" action="${pageContext.request.contextPath}/users/validateEdit/${user.id}" modelAttribute="user">
+<f:form method="POST" action="${pageContext.request.contextPath}/users/validateEdit" modelAttribute="user">
   User Name: <f:input path="userName" value="${user.userName}"/> <f:errors path="userName"/>
-  <br><br>
-  <f:input path="encryptedPassword" value="${user.encryptedPassword}" type="hidden"/>
-  Current Password: <input name="currentPassword" type="password">
-  <c:if test="${isNotPassword}">
-    Incorrect password. Please try again.
-  </c:if>
-  <br><br>
-<%--  Repeat Password: <input name="passCheck" type="password"/> <c:if test="${isNotMatch}">Passwords did not match</c:if>--%>
   <br><br>
   First Name: <f:input path="firstName" value="${user.firstName}"/> <f:errors path="firstName"/>
   <br><br>
@@ -34,8 +26,10 @@
   Admin <input name="role" type="radio" value="1" ${roleAdm}>
   <br><br>
   Enabled
-  <f:checkbox path="enabled" checked="${chk}" />
+  <f:checkbox path="enabled"/>
   <br><br>
+  <f:hidden path="id" value="${user.id}"/>
+  <f:hidden path="encryptedPassword" value="${user.encryptedPassword}"/>
   <input type="submit"/>
 </f:form>
 </body>
