@@ -7,7 +7,7 @@
     <title>Result</title>
 </head>
 <body>
-<%@include file="_menu.jsp"%>
+<%@include file="_menu.jsp" %>
 
 <h1>${userName} is now a user!</h1>
 </body>

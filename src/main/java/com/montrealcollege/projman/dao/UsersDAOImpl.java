@@ -1,6 +1,5 @@
 package com.montrealcollege.projman.dao;
 
-import com.montrealcollege.projman.model.Roles;
 import com.montrealcollege.projman.model.Users;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,7 +80,12 @@ public class UsersDAOImpl implements UsersDAO {
     }
 
     @Override
-    public void deleteUser(Users user) {
+    public void deleteUser(Long id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
+        Users user = entityManager.find(Users.class, id);
+        entityManager.getTransaction().begin();
+        entityManager.remove(user);
+        entityManager.getTransaction().commit();
     }
 }

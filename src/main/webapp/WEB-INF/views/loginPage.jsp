@@ -13,7 +13,7 @@
 <!-- /login?error=true -->
 <c:if test="${param.error == 'true'}">
     <div style="color:red; margin:10px 0;">
-        Login Failed!!!<br />
+        Login Failed!!!<br/>
         Reason :
         <c:if test="${sessionScope != null and sessionScope['SPRING_SECURITY_LAST_EXCEPTION'] != null}">
             <span>"${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message}"</span>
@@ -26,18 +26,18 @@
     <table>
         <tr>
             <td><label for='username'>User:</label></td>
-            <td><input id='username' type='text' name='username' value='' autofocus /></td>
+            <td><input id='username' type='text' name='username' value='' autofocus/></td>
         </tr>
         <tr>
             <td><label for='password'>Password:</label></td>
-            <td><input id='password' type='password' name='password' /></td>
+            <td><input id='password' type='password' name='password'/></td>
         </tr>
         <tr>
             <td><label for='remember'>Remember Me?</label></td>
-            <td><input id='remember' type="checkbox" name="remember-me" /></td>
+            <td><input id='remember' type="checkbox" name="remember-me"/></td>
         </tr>
         <tr>
-            <td><input name="submit" type="submit" value="submit" /></td>
+            <td><input name="submit" type="submit" value="submit"/></td>
         </tr>
     </table>
 </form>

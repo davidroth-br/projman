@@ -8,26 +8,26 @@
 <body>
 <h3>Project List</h3>
 
-    <table>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Leader Id</th>
+    </tr>
+    <c:forEach items="${projectList}" var="project">
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Leader Id</th>
+            <td>${project.id}</td>
+            <td>${project.name}</td>
+            <td>${project.description}</td>
+            <td>${project.startDate}</td>
+            <td>${project.endDate}</td>
+            <td>${project.leaderId}</td>
         </tr>
-        <c:forEach items="${projectList}" var="project">
-            <tr>
-                <td>${project.id}</td>
-                <td>${project.name}</td>
-                <td>${project.description}</td>
-                <td>${project.startDate}</td>
-                <td>${project.endDate}</td>
-                <td>${project.leaderId}</td>
-            </tr>
-        </c:forEach>
-    </table>
+    </c:forEach>
+</table>
 
 </body>
 </html>

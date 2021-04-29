@@ -54,20 +54,20 @@ public class UsersController {
         user.getRoles().add(newRole);
 
         service.addUser(user);
-        model.addAttribute("newUser", user.getFirstName() + " " + user.getLastName());
-        model.addAttribute("newUserName", user.getUserName());
+
+        String message = user.getFirstName() + " " + user.getLastName() +
+                " was successfully added as " + user.getUserName() + "!";
+        model.addAttribute("message", message);
         model.addAttribute("userList", service.showUsers());
         return "userList";
     }
 
     @GetMapping("/edit/{id}")
-    public String editUser(@PathVariable Long id,
-                           @ModelAttribute("user") Users user, Model model) {
+    public String editUser(@PathVariable Long id, Model model) {
 
-        Users usr = service.getUserById(id);
-        model.addAttribute("user", usr);
-
-        setRoleAttributes(usr.getRoles().iterator().next().getRoleId(), model);
+        Users user = service.getUserById(id);
+        model.addAttribute("user", user);
+        setRoleAttributes(user.getRoles().iterator().next().getRoleId(), model);
 
         return "editUser";
     }
@@ -89,6 +89,9 @@ public class UsersController {
 
         service.editUser(user);
 
+        String message = user.getFirstName() + " " + user.getLastName() +
+                " was successfully edited!";
+        model.addAttribute("message", message);
         model.addAttribute("userList", service.showUsers());
         return "userList";
     }
@@ -104,13 +107,11 @@ public class UsersController {
     }
 
     @GetMapping("/newPass/{id}")
-    public String editPassword(@PathVariable Long id,
-                               @ModelAttribute("user") Users user, Model model) {
+    public String editPassword(@PathVariable Long id, Model model) {
 
-        Users usr = service.getUserById(id);
-        model.addAttribute("user", usr);
-
-        setRoleAttributes(usr.getRoles().iterator().next().getRoleId(), model);
+        Users user = service.getUserById(id);
+        model.addAttribute("user", user);
+        setRoleAttributes(user.getRoles().iterator().next().getRoleId(), model);
 
         return "changePassword";
     }
@@ -135,6 +136,21 @@ public class UsersController {
 
         service.editUser(user);
 
+        String message = user.getFirstName() + " " + user.getLastName() +
+                "'s password was successfully changed!";
+        model.addAttribute("message", message);
+        model.addAttribute("userList", service.showUsers());
+        return "userList";
+    }
+
+    @GetMapping("/remove/{id}")
+    public String deleteUser(@PathVariable Long id, Model model) {
+
+        Users user = service.getUserById(id);
+        service.removeUser(id);
+        String message = user.getFirstName() + " " + user.getLastName() +
+                " was successfully removed!";
+        model.addAttribute("message", message);
         model.addAttribute("userList", service.showUsers());
         return "userList";
     }

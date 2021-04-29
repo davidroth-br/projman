@@ -28,4 +28,9 @@ public class UsersService {
     public void editUser(Users user) {
         usersDAO.updateUser(user);
     }
+
+    public void removeUser(Long id) {
+
+        usersDAO.deleteUser(id);
+    }
 }
