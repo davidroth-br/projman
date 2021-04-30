@@ -8,7 +8,7 @@
 </head>
 <body>
 <%@include file="_menu.jsp" %>
-<f:form method="POST" action="${pageContext.request.contextPath}/users/validateEdit" modelAttribute="user">
+<f:form method="POST" action="${pageContext.request.contextPath}/users/admin/validateEdit" modelAttribute="user">
     User Name: <f:input path="userName" value="${user.userName}"/> <f:errors path="userName"/>
     <br><br>
     First Name: <f:input path="firstName" value="${user.firstName}"/> <f:errors path="firstName"/>

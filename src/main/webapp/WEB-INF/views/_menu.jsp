@@ -7,7 +7,7 @@
             <c:choose>
                 <c:when test="${sessionScope.values().toString().contains('ROLE_ADMIN')}">
                     <a href="<c:url value="/welcome"/>">Home</a> |
-                    <a href="<c:url value="/users/list"/>">Users</a> |
+                    <a href="<c:url value="/users/admin/list"/>">Users</a> |
                     <a href="<c:url value="/projects/list"/>">Projects</a> |
                     <a href="<c:url value="/admin"/>">Admin</a> |
                     <a href="<c:url value="/logout"/>">Logout</a>

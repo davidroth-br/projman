@@ -8,7 +8,7 @@
 </head>
 <body>
 <%@include file="_menu.jsp" %>
-<f:form method="POST" action="${pageContext.request.contextPath}/users/validateNewPass" modelAttribute="user">
+<f:form method="POST" action="${pageContext.request.contextPath}/users/admin/validateNewPass" modelAttribute="user">
     Current Password: <input name="currentPassword" type="password">
     <c:if test="${isNotPassword}">
         Incorrect password. Please try again.

@@ -9,7 +9,7 @@
 <body>
 <%@include file="_menu.jsp" %>
 
-<f:form method="POST" action="validateNew" modelAttribute="user">
+<f:form method="POST" action="${pageContext.request.contextPath}/users/admin/validateNew" modelAttribute="user">
 
     User Name: <f:input path="userName"/> <f:errors path="userName"/>
     <br><br>

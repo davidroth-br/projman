@@ -21,19 +21,19 @@ public class UsersController {
     @Autowired
     private UsersService service;
 
-    @GetMapping("/new")
+    @GetMapping("/admin/new")
     public String showForm(Model model) {
         model.addAttribute("user", new Users());
         return "newUser";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/admin/list")
     public String showAllUsers(Model model) {
         model.addAttribute("userList", service.showUsers());
         return "userList";
     }
 
-    @PostMapping("/validateNew")
+    @PostMapping("/admin/validateNew")
     public String validateNewUser(@RequestParam("role") Long role,
                                   @RequestParam("passCheck") String passCheck,
                                   @ModelAttribute("user") @Valid Users user,
@@ -62,7 +62,7 @@ public class UsersController {
         return "userList";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/edit/{id}")
     public String editUser(@PathVariable Long id, Model model) {
 
         Users user = service.getUserById(id);
@@ -72,7 +72,7 @@ public class UsersController {
         return "editUser";
     }
 
-    @PostMapping("/validateEdit")
+    @PostMapping("/admin/validateEdit")
     public String validateEdit(@RequestParam("role") Long role,
                                @ModelAttribute("user") @Valid Users user,
                                BindingResult errors, Model model) {
@@ -106,7 +106,7 @@ public class UsersController {
         }
     }
 
-    @GetMapping("/newPass/{id}")
+    @GetMapping("/admin/newPass/{id}")
     public String editPassword(@PathVariable Long id, Model model) {
 
         Users user = service.getUserById(id);
@@ -116,7 +116,7 @@ public class UsersController {
         return "changePassword";
     }
 
-    @PostMapping("/validateNewPass")
+    @PostMapping("/admin/validateNewPass")
     public String validatePassword(@RequestParam("currentPassword") String currentPassword,
                                    @RequestParam("newPassword") String newPassword,
                                    @RequestParam("passCheck") String passCheck,
@@ -143,7 +143,7 @@ public class UsersController {
         return "userList";
     }
 
-    @GetMapping("/remove/{id}")
+    @GetMapping("/admin/remove/{id}")
     public String deleteUser(@PathVariable Long id, Model model) {
 
         Users user = service.getUserById(id);
