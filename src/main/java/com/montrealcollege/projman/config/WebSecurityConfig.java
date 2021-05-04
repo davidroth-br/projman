@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
         // For ADMIN only.
-        http.authorizeRequests().antMatchers("/admin", "/users/admin/**", "/projects/list")
+        http.authorizeRequests().antMatchers("/admin", "/users/admin/**", "/projects/**")
                 .access("hasRole('ROLE_ADMIN')");
 
         // When the user has logged in as XX.

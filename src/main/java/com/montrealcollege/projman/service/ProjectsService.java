@@ -20,4 +20,17 @@ public class ProjectsService {
         public List<Projects> showProjects() {
             return projectsDAO.listProjects();
         }
+
+    public Projects getUserById(Long id) {
+        return projectsDAO.displayProject(id);
+    }
+
+    public void editUser(Projects project) {
+        projectsDAO.updateProject(project);
+    }
+
+    public void removeUser(Long id) {
+
+        projectsDAO.deleteProject(id);
+    }
 }

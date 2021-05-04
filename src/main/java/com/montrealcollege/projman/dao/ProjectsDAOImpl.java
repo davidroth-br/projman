@@ -1,58 +1,71 @@
 package com.montrealcollege.projman.dao;
 
 import com.montrealcollege.projman.model.Projects;
-import com.montrealcollege.projman.model.Users;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
 public class ProjectsDAOImpl implements ProjectsDAO{
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @PersistenceUnit
+    private EntityManagerFactory entityManagerFactory;
 
     @Override
     public void createProject(Projects project) {
-        Session session = entityManager.unwrap(Session.class);
-        session.beginTransaction();
-        session.save(project);
-        session.getTransaction().commit();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        entityManager.getTransaction().begin();
+        entityManager.persist(project);
+        entityManager.getTransaction().commit();
+
     }
 
     @Override
     public List<Projects> listProjects() {
-        Session session = entityManager.unwrap(Session.class);
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<Projects> criteriaQuery = criteriaBuilder.createQuery(Projects.class);
-        Root<Projects> projectsRoot = criteriaQuery.from(Projects.class);
-        criteriaQuery.select(projectsRoot);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Projects> criteria = builder.createQuery(Projects.class);
+        Root<Projects> projectsRoot = criteria.from(Projects.class);
+        criteria.select(projectsRoot).orderBy(builder.asc(projectsRoot.get("name")));
 
-        Query<Projects> query = session.createQuery(criteriaQuery);
-        return query.list();
+        TypedQuery<Projects> query = entityManager.createQuery(criteria);
+        return query.getResultList();
     }
 
     @Override
-    public Projects displayProject(Integer id) {
-        return null;
+    public Projects displayProject(Long id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Projects> criteria = builder.createQuery(Projects.class);
+        Root<Projects> projectsRoot = criteria.from(Projects.class);
+        criteria.select(projectsRoot).where(builder.equal(projectsRoot.get("id"), id));
+
+        TypedQuery<Projects> query = entityManager.createQuery(criteria);
+        return query.getSingleResult();
     }
 
     @Override
     public void updateProject(Projects project) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
+        entityManager.getTransaction().begin();
+        entityManager.merge(project);
+        entityManager.getTransaction().commit();
     }
 
     @Override
-    public void deleteProject(Projects project) {
+    public void deleteProject(Long id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
+        Projects projects = entityManager.find(Projects.class, id);
+        entityManager.getTransaction().begin();
+        entityManager.remove(projects);
+        entityManager.getTransaction().commit();
     }
 
 }

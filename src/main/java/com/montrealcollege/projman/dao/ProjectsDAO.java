@@ -10,11 +10,11 @@ public interface ProjectsDAO {
 
     List<Projects> listProjects();
 
-    Projects displayProject(Integer id);
+    Projects displayProject(Long id);
 
     void updateProject(Projects project);
 
-    void deleteProject(Projects project);
+    void deleteProject(Long id);
 
 
 }

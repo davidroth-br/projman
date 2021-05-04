@@ -1,5 +1,8 @@
 package com.montrealcollege.projman.model;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,8 +11,12 @@ import java.util.Date;
 public class Projects {
 
     @Id
+    @GenericGenerator(name="proj_seq", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {@Parameter(name = "PROJECTS_SEQ", value = "SEQUENCE")}
+    )
+    @GeneratedValue(generator = "PROJECTS_SEQ")
     @Column(name = "ID")
-    private Integer id;
+    private Long id;
     @Column(name = "NAME")
     private String name;
     @Column(name = "DESCRIPTION")
@@ -23,11 +30,11 @@ public class Projects {
     @JoinColumn(name = "LEADER_ID", referencedColumnName = "ID")
     private Users leader;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

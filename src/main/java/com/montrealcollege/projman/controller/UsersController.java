@@ -144,7 +144,7 @@ public class UsersController {
     }
 
     @GetMapping("/admin/remove/{id}")
-    public String deleteUser(@PathVariable Long id, Model model) {
+    public String removeUser(@PathVariable Long id, Model model) {
 
         Users user = service.getUserById(id);
         service.removeUser(id);

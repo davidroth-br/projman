@@ -2,6 +2,7 @@ package com.montrealcollege.projman.controller;
 
 import com.montrealcollege.projman.model.Projects;
 import com.montrealcollege.projman.service.ProjectsService;
+import com.montrealcollege.projman.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,15 +30,17 @@ public class ProjectsController {
         return "projectList";
     }
 
-    @PostMapping("/validate")
-    public String validateForm(@ModelAttribute("user") @Valid Projects project, BindingResult errors, Model model) {
+    @PostMapping("/validateNew")
+    public String validateForm(@ModelAttribute("project") @Valid Projects project, BindingResult errors, Model model) {
         if (errors.hasErrors()) {
             return "newProject";
         }
 
         service.addProject(project);
+        UsersService usersService = new UsersService();
         model.addAttribute("newProjectName", project.getName());
         model.addAttribute("projectList", service.showProjects());
+        model.addAttribute("userList", usersService.showUsers());
         return "projectList";
     }
 }

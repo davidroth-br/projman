@@ -27,7 +27,7 @@
         </tr>
         <c:forEach items="${projectList}" var="project">
             <tr>
-                <td>${project.name}</td>
+                <td><a href="<c:url value="/projects/details/${project.id}"/>">${project.name}</a></td>
                 <td><fmt:formatDate value="${project.startDate}" type="date"/></td>
                 <td><fmt:formatDate value="${project.endDate}" type="date"/></td>
                 <td>${project.leader.firstName} ${project.leader.lastName}</td>
