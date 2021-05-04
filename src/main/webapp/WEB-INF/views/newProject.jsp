@@ -24,7 +24,6 @@
     Leader: <f:select path="leader" items="${userList}" />
 <%--    Leader Id: <f:input path="leaderId"/> <f:errors path="leaderId"/>--%>
 
-
     <br><br>
     <input type="submit"/>
     <br><br>
