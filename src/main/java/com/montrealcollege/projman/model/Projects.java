@@ -4,6 +4,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -17,13 +20,21 @@ public class Projects {
     @GeneratedValue(generator = "PROJECTS_SEQ")
     @Column(name = "ID")
     private Long id;
+
     @Column(name = "NAME")
+    @NotBlank(message="Please enter a project name.")
     private String name;
+
     @Column(name = "DESCRIPTION")
     private String description;
+
     @Column(name = "START_DATE")
+    @NotNull(message="Please enter a start date.")
     private Date startDate;
+
     @Column(name = "END_DATE")
+    @NotNull(message="Please enter an end date.")
+    @Future(message="End date must be in the future.")
     private Date endDate;
 
     @OneToOne

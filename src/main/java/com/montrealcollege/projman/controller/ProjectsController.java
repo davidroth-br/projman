@@ -18,9 +18,13 @@ public class ProjectsController {
     @Autowired
     private ProjectsService service;
 
+    @Autowired
+    private UsersService usersService;
+
     @GetMapping("/new")
     public String showForm(Model model) {
         model.addAttribute("project", new Projects());
+        model.addAttribute("userList", usersService.showUsers());
         return "newProject";
     }
 
@@ -31,16 +35,27 @@ public class ProjectsController {
     }
 
     @PostMapping("/validateNew")
-    public String validateForm(@ModelAttribute("project") @Valid Projects project, BindingResult errors, Model model) {
+    public String validateForm(@RequestParam("leaderId") Long leaderId,
+                               @ModelAttribute("project") @Valid Projects project,
+                               BindingResult errors, Model model) {
         if (errors.hasErrors()) {
+            model.addAttribute("userList", usersService.showUsers());
             return "newProject";
         }
 
+        if (project.getEndDate().compareTo(project.getStartDate()) <= 0) {
+            model.addAttribute("isEndDateBeforeStartDate", true);
+            return "newProject";
+        }
+
+        if (leaderId != 0) {
+            project.setLeader(usersService.getUserById(leaderId));
+        }
         service.addProject(project);
-        UsersService usersService = new UsersService();
+
         model.addAttribute("newProjectName", project.getName());
         model.addAttribute("projectList", service.showProjects());
-        model.addAttribute("userList", usersService.showUsers());
+
         return "projectList";
     }
 }

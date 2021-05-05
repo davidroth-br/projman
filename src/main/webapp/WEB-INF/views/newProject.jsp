@@ -18,11 +18,16 @@
     Start Date: <f:input path="startDate"/> <f:errors path="startDate"/>
     <br><br>
     End Date: <f:input path="endDate"/> <f:errors path="endDate"/>
+    <c:if test="${isEndDateBeforeStartDate}">End date cannot be before start date.</c:if>
     <br><br>
 
-    <%--TODO: Make user pulldown list--%>
-    Leader: <f:select path="leader" items="${userList}" />
-<%--    Leader Id: <f:input path="leaderId"/> <f:errors path="leaderId"/>--%>
+    Leader:
+    <select name="leaderId">
+        <option value="0">--- Select Leader ---</option>
+        <c:forEach items="${userList}" var="user">
+            <option value="${user.id}">${user.firstName} ${user.lastName}</option>
+        </c:forEach>
+    </select>
 
     <br><br>
     <input type="submit"/>
