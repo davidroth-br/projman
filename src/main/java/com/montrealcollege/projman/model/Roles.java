@@ -9,15 +9,16 @@ import java.util.Set;
 public class Roles {
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
     @Column(name = "ROLE_ID", nullable = false)
     private Long roleId;
 
     @Column(name = "ROLE_NAME", length = 30, nullable = false)
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles", cascade = CascadeType.PERSIST)
-    private Set<Users> users = new HashSet<>();
+    @OneToMany(mappedBy = "role")
+//    @ManyToMany(mappedBy = "roles", cascade = CascadeType.PERSIST)
+    private Set<Users> users;
 
     public Long getRoleId() {
         return roleId;

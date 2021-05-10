@@ -22,9 +22,9 @@
     <br><br>
     Role:
     <br>
-    User <input name="role" type="radio" value="2" ${roleUser}>
+    User <f:radiobutton path="role.roleId" value="2"/>
     <br>
-    Admin <input name="role" type="radio" value="1" ${roleAdm}>
+    Admin: <f:radiobutton path="role.roleId" value="1"/>
     <br><br>
     Enabled
     <f:checkbox path="enabled"/>

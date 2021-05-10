@@ -26,9 +26,9 @@
     Phone: <f:input path="phone" type="tel" placeholder="(999) 999-9999"/> <f:errors path="phone"/>
     <br><br>
     Role:
-    User <input name="role" type="radio" value="2" checked>
+    User <f:radiobutton path="role.roleId" value="2" checked="checked"/>
     <br>
-    Admin <input name="role" type="radio" value="1">
+    Admin: <f:radiobutton path="role.roleId" value="1"/>
     <br><br>
     Enabled <f:checkbox path="enabled" checked="checked"/>
     <br><br>

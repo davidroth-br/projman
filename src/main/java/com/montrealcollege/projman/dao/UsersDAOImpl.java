@@ -11,15 +11,14 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UsersDAOImpl implements UsersDAO {
 
-    @PersistenceUnit
-    private EntityManagerFactory entityManagerFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
-    @Transactional
     public Users findUserAccount(String userName) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Users> criteria = builder.createQuery(Users.class);
@@ -36,16 +35,11 @@ public class UsersDAOImpl implements UsersDAO {
 
     @Override
     public void createUser(Users user) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-        entityManager.getTransaction().begin();
         entityManager.persist(user);
-        entityManager.getTransaction().commit();
     }
 
     @Override
     public List<Users> listUsers() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Users> criteria = builder.createQuery(Users.class);
         Root<Users> usersRoot = criteria.from(Users.class);
@@ -59,33 +53,30 @@ public class UsersDAOImpl implements UsersDAO {
     }
 
     @Override
-    public Users displayUser(Long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Users> criteria = builder.createQuery(Users.class);
-        Root<Users> usersRoot = criteria.from(Users.class);
-        criteria.select(usersRoot).where(builder.equal(usersRoot.get("id"), id));
-
-        TypedQuery<Users> query = entityManager.createQuery(criteria);
-        return query.getSingleResult();
+    public Users findUserById(Long id) {
+        return entityManager.find(Users.class, id);
     }
 
     @Override
     public void updateUser(Users user) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Users dbUser = entityManager.find(Users.class, user.getId());
+        dbUser.setUserName(user.getUserName());
+        dbUser.setEncryptedPassword(user.getEncryptedPassword());
+        dbUser.setFirstName(user.getFirstName());
+        dbUser.setLastName(user.getLastName());
+        dbUser.setEmail(user.getEmail());
+        dbUser.setPhone(user.getPhone());
+        dbUser.setProjects(user.getProjects());
+        dbUser.setTasks(user.getTasks());
+        dbUser.setRole(user.getRole());
+        dbUser.setEnabled(user.isEnabled());
 
-        entityManager.getTransaction().begin();
-        entityManager.merge(user);
-        entityManager.getTransaction().commit();
+        entityManager.persist(dbUser);
     }
 
     @Override
     public void deleteUser(Long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
         Users user = entityManager.find(Users.class, id);
-        entityManager.getTransaction().begin();
         entityManager.remove(user);
-        entityManager.getTransaction().commit();
     }
 }
