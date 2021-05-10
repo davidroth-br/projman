@@ -1,7 +1,6 @@
 package com.montrealcollege.projman.dao;
 
 import com.montrealcollege.projman.model.Users;
-
 import java.util.List;
 
 public interface UsersDAO {
@@ -12,7 +11,7 @@ public interface UsersDAO {
 
     List<Users> listUsers();
 
-    Users displayUser(Long id);
+    Users findUserById(Long id);
 
     void updateUser(Users user);
 

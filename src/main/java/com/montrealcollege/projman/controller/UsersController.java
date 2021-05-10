@@ -1,6 +1,5 @@
 package com.montrealcollege.projman.controller;
 
-import com.montrealcollege.projman.model.Roles;
 import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +33,11 @@ public class UsersController {
     }
 
     @PostMapping("/admin/validateNew")
-    public String validateNewUser(@RequestParam("role") Long role,
-                                  @RequestParam("passCheck") String passCheck,
+    public String validateNewUser(@RequestParam("passCheck") String passCheck,
                                   @ModelAttribute("user") @Valid Users user,
                                   BindingResult errors, Model model) {
-        if (errors.hasErrors()) {
+        if (errors.hasErrors())
             return "newUser";
-        }
 
         if (!user.getEncryptedPassword().equals(passCheck)) {
             model.addAttribute("isNotMatch", true);
@@ -48,10 +45,6 @@ public class UsersController {
         }
 
         user.setEncryptedPassword(encryptPassword(user.getEncryptedPassword()));
-
-        Roles newRole = new Roles();
-        newRole.setRoleId(role);
-        user.getRoles().add(newRole);
 
         service.addUser(user);
 
@@ -67,25 +60,17 @@ public class UsersController {
 
         Users user = service.getUserById(id);
         model.addAttribute("user", user);
-        setRoleAttributes(user.getRoles().iterator().next().getRoleId(), model);
 
         return "editUser";
     }
 
     @PostMapping("/admin/validateEdit")
-    public String validateEdit(@RequestParam("role") Long role,
-                               @ModelAttribute("user") @Valid Users user,
+    public String validateEdit(@ModelAttribute("user") @Valid Users user,
                                BindingResult errors, Model model) {
 
         if (errors.hasErrors()) {
-            setRoleAttributes(role, model);
             return "editUser";
         }
-
-        Roles newRole = new Roles();
-        newRole.setRoleId(role);
-        user.getRoles().clear();
-        user.getRoles().add(newRole);
 
         service.editUser(user);
 
@@ -96,22 +81,11 @@ public class UsersController {
         return "userList";
     }
 
-    private void setRoleAttributes(Long role, Model model) {
-        if (role == 1) {
-            model.addAttribute("roleAdm", "checked");
-            model.addAttribute("roleUser", "");
-        } else {
-            model.addAttribute("roleAdm", "");
-            model.addAttribute("roleUser", "checked");
-        }
-    }
-
     @GetMapping("/admin/newPass/{id}")
     public String editPassword(@PathVariable Long id, Model model) {
 
         Users user = service.getUserById(id);
         model.addAttribute("user", user);
-        setRoleAttributes(user.getRoles().iterator().next().getRoleId(), model);
 
         return "changePassword";
     }
@@ -130,10 +104,9 @@ public class UsersController {
             model.addAttribute("isNotMatch", true);
             return "changePassword";
         }
-        Users usr = service.getUserById(user.getId());
-        user.setRoles(usr.getRoles());
-        user.setEncryptedPassword(encryptPassword(newPassword));
 
+        user.setRole(service.getUserById(user.getId()).getRole());
+        user.setEncryptedPassword(encryptPassword(newPassword));
         service.editUser(user);
 
         String message = user.getFirstName() + " " + user.getLastName() +

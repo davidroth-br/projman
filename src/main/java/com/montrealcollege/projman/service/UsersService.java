@@ -22,7 +22,7 @@ public class UsersService {
     }
 
     public Users getUserById(Long id) {
-        return usersDAO.displayUser(id);
+        return usersDAO.findUserById(id);
     }
 
     public void editUser(Users user) {

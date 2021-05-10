@@ -7,8 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -56,15 +54,22 @@ public class Users {
     @Column(name = "TASKS")
     private Integer tasks;
 
-    @ManyToMany()
-    @JoinTable(name = "USERS_ROLES",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")}
-    )
-    private Set<Roles> roles = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "ROLE_ID")
+//    @JoinTable(name = "ROLES",
+//            joinColumns = {@JoinColumn(name = "ROLE_ID")}
+//    )
+    Roles role;
+
+//    @ManyToMany()
+//    @JoinTable(name = "USERS_ROLES",
+//            joinColumns = {@JoinColumn(name = "user_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+//    )
+//    private Set<Roles> roles = new HashSet<>();
 
     @OneToOne(mappedBy = "leader")
-    private Projects project;
+    private Projects projectLead;
 
     public Long getId() {
         return id;
@@ -146,19 +151,19 @@ public class Users {
         this.tasks = tasks;
     }
 
-    public Set<Roles> getRoles() {
-        return roles;
+    public Roles getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Roles> roles) {
-        this.roles = roles;
+    public void setRole(Roles role) {
+        this.role = role;
     }
 
-    public Projects getProject() {
-        return project;
+    public Projects getProjectLead() {
+        return projectLead;
     }
 
-    public void setProject(Projects project) {
-        this.project = project;
+    public void setProjectLead(Projects project) {
+        this.projectLead = project;
     }
 }
