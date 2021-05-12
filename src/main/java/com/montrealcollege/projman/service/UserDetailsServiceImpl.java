@@ -28,7 +28,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Users user = this.usersDAO.findUserAccount(userName);
 
-
         if (user == null) {
             System.out.println("User not found! " + userName);
             throw new UsernameNotFoundException(userName + " was not found in the database");
@@ -41,11 +40,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         List<GrantedAuthority> grantList = new ArrayList<>();
         if (roleName != null) {
-//            for (String role : roleName) {
                 // ROLE_USER, ROLE_ADMIN,..
                 GrantedAuthority authority = new SimpleGrantedAuthority(roleName);
                 grantList.add(authority);
-//            }
         }
 
         return new User(user.getUserName(), user.getEncryptedPassword(), user.isEnabled(),

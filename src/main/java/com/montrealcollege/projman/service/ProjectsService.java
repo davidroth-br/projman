@@ -10,19 +10,19 @@ import java.util.List;
 @Service
 public class ProjectsService {
 
-        @Autowired
-        ProjectsDAO projectsDAO;
+    @Autowired
+    ProjectsDAO projectsDAO;
 
-        public void addProject(Projects project) {
-            projectsDAO.createProject(project);
-        }
+    public void addProject(Projects project) {
+        projectsDAO.createProject(project);
+    }
 
-        public List<Projects> showProjects() {
-            return projectsDAO.listProjects();
-        }
+    public List<Projects> showProjects() {
+        return projectsDAO.listProjects();
+    }
 
     public Projects getUserById(Long id) {
-        return projectsDAO.displayProject(id);
+        return projectsDAO.findProjectById(id);
     }
 
     public void editUser(Projects project) {
@@ -30,7 +30,6 @@ public class ProjectsService {
     }
 
     public void removeUser(Long id) {
-
         projectsDAO.deleteProject(id);
     }
 }

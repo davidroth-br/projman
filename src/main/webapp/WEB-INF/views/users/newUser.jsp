@@ -7,7 +7,7 @@
     <title>Add User</title>
 </head>
 <body>
-<%@include file="_menu.jsp" %>
+<%@include file="../_menu.jsp" %>
 
 <f:form method="POST" action="${pageContext.request.contextPath}/users/admin/validateNew" modelAttribute="user">
 

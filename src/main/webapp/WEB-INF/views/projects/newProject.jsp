@@ -7,7 +7,7 @@
     <title>Add Project</title>
 </head>
 <body>
-<%@include file="_menu.jsp" %>
+<%@include file="../_menu.jsp" %>
 
 <f:form method="post" action="validateNew" modelAttribute="project">
 

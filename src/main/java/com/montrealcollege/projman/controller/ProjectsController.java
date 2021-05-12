@@ -10,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/projects")
@@ -25,13 +27,13 @@ public class ProjectsController {
     public String showForm(Model model) {
         model.addAttribute("project", new Projects());
         model.addAttribute("userList", usersService.showUsers());
-        return "newProject";
+        return "projects/newProject";
     }
 
     @GetMapping("/list")
     public String showAllProjects(Model model) {
         model.addAttribute("projectList", service.showProjects());
-        return "projectList";
+        return "projects/projectList";
     }
 
     @PostMapping("/validateNew")
@@ -40,12 +42,12 @@ public class ProjectsController {
                                BindingResult errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("userList", usersService.showUsers());
-            return "newProject";
+            return "projects/newProject";
         }
 
         if (project.getEndDate().compareTo(project.getStartDate()) <= 0) {
             model.addAttribute("isEndDateBeforeStartDate", true);
-            return "newProject";
+            return "projects/newProject";
         }
 
         if (leaderId != 0) {
@@ -56,6 +58,6 @@ public class ProjectsController {
         model.addAttribute("newProjectName", project.getName());
         model.addAttribute("projectList", service.showProjects());
 
-        return "projectList";
+        return "projects/projectList";
     }
 }
