@@ -5,10 +5,10 @@
 
 <html>
 <head>
-    <title>Add User</title>
+    <title>Projects</title>
 </head>
 <body>
-<%@include file="_menu.jsp" %>
+<%@include file="../_menu.jsp" %>
 
 <c:if test="${newProjectName != null}">
     <h2>${newProjectName} was successfully added!</h2>

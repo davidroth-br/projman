@@ -10,7 +10,7 @@ public interface ProjectsDAO {
 
     List<Projects> listProjects();
 
-    Projects displayProject(Long id);
+    Projects findProjectById(Long id);
 
     void updateProject(Projects project);
 

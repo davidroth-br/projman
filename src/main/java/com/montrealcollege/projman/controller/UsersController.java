@@ -23,13 +23,13 @@ public class UsersController {
     @GetMapping("/admin/new")
     public String showForm(Model model) {
         model.addAttribute("user", new Users());
-        return "newUser";
+        return "users/newUser";
     }
 
     @GetMapping("/admin/list")
     public String showAllUsers(Model model) {
         model.addAttribute("userList", service.showUsers());
-        return "userList";
+        return "users/userList";
     }
 
     @PostMapping("/admin/validateNew")
@@ -37,31 +37,26 @@ public class UsersController {
                                   @ModelAttribute("user") @Valid Users user,
                                   BindingResult errors, Model model) {
         if (errors.hasErrors())
-            return "newUser";
+            return "users/newUser";
 
         if (!user.getEncryptedPassword().equals(passCheck)) {
             model.addAttribute("isNotMatch", true);
-            return "newUser";
+            return "users/newUser";
         }
 
         user.setEncryptedPassword(encryptPassword(user.getEncryptedPassword()));
-
         service.addUser(user);
 
-        String message = user.getFirstName() + " " + user.getLastName() +
-                " was successfully added as " + user.getUserName() + "!";
+        String message = user.getFirstName() + " " + user.getLastName() + " was successfully added as " + user.getUserName() + "!";
         model.addAttribute("message", message);
         model.addAttribute("userList", service.showUsers());
-        return "userList";
+        return "users/userList";
     }
 
     @GetMapping("/admin/edit/{id}")
     public String editUser(@PathVariable Long id, Model model) {
-
-        Users user = service.getUserById(id);
-        model.addAttribute("user", user);
-
-        return "editUser";
+        model.addAttribute("user", service.getUserById(id));
+        return "users/editUser";
     }
 
     @PostMapping("/admin/validateEdit")
@@ -69,25 +64,21 @@ public class UsersController {
                                BindingResult errors, Model model) {
 
         if (errors.hasErrors()) {
-            return "editUser";
+            return "users/editUser";
         }
 
         service.editUser(user);
 
-        String message = user.getFirstName() + " " + user.getLastName() +
-                " was successfully edited!";
+        String message = user.getFirstName() + " " + user.getLastName() + " was successfully edited!";
         model.addAttribute("message", message);
         model.addAttribute("userList", service.showUsers());
-        return "userList";
+        return "users/userList";
     }
 
     @GetMapping("/admin/newPass/{id}")
     public String editPassword(@PathVariable Long id, Model model) {
-
-        Users user = service.getUserById(id);
-        model.addAttribute("user", user);
-
-        return "changePassword";
+        model.addAttribute("user", service.getUserById(id));
+        return "users/changePassword";
     }
 
     @PostMapping("/admin/validateNewPass")
@@ -98,33 +89,33 @@ public class UsersController {
 
         if (!currentPassword.equals("") && !checkPassword(currentPassword, user.getEncryptedPassword())) {
             model.addAttribute("isNotPassword", true);
-            return "changePassword";
+            return "users/changePassword";
         }
         if (!newPassword.equals(passCheck)) {
             model.addAttribute("isNotMatch", true);
-            return "changePassword";
+            return "users/changePassword";
         }
 
         user.setRole(service.getUserById(user.getId()).getRole());
         user.setEncryptedPassword(encryptPassword(newPassword));
         service.editUser(user);
 
-        String message = user.getFirstName() + " " + user.getLastName() +
-                "'s password was successfully changed!";
+        String message = user.getFirstName() + " " + user.getLastName() + "'s password was successfully changed!";
         model.addAttribute("message", message);
         model.addAttribute("userList", service.showUsers());
-        return "userList";
+        return "users/userList";
     }
 
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
         Users user = service.getUserById(id);
+        String message = user.getFirstName() + " " + user.getLastName() + " was successfully removed!";
+
         service.removeUser(id);
-        String message = user.getFirstName() + " " + user.getLastName() +
-                " was successfully removed!";
+
         model.addAttribute("message", message);
         model.addAttribute("userList", service.showUsers());
-        return "userList";
+        return "users/userList";
     }
 }

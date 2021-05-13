@@ -41,11 +41,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         List<GrantedAuthority> grantList = new ArrayList<>();
         if (roleName != null) {
-//            for (String role : roleName) {
                 // ROLE_USER, ROLE_ADMIN,..
                 GrantedAuthority authority = new SimpleGrantedAuthority(roleName);
                 grantList.add(authority);
-//            }
         }
 
         return new User(user.getUserName(), user.getEncryptedPassword(), user.isEnabled(),

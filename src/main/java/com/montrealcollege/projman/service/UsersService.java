@@ -30,7 +30,6 @@ public class UsersService {
     }
 
     public void removeUser(Long id) {
-
         usersDAO.deleteUser(id);
     }
 }

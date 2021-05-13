@@ -60,6 +60,7 @@ public class UsersDAOImpl implements UsersDAO {
     @Override
     public void updateUser(Users user) {
         Users dbUser = entityManager.find(Users.class, user.getId());
+
         dbUser.setUserName(user.getUserName());
         dbUser.setEncryptedPassword(user.getEncryptedPassword());
         dbUser.setFirstName(user.getFirstName());

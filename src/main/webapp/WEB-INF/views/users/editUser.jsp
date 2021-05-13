@@ -7,7 +7,7 @@
     <title>Edit User</title>
 </head>
 <body>
-<%@include file="_menu.jsp" %>
+<%@include file="../_menu.jsp" %>
 <f:form method="POST" action="${pageContext.request.contextPath}/users/admin/validateEdit" modelAttribute="user">
     User Name: <f:input path="userName" value="${user.userName}"/> <f:errors path="userName"/>
     <br><br>
