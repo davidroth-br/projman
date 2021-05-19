@@ -1,17 +1,18 @@
 package com.montrealcollege.projman.controller;
 
 import com.montrealcollege.projman.model.Projects;
+import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.UsersService;
+import com.montrealcollege.projman.utils.UsersConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/projects")
@@ -22,6 +23,11 @@ public class ProjectsController {
 
     @Autowired
     private UsersService usersService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Users.class, new UsersConverter());
+    }
 
     @GetMapping("/new")
     public String showForm(Model model) {
