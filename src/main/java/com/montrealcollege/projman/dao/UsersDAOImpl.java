@@ -73,6 +73,7 @@ public class UsersDAOImpl implements UsersDAO {
         dbUser.setEnabled(user.isEnabled());
 
         entityManager.persist(dbUser);
+        entityManager.flush();
     }
 
     @Override

@@ -37,6 +37,7 @@ public class Projects {
     @Future(message="End date must be in the future.")
     private Date endDate;
 
+    //TODO Change to ManyToOne
     @OneToOne
     @JoinColumn(name = "LEADER_ID", referencedColumnName = "ID")
     private Users leader;

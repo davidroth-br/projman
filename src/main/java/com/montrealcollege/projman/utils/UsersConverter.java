@@ -1,18 +1,19 @@
 package com.montrealcollege.projman.utils;
 
-import com.montrealcollege.projman.dao.UsersDAO;
-import com.montrealcollege.projman.model.Users;
+import com.montrealcollege.projman.service.UsersService;
 
 import java.beans.PropertyEditorSupport;
 
 public class UsersConverter extends PropertyEditorSupport {
 
-    private UsersDAO service;
+    private final UsersService _service;
+
+    public UsersConverter(UsersService service) {
+        _service = service;
+    }
 
     @Override
     public void setAsText(String id) {
-        Users user = new Users();
-        service.findUserById(Long.parseLong(id));
-        this.setValue(user);
+        this.setValue(_service.getUserById(Long.parseLong(id)));
     }
 }

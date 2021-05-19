@@ -1,7 +1,6 @@
 package com.montrealcollege.projman.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -9,7 +8,6 @@ import java.util.Set;
 public class Roles {
 
     @Id
-//    @GeneratedValue
     @Column(name = "ROLE_ID", nullable = false)
     private Long roleId;
 
@@ -17,7 +15,6 @@ public class Roles {
     private String roleName;
 
     @OneToMany(mappedBy = "role")
-//    @ManyToMany(mappedBy = "roles", cascade = CascadeType.PERSIST)
     private Set<Users> users;
 
     public Long getRoleId() {

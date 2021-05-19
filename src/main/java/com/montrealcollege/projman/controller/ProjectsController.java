@@ -26,7 +26,7 @@ public class ProjectsController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Users.class, new UsersConverter());
+        binder.registerCustomEditor(Users.class, new UsersConverter(usersService));
     }
 
     @GetMapping("/new")
@@ -43,8 +43,7 @@ public class ProjectsController {
     }
 
     @PostMapping("/validateNew")
-    public String validateForm(@RequestParam("leaderId") Long leaderId,
-                               @ModelAttribute("project") @Valid Projects project,
+    public String validateForm(@ModelAttribute("project") @Valid Projects project,
                                BindingResult errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("userList", usersService.showUsers());
@@ -56,9 +55,6 @@ public class ProjectsController {
             return "projects/newProject";
         }
 
-        if (leaderId != 0) {
-            project.setLeader(usersService.getUserById(leaderId));
-        }
         service.addProject(project);
 
         model.addAttribute("newProjectName", project.getName());

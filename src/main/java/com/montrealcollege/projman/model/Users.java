@@ -56,18 +56,9 @@ public class Users {
 
     @ManyToOne
     @JoinColumn(name = "ROLE_ID")
-//    @JoinTable(name = "ROLES",
-//            joinColumns = {@JoinColumn(name = "ROLE_ID")}
-//    )
     Roles role;
 
-//    @ManyToMany()
-//    @JoinTable(name = "USERS_ROLES",
-//            joinColumns = {@JoinColumn(name = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "role_id")}
-//    )
-//    private Set<Roles> roles = new HashSet<>();
-
+    //TODO Change to OneToMany
     @OneToOne(mappedBy = "leader")
     private Projects projectLead;
 

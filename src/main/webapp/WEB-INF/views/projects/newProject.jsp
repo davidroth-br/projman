@@ -22,18 +22,18 @@
     <br><br>
 
     Leader:
-<%--    <f:select path="leader">--%>
-<%--        <f:option value="0" label="--- Select Leader ---"/>--%>
-<%--        <c:forEach items="${userList}" var="user">--%>
-<%--            <f:option value="${user.id}" label="${user.firstName} ${user.lastName}"/>--%>
-<%--        </c:forEach>--%>
-<%--    </f:select>--%>
-    <select name="leaderId">
-        <option value="0">--- Select Leader ---</option>
+    <f:select path="leader">
+        <f:option value="0" label="--- Select Leader ---"/>
         <c:forEach items="${userList}" var="user">
-            <option value="${user.id}">${user.firstName} ${user.lastName}</option>
+            <f:option value="${user.id}" label="${user.firstName} ${user.lastName}"/>
         </c:forEach>
-    </select>
+    </f:select>
+<%--    <select name="leaderId">--%>
+<%--        <option value="0">--- Select Leader ---</option>--%>
+<%--        <c:forEach items="${userList}" var="user">--%>
+<%--            <option value="${user.id}">${user.firstName} ${user.lastName}</option>--%>
+<%--        </c:forEach>--%>
+<%--    </select>--%>
 
     <br><br>
     <input type="submit"/>
