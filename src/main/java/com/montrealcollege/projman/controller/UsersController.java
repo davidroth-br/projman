@@ -7,8 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+
+import java.util.Map;
 
 import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.checkPassword;
 import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.encryptPassword;
@@ -20,16 +23,21 @@ public class UsersController {
     @Autowired
     private UsersService service;
 
+    // LIST
+    @GetMapping("/admin/list")
+    public String showAllUsers(@RequestParam("message") String message,
+                               Model model) {
+
+        model.addAttribute("message", message);
+        model.addAttribute("userList", service.showUsers());
+        return "users/userList";
+    }
+
+    // NEW
     @GetMapping("/admin/new")
     public String showForm(Model model) {
         model.addAttribute("user", new Users());
         return "users/newUser";
-    }
-
-    @GetMapping("/admin/list")
-    public String showAllUsers(Model model) {
-        model.addAttribute("userList", service.showUsers());
-        return "users/userList";
     }
 
     @PostMapping("/admin/validateNew")
@@ -53,6 +61,7 @@ public class UsersController {
         return "users/userList";
     }
 
+    // EDIT
     @GetMapping("/admin/edit/{id}")
     public String editUser(@PathVariable Long id, Model model) {
         model.addAttribute("user", service.getUserById(id));
@@ -60,7 +69,7 @@ public class UsersController {
     }
 
     @PostMapping("/admin/validateEdit")
-    public String validateEdit(@ModelAttribute("user") @Valid Users user,
+    public Object validateEdit(@ModelAttribute("user") @Valid Users user,
                                BindingResult errors, Model model) {
 
         if (errors.hasErrors()) {
@@ -71,10 +80,10 @@ public class UsersController {
 
         String message = user.getFirstName() + " " + user.getLastName() + " was successfully edited!";
         model.addAttribute("message", message);
-        model.addAttribute("userList", service.showUsers());
-        return "users/userList";
+        return new ModelAndView("redirect:/users/admin/list", (Map<String, ?>) model);
     }
 
+    // CHANGE PASSWORD
     @GetMapping("/admin/newPass/{id}")
     public String editPassword(@PathVariable Long id, Model model) {
         model.addAttribute("user", service.getUserById(id));
@@ -106,6 +115,7 @@ public class UsersController {
         return "users/userList";
     }
 
+    // DELETE
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
