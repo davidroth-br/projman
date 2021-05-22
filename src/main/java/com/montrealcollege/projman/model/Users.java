@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -58,9 +59,8 @@ public class Users {
     @JoinColumn(name = "ROLE_ID")
     Roles role;
 
-    //TODO Change to OneToMany
-    @OneToOne(mappedBy = "leader")
-    private Projects projectLead;
+    @OneToMany(mappedBy = "leader")
+    private Set<Projects> projectLeaders;
 
     public Long getId() {
         return id;
@@ -150,11 +150,20 @@ public class Users {
         this.role = role;
     }
 
-    public Projects getProjectLead() {
-        return projectLead;
+    public Set<Projects> getProjectLeaders() {
+        return projectLeaders;
     }
 
-    public void setProjectLead(Projects project) {
-        this.projectLead = project;
+    public void setProjectLeaders(Set<Projects> project) {
+        this.projectLeaders = project;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

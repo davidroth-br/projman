@@ -10,7 +10,7 @@
 <body>
 <%@include file="../_menu.jsp" %>
 
-<f:form method="post" action="validateNew" modelAttribute="project">
+<f:form method="post" action="${pageContext.request.contextPath}/projects/validateEdit" modelAttribute="project">
 
     Project Name: <f:input path="name"/> <f:errors path="name"/>
     <br><br>
@@ -25,7 +25,6 @@
     <f:input path="endDate" placeholder="mm/dd/yyyy" value="${endDateString}"/> <f:errors path="endDate"/>
     <c:if test="${isEndDateBeforeStartDate}">End date cannot be before start date.</c:if>
     <br><br>
-
     Leader:
     <f:select path="leader">
         <f:option value="0" label="--- Select Leader ---"/>
@@ -40,7 +39,7 @@
             </c:choose>
         </c:forEach>
     </f:select>
-
+    <f:hidden path="id" value="${project.id}"/>
     <br><br>
     <input type="submit"/>
     <br><br>

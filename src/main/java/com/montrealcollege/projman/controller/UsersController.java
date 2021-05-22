@@ -23,7 +23,7 @@ public class UsersController {
     @Autowired
     private UsersService service;
 
-    // LIST
+    // LIST ALL
     @GetMapping("/admin/list")
     public String showAllUsers(@RequestParam("message") String message,
                                Model model) {

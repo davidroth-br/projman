@@ -10,13 +10,13 @@
 <body>
 <%@include file="../_menu.jsp" %>
 
-<c:if test="${newProjectName != null}">
-    <h2>${newProjectName} was successfully added!</h2>
+<c:if test="${message != null}">
+    <h2>${message}</h2>
 </c:if>
 
 <a href="<c:url value="/projects/new"/>"><h2>Add New Project</h2></a>
 <br>
-<h2>User List</h2>
+<h2>Project List</h2>
 <c:if test="${!empty projectList}">
     <table>
         <tr>
@@ -32,6 +32,7 @@
                 <td><fmt:formatDate value="${project.endDate}" type="date"/></td>
                 <td>${project.leader.firstName} ${project.leader.lastName}</td>
                 <td><a href="<c:url value="/projects/edit/${project.id}"/>">Edit</a></td>
+                <td><a href="<c:url value="/projects/remove/${project.id}"/>">Delete</a></td>
             </tr>
         </c:forEach>
     </table>

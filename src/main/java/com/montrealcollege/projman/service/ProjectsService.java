@@ -21,15 +21,15 @@ public class ProjectsService {
         return projectsDAO.listProjects();
     }
 
-    public Projects getUserById(Long id) {
+    public Projects getProjectById(Long id) {
         return projectsDAO.findProjectById(id);
     }
 
-    public void editUser(Projects project) {
+    public void editProject(Projects project) {
         projectsDAO.updateProject(project);
     }
 
-    public void removeUser(Long id) {
+    public void removeProject(Long id) {
         projectsDAO.deleteProject(id);
     }
 }
