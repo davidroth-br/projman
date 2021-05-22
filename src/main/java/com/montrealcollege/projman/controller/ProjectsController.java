@@ -129,4 +129,13 @@ public class ProjectsController {
         model.addAttribute("projectList", service.showProjects());
         return "projects/projectList";
     }
+
+    // DETAILS
+    @GetMapping("/details/{id}")
+    public String showProject(@PathVariable Long id, Model model) {
+        Projects project = service.getProjectById(id);
+
+        model.addAttribute("project", project);
+        return "projects/projectDetails";
+    }
 }
