@@ -9,7 +9,7 @@
                     <a href="<c:url value="/welcome"/>">Home</a> |
                     <a href="<c:url value="/users/admin/list?message="/>">Users</a> |
                     <a href="<c:url value="/projects/list?message="/>">Projects</a> |
-                    <a href="<c:url value="/admin"/>">Admin</a> |
+                    <a href="<c:url value="/tasks/list?message="/>">Tasks</a> |
                     <a href="<c:url value="/logout"/>">Logout</a>
                 </c:when>
                 <c:otherwise>

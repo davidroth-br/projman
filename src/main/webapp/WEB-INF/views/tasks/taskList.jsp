@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <title>Projects</title>
+    <title>Tasks</title>
 </head>
 <body>
 <%@include file="../_menu.jsp" %>
@@ -16,13 +16,13 @@
 
 <a href="<c:url value="/tasks/new"/>"><h2>Add New Task</h2></a>
 <br>
-<h2>Project List</h2>
+<h2>Task List</h2>
 <c:if test="${!empty taskList}">
     <table>
         <tr>
             <th>Project Name</th>
-            <th>User Name</th>
             <th>Task</th>
+            <th>Users Responsible</th>
             <th>Deadline</th>
             <th>Priority</th>
             <th>State</th>
@@ -30,9 +30,14 @@
         </tr>
         <c:forEach items="${taskList}" var="task">
             <tr>
-                <td>${task.projectId}</td>
-                <td>${task.usersId}</td>
+                <td>${task.project.name}</td>
                 <td><a href="<c:url value="/task/details/${task.id}"/>">${task.name}</a></td>
+                <td>
+                    <c:forEach items="${task.users}" var="user">
+                        <a href="<c:url value="/user/details/${user.id}"/>">${user.firstName} ${user.lastName}</a>
+                        <br>
+                    </c:forEach>
+                </td>
                 <td><fmt:formatDate value="${task.deadline}" type="date"/></td>
                 <td>${task.priority}</td>
                 <td>${task.state}</td>
