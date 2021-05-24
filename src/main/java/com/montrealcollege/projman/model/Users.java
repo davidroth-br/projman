@@ -52,13 +52,9 @@ public class Users {
 
     @ManyToMany(mappedBy = "users")
     private Set<Projects> projects = new HashSet<>();
-//    @Column(name = "PROJECTS")
-//    private Integer projects;
 
     @ManyToMany(mappedBy = "users")
     private Set<Tasks> tasks = new HashSet<>();
-//    @Column(name = "TASKS")
-//    private Integer tasks;
 
     @ManyToOne
     @JoinColumn(name = "ROLE_ID")
@@ -130,22 +126,6 @@ public class Users {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-//
-//    public Integer getProjects() {
-//        return projects;
-//    }
-//
-//    public void setProjects(Integer projects) {
-//        this.projects = projects;
-//    }
-//
-//    public Integer getTasks() {
-//        return tasks;
-//    }
-//
-//    public void setTasks(Integer tasks) {
-//        this.tasks = tasks;
-//    }
 
     public Set<Projects> getProjects() {
         return projects;

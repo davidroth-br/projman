@@ -1,6 +1,5 @@
 package com.montrealcollege.projman.dao;
 
-import com.montrealcollege.projman.model.Projects;
 import com.montrealcollege.projman.model.Tasks;
 import org.hibernate.Session;
 import org.hibernate.query.Query;

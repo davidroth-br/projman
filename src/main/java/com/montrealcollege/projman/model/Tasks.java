@@ -1,5 +1,7 @@
 package com.montrealcollege.projman.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -9,6 +11,10 @@ import java.util.Set;
 @Table(name = "TASKS")
 public class Tasks {
     @Id
+    @GenericGenerator(name="tasks_seq", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {@org.hibernate.annotations.Parameter(name = "TASKS_SEQ", value = "SEQUENCE")}
+    )
+    @GeneratedValue(generator = "TASKS_SEQ")
     @Column(name = "ID")
     private Integer id;
     @Column(name = "NAME")
@@ -28,16 +34,11 @@ public class Tasks {
     @JoinColumn(name = "PROJECT_ID")
     private Projects project;
 
-//    @Column(name = "PROJECT_ID")
-//    private Integer projectId;
-
     @ManyToMany
     @JoinTable(name = "USERS_TASKS",
             joinColumns = {@JoinColumn(name = "TASK_ID")},
             inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
     private Set<Users> users = new HashSet<>();
-//    @Column(name = "USERS_ID")
-//    private Integer usersId;
 
     public Integer getId() {
         return id;
@@ -110,19 +111,4 @@ public class Tasks {
     public void setUsers(Set<Users> users) {
         this.users = users;
     }
-//    public Integer getProjectId() {
-//        return projectId;
-//    }
-//
-//    public void setProjectId(Integer projectId) {
-//        this.projectId = projectId;
-//    }
-//
-//    public Integer getUsersId() {
-//        return usersId;
-//    }
-//
-//    public void setUsersId(Integer usersId) {
-//        this.usersId = usersId;
-//    }
 }
