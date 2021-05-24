@@ -8,6 +8,8 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "PROJECTS")
@@ -40,6 +42,15 @@ public class Projects {
     @ManyToOne
     @JoinColumn(name = "LEADER_ID")
     private Users leader;
+
+    @OneToMany(mappedBy = "project")
+    private Set<Tasks> tasks;
+
+    @ManyToMany
+    @JoinTable(name = "USERS_PROJECTS",
+            joinColumns = {@JoinColumn(name = "PROJECT_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
+    private Set<Users> users = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -87,6 +98,22 @@ public class Projects {
 
     public void setLeader(Users leader) {
         this.leader = leader;
+    }
+
+    public Set<Tasks> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Tasks> tasks) {
+        this.tasks = tasks;
+    }
+
+    public Set<Users> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<Users> users) {
+        this.users = users;
     }
 
     @Override

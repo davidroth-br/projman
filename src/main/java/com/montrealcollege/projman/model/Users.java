@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -49,18 +50,22 @@ public class Users {
             message="Please enter a valid phone number. (999) 999-9999")
     private String phone;
 
-    @Column(name = "PROJECTS")
-    private Integer projects;
+    @ManyToMany(mappedBy = "users")
+    private Set<Projects> projects = new HashSet<>();
+//    @Column(name = "PROJECTS")
+//    private Integer projects;
 
-    @Column(name = "TASKS")
-    private Integer tasks;
+    @ManyToMany(mappedBy = "users")
+    private Set<Tasks> tasks = new HashSet<>();
+//    @Column(name = "TASKS")
+//    private Integer tasks;
 
     @ManyToOne
     @JoinColumn(name = "ROLE_ID")
     Roles role;
 
     @OneToMany(mappedBy = "leader")
-    private Set<Projects> projectLeaders;
+    private Set<Projects> projectsLead;
 
     public Long getId() {
         return id;
@@ -125,20 +130,36 @@ public class Users {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+//
+//    public Integer getProjects() {
+//        return projects;
+//    }
+//
+//    public void setProjects(Integer projects) {
+//        this.projects = projects;
+//    }
+//
+//    public Integer getTasks() {
+//        return tasks;
+//    }
+//
+//    public void setTasks(Integer tasks) {
+//        this.tasks = tasks;
+//    }
 
-    public Integer getProjects() {
+    public Set<Projects> getProjects() {
         return projects;
     }
 
-    public void setProjects(Integer projects) {
+    public void setProjects(Set<Projects> projects) {
         this.projects = projects;
     }
 
-    public Integer getTasks() {
+    public Set<Tasks> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Integer tasks) {
+    public void setTasks(Set<Tasks> tasks) {
         this.tasks = tasks;
     }
 
@@ -150,12 +171,12 @@ public class Users {
         this.role = role;
     }
 
-    public Set<Projects> getProjectLeaders() {
-        return projectLeaders;
+    public Set<Projects> getProjectsLead() {
+        return projectsLead;
     }
 
-    public void setProjectLeaders(Set<Projects> project) {
-        this.projectLeaders = project;
+    public void setProjectsLead(Set<Projects> project) {
+        this.projectsLead = project;
     }
 
     @Override

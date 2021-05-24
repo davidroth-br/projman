@@ -10,11 +10,11 @@ public interface TasksDAO {
 
     List<Tasks> listTasks();
 
-    Tasks displayTask(Integer id);
+    Tasks findTaskById(Long id);
 
     void updateTask(Tasks task);
 
-    void deleteTask(Tasks task);
+    void deleteTask(Long id);
 
 
 }

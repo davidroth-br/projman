@@ -1,10 +1,9 @@
 package com.montrealcollege.projman.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "TASKS")
@@ -24,10 +23,21 @@ public class Tasks {
     private Integer state;
     @Column(name = "COMPLETION_DATE")
     private Date completionDate;
-    @Column(name = "PROJECT_ID")
-    private Integer projectId;
-    @Column(name = "USERS_ID")
-    private Integer usersId;
+
+    @ManyToOne
+    @JoinColumn(name = "PROJECT_ID")
+    private Projects project;
+
+//    @Column(name = "PROJECT_ID")
+//    private Integer projectId;
+
+    @ManyToMany
+    @JoinTable(name = "USERS_TASKS",
+            joinColumns = {@JoinColumn(name = "TASK_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
+    private Set<Users> users = new HashSet<>();
+//    @Column(name = "USERS_ID")
+//    private Integer usersId;
 
     public Integer getId() {
         return id;
@@ -85,19 +95,34 @@ public class Tasks {
         this.completionDate = completionDate;
     }
 
-    public Integer getProjectId() {
-        return projectId;
+    public Projects getProject() {
+        return project;
     }
 
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
+    public void setProject(Projects project) {
+        this.project = project;
     }
 
-    public Integer getUsersId() {
-        return usersId;
+    public Set<Users> getUsers() {
+        return users;
     }
 
-    public void setUsersId(Integer usersId) {
-        this.usersId = usersId;
+    public void setUsers(Set<Users> users) {
+        this.users = users;
     }
+//    public Integer getProjectId() {
+//        return projectId;
+//    }
+//
+//    public void setProjectId(Integer projectId) {
+//        this.projectId = projectId;
+//    }
+//
+//    public Integer getUsersId() {
+//        return usersId;
+//    }
+//
+//    public void setUsersId(Integer usersId) {
+//        this.usersId = usersId;
+//    }
 }

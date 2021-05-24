@@ -1,5 +1,6 @@
 package com.montrealcollege.projman.dao;
 
+import com.montrealcollege.projman.model.Projects;
 import com.montrealcollege.projman.model.Tasks;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -36,8 +37,8 @@ public class TasksDAOImpl implements TasksDAO{
     }
 
     @Override
-    public Tasks displayTask(Integer id) {
-        return null;
+    public Tasks findTaskById(Long id) {
+        return entityManager.find(Tasks.class, id);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class TasksDAOImpl implements TasksDAO{
     }
 
     @Override
-    public void deleteTask(Tasks task) {
+    public void deleteTask(Long id) {
 
     }
 }
