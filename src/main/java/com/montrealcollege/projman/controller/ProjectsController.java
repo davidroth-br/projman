@@ -21,7 +21,7 @@ import java.util.Map;
 public class ProjectsController {
 
     @Autowired
-    private ProjectsService service;
+    private ProjectsService projectsService;
 
     @Autowired
     private UsersService usersService;
@@ -37,13 +37,14 @@ public class ProjectsController {
                                   Model model) {
 
         model.addAttribute("message", message);
-        model.addAttribute("projectList", service.showProjects());
+        model.addAttribute("projectList", projectsService.showProjects());
         return "projects/projectList";
     }
 
     //NEW
     @GetMapping("/new")
     public String showForm(Model model) {
+
         model.addAttribute("project", new Projects());
         model.addAttribute("leaderId", 0);
         model.addAttribute("userList", usersService.showUsers());
@@ -54,23 +55,21 @@ public class ProjectsController {
     public String validateForm(@ModelAttribute("project") @Valid Projects project,
                                BindingResult errors, Model model) {
 
-        if (errors.hasErrors()) {
-            model.addAttribute("leaderId", project.getLeader().getId());
-            model.addAttribute("userList", usersService.showUsers());
-            return "projects/newProject";
-        }
+        Long leaderId = project.getLeader() == null ? 0L : project.getLeader().getId();
+        boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
 
-        if (project.getEndDate().compareTo(project.getStartDate()) <= 0) {
-            model.addAttribute("leaderId", project.getLeader().getId());
-            model.addAttribute("isEndDateBeforeStartDate", true);
+        if (errors.hasErrors() || isEndDateBeforeStartDate) {
+            model.addAttribute("leaderId", leaderId);
+            model.addAttribute("userList", usersService.showUsers());
+            model.addAttribute("isEndDateBeforeStartDate", isEndDateBeforeStartDate);
             return "projects/newProject";
         }
 
         String message = project.getName() + " was successfully added!";
-        service.addProject(project);
+        projectsService.addProject(project);
 
         model.addAttribute("message", message);
-        model.addAttribute("projectList", service.showProjects());
+        model.addAttribute("projectList", projectsService.showProjects());
 
         return "projects/projectList";
     }
@@ -78,13 +77,8 @@ public class ProjectsController {
     // EDIT
     @GetMapping("/edit/{id}")
     public String editProject(@PathVariable Long id, Model model) {
-        Projects project = service.getProjectById(id);
-
-        System.out.println(project);
-
-        Long leaderId = project.getLeader() != null ? project.getLeader().getId() : 0;
-
-        System.out.println(leaderId);
+        Projects project = projectsService.getProjectById(id);
+        Long leaderId = project.getLeader() == null ? 0L : project.getLeader().getId();
 
         model.addAttribute("project", project);
         model.addAttribute("leaderId", leaderId);
@@ -96,44 +90,41 @@ public class ProjectsController {
     public Object validateEdit(@ModelAttribute("project") @Valid Projects project,
                                BindingResult errors, Model model) {
 
-        if (errors.hasErrors()) {
-            model.addAttribute("leaderId", project.getLeader().getId());
+        Long leaderId = project.getLeader() == null ? 0L : project.getLeader().getId();
+        boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
+
+        if (errors.hasErrors() || isEndDateBeforeStartDate) {
+            model.addAttribute("leaderId", leaderId);
             model.addAttribute("userList", usersService.showUsers());
+            model.addAttribute("isEndDateBeforeStartDate", isEndDateBeforeStartDate);
             return "projects/editProject";
         }
 
-        if (project.getEndDate().compareTo(project.getStartDate()) <= 0) {
-            model.addAttribute("leaderId", project.getLeader().getId());
-            model.addAttribute("isEndDateBeforeStartDate", true);
-            return "projects/editProject";
-        }
-
-        service.editProject(project);
+        projectsService.editProject(project);
 
         String message = project.getName() + " was successfully edited!";
         model.addAttribute("message", message);
         return new ModelAndView("redirect:/projects/list", (Map<String, ?>) model);
-//        return "projects/projectList";
     }
 
     // DELETE
     @GetMapping("/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
-        Projects project = service.getProjectById(id);
+        Projects project = projectsService.getProjectById(id);
         String message = project.getName() + " was successfully removed!";
 
-        service.removeProject(id);
+        projectsService.removeProject(id);
 
         model.addAttribute("message", message);
-        model.addAttribute("projectList", service.showProjects());
+        model.addAttribute("projectList", projectsService.showProjects());
         return "projects/projectList";
     }
 
     // DETAILS
     @GetMapping("/details/{id}")
     public String showProject(@PathVariable Long id, Model model) {
-        Projects project = service.getProjectById(id);
+        Projects project = projectsService.getProjectById(id);
 
         model.addAttribute("project", project);
         return "projects/projectDetails";

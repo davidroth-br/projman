@@ -1,8 +1,12 @@
 package com.montrealcollege.projman.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,21 +21,35 @@ public class Tasks {
     @GeneratedValue(generator = "TASKS_SEQ")
     @Column(name = "ID")
     private Integer id;
+
     @Column(name = "NAME")
+    @NotBlank(message = "Please enter a task name")
     private String name;
+
     @Column(name = "DESCRIPTION")
     private String description;
+
     @Column(name = "DEADLINE")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Please enter a deadline")
+    @Future(message="Deadline must be in the future.")
     private Date deadline;
+
     @Column(name = "PRIORITY")
+    @NotNull(message = "Please select a priority")
     private Integer priority;
+
     @Column(name = "STATE")
+    @NotNull(message = "Please select a state")
     private Integer state;
+
     @Column(name = "COMPLETION_DATE")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date completionDate;
 
     @ManyToOne
     @JoinColumn(name = "PROJECT_ID")
+    @NotNull(message = "Please select a project")
     private Projects project;
 
     @ManyToMany

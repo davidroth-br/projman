@@ -22,7 +22,7 @@
         <tr>
             <th>Project Name</th>
             <th>Task</th>
-            <th>Users Responsible</th>
+            <th>Allocated to</th>
             <th>Deadline</th>
             <th>Priority</th>
             <th>State</th>
@@ -39,8 +39,8 @@
                     </c:forEach>
                 </td>
                 <td><fmt:formatDate value="${task.deadline}" type="date"/></td>
-                <td>${task.priority}</td>
-                <td>${task.state}</td>
+                <td>${priorityList[task.priority]}</td>
+                <td>${stateList[task.state]}</td>
                 <td><fmt:formatDate value="${task.completionDate}" type="date"/></td>
                 <td><a href="<c:url value="/projects/edit/${task.id}"/>">Edit</a></td>
                 <td><a href="<c:url value="/projects/remove/${task.id}"/>">Delete</a></td>

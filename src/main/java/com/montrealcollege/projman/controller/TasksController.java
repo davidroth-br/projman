@@ -1,10 +1,13 @@
 package com.montrealcollege.projman.controller;
 
 import com.montrealcollege.projman.model.Projects;
+import com.montrealcollege.projman.model.Tasks;
 import com.montrealcollege.projman.model.Users;
+import com.montrealcollege.projman.utils.Constants;
 import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.TasksService;
 import com.montrealcollege.projman.service.UsersService;
+import com.montrealcollege.projman.utils.ProjectsConverter;
 import com.montrealcollege.projman.utils.UsersConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,25 +15,31 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Map;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/tasks")
 public class TasksController {
 
     @Autowired
-    private TasksService service;
+    private TasksService tasksService;
 
-//    @Autowired
-//    private UsersService usersService;
+    @Autowired
+    private UsersService usersService;
 
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder) {
-//        binder.registerCustomEditor(Users.class, new UsersConverter(usersService));
-//    }
+    @Autowired
+    private ProjectsService projectsService;
+
+    private final Constants constants = new Constants();
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Projects.class, new ProjectsConverter(projectsService));
+        binder.registerCustomEditor(Users.class, new UsersConverter(usersService));
+    }
 
     //LIST ALL
     @GetMapping("/list")
@@ -38,44 +47,54 @@ public class TasksController {
                                   Model model) {
 
         model.addAttribute("message", message);
-        model.addAttribute("taskList", service.showTasks());
+        model.addAttribute("priorityList", constants.priorityList);
+        model.addAttribute("stateList", constants.stateList);
+        model.addAttribute("taskList", tasksService.showTasks());
         return "tasks/taskList";
     }
-//
-//    //NEW
-//    @GetMapping("/new")
-//    public String showForm(Model model) {
-//        model.addAttribute("project", new Projects());
-//        model.addAttribute("leaderId", 0);
-//        model.addAttribute("userList", usersService.showUsers());
-//        return "projects/newProject";
-//    }
-//
-//    @PostMapping("/validateNew")
-//    public String validateForm(@ModelAttribute("project") @Valid Projects project,
-//                               BindingResult errors, Model model) {
-//
-//        if (errors.hasErrors()) {
-//            model.addAttribute("leaderId", project.getLeader().getId());
-//            model.addAttribute("userList", usersService.showUsers());
-//            return "projects/newProject";
-//        }
-//
-//        if (project.getEndDate().compareTo(project.getStartDate()) <= 0) {
-//            model.addAttribute("leaderId", project.getLeader().getId());
-//            model.addAttribute("isEndDateBeforeStartDate", true);
-//            return "projects/newProject";
-//        }
-//
-//        String message = project.getName() + " was successfully added!";
-//        service.addProject(project);
-//
-//        model.addAttribute("message", message);
-//        model.addAttribute("projectList", service.showProjects());
-//
-//        return "projects/projectList";
-//    }
-//
+
+    //NEW
+    @GetMapping("/new")
+    public String showForm(Model model) {
+
+        model.addAttribute("task", new Tasks());
+        model.addAttribute("priorityList", constants.priorityList);
+        model.addAttribute("stateList", constants.stateList);
+        model.addAttribute("projectId", 0);
+        model.addAttribute("projectList", projectsService.showProjects());
+        model.addAttribute("selectedUsers", null);
+        model.addAttribute("userList", usersService.showUsers());
+
+        return "tasks/newTask";
+    }
+
+    @PostMapping("/validateNew")
+    public String validateForm(@ModelAttribute("task") @Valid Tasks task,
+                               BindingResult errors, Model model) {
+
+        Long projectId = task.getProject() == null ? 0L : task.getProject().getId();
+        Set<Users> selectedUsers = task.getUsers().isEmpty() ? null : task.getUsers();
+
+        if (errors.hasErrors()) {
+            System.out.println("ATTENTION: " + errors);
+            model.addAttribute("priorityList", constants.priorityList);
+            model.addAttribute("stateList", constants.stateList);
+            model.addAttribute("projectId", projectId);
+            model.addAttribute("projectList", projectsService.showProjects());
+            model.addAttribute("selectedUsers", selectedUsers);
+            model.addAttribute("userList", usersService.showUsers());
+            return "tasks/newTask";
+        }
+
+        String message = task.getName() + " was successfully added!";
+        tasksService.addTask(task);
+
+        model.addAttribute("message", message);
+        model.addAttribute("taskList", tasksService.showTasks());
+
+        return "tasks/taskList";
+    }
+
 //    // EDIT
 //    @GetMapping("/edit/{id}")
 //    public String editProject(@PathVariable Long id, Model model) {

@@ -17,13 +17,11 @@
     Description: <f:textarea path="description"/> <f:errors path="description"/>
     <br><br>
     Start Date:
-    <fmt:formatDate value="${project.startDate}" var="startDateString" pattern="MM/dd/yyyy" />
-    <f:input path="startDate" placeholder="mm/dd/yyyy" value="${startDateString}"/> <f:errors path="startDate"/>
+    <f:input path="startDate" type="date"/> <f:errors path="startDate"/>
     <br><br>
     End Date:
-    <fmt:formatDate value="${project.endDate}" var="endDateString" pattern="MM/dd/yyyy" />
-    <f:input path="endDate" placeholder="mm/dd/yyyy" value="${endDateString}"/> <f:errors path="endDate"/>
-    <c:if test="${isEndDateBeforeStartDate}">End date cannot be before start date.</c:if>
+    <f:input path="endDate" type="date"/> <f:errors path="endDate"/>
+    <c:if test="${isEndDateBeforeStartDate}">End date must be after start date.</c:if>
     <br><br>
     Leader:
     <f:select path="leader">

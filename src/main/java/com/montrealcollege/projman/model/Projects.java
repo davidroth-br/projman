@@ -2,11 +2,14 @@ package com.montrealcollege.projman.model;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,10 +34,12 @@ public class Projects {
     private String description;
 
     @Column(name = "START_DATE")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message="Please enter a start date.")
     private Date startDate;
 
     @Column(name = "END_DATE")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message="Please enter an end date.")
     @Future(message="End date must be in the future.")
     private Date endDate;

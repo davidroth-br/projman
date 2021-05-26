@@ -1,18 +1,17 @@
 package com.montrealcollege.projman.dao;
 
 import com.montrealcollege.projman.model.Tasks;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
+@Transactional
 public class TasksDAOImpl implements TasksDAO{
 
     @PersistenceContext
@@ -20,19 +19,18 @@ public class TasksDAOImpl implements TasksDAO{
 
     @Override
     public void createTask(Tasks task) {
-
+        entityManager.persist(task);
     }
 
     @Override
     public List<Tasks> listTasks() {
-        Session session = entityManager.unwrap(Session.class);
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tasks> criteriaQuery = criteriaBuilder.createQuery(Tasks.class);
         Root<Tasks> root = criteriaQuery.from(Tasks.class);
         criteriaQuery.select(root);
 
-        Query<Tasks> query = session.createQuery(criteriaQuery);
-        return query.list();
+        TypedQuery<Tasks> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
     }
 
     @Override
