@@ -1,5 +1,6 @@
 package com.montrealcollege.projman.dao;
 
+import com.montrealcollege.projman.model.Projects;
 import com.montrealcollege.projman.model.Tasks;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +26,13 @@ public class TasksDAOImpl implements TasksDAO{
     @Override
     public List<Tasks> listTasks() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tasks> criteriaQuery = criteriaBuilder.createQuery(Tasks.class);
-        Root<Tasks> root = criteriaQuery.from(Tasks.class);
-        criteriaQuery.select(root);
+        CriteriaQuery<Tasks> criteria = criteriaBuilder.createQuery(Tasks.class);
+        Root<Tasks> tasksRoot = criteria.from(Tasks.class);
+        criteria.select(tasksRoot).orderBy(
+                criteriaBuilder.asc(tasksRoot.get("project").get("name")),
+                criteriaBuilder.asc(tasksRoot.get("name")));
 
-        TypedQuery<Tasks> query = entityManager.createQuery(criteriaQuery);
-        return query.getResultList();
+        return entityManager.createQuery(criteria).getResultList();
     }
 
     @Override
@@ -40,11 +42,24 @@ public class TasksDAOImpl implements TasksDAO{
 
     @Override
     public void updateTask(Tasks task) {
+        Tasks dbTask = entityManager.find(Tasks.class, task.getId());
 
+        dbTask.setName(task.getName());
+        dbTask.setDescription(task.getDescription());
+        dbTask.setDeadline(task.getDeadline());
+        dbTask.setPriority(task.getPriority());
+        dbTask.setState(task.getState());
+        dbTask.setCompletionDate(task.getCompletionDate());
+        dbTask.setProject(task.getProject());
+        dbTask.setUsers(task.getUsers());
+
+        entityManager.persist(dbTask);
+        entityManager.flush();
     }
 
     @Override
     public void deleteTask(Long id) {
-
+        Tasks task = entityManager.find(Tasks.class, id);
+        entityManager.remove(task);
     }
 }

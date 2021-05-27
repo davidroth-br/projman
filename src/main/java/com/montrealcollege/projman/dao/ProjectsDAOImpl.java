@@ -29,8 +29,7 @@ public class ProjectsDAOImpl implements ProjectsDAO{
         Root<Projects> projectsRoot = criteria.from(Projects.class);
         criteria.select(projectsRoot).orderBy(builder.asc(projectsRoot.get("name")));
 
-        TypedQuery<Projects> query = entityManager.createQuery(criteria);
-        return query.getResultList();
+        return entityManager.createQuery(criteria).getResultList();
     }
 
     @Override
@@ -54,8 +53,8 @@ public class ProjectsDAOImpl implements ProjectsDAO{
 
     @Override
     public void deleteProject(Long id) {
-        Projects projects = entityManager.find(Projects.class, id);
-        entityManager.remove(projects);
+        Projects project = entityManager.find(Projects.class, id);
+        entityManager.remove(project);
     }
 
 }

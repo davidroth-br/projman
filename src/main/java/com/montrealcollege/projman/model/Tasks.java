@@ -20,7 +20,7 @@ public class Tasks {
     )
     @GeneratedValue(generator = "TASKS_SEQ")
     @Column(name = "ID")
-    private Integer id;
+    private Long id;
 
     @Column(name = "NAME")
     @NotBlank(message = "Please enter a task name")
@@ -58,11 +58,11 @@ public class Tasks {
             inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
     private Set<Users> users = new HashSet<>();
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

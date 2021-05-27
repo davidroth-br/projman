@@ -90,6 +90,8 @@ public class TasksController {
         tasksService.addTask(task);
 
         model.addAttribute("message", message);
+        model.addAttribute("priorityList", constants.priorityList);
+        model.addAttribute("stateList", constants.stateList);
         model.addAttribute("taskList", tasksService.showTasks());
 
         return "tasks/taskList";
@@ -136,20 +138,22 @@ public class TasksController {
 ////        return "projects/projectList";
 //    }
 //
-//    // DELETE
-//    @GetMapping("/remove/{id}")
-//    public String removeUser(@PathVariable Long id, Model model) {
-//
-//        Projects project = service.getProjectById(id);
-//        String message = project.getName() + " was successfully removed!";
-//
-//        service.removeProject(id);
-//
-//        model.addAttribute("message", message);
-//        model.addAttribute("projectList", service.showProjects());
-//        return "projects/projectList";
-//    }
-//
+    // DELETE
+    @GetMapping("/remove/{id}")
+    public String removeUser(@PathVariable Long id, Model model) {
+
+        Tasks task = tasksService.getTaskById(id);
+        String message = task.getName() + " was successfully removed!";
+
+        tasksService.removeTask(id);
+
+        model.addAttribute("message", message);
+        model.addAttribute("priorityList", constants.priorityList);
+        model.addAttribute("stateList", constants.stateList);
+        model.addAttribute("taskList", tasksService.showTasks());
+        return "tasks/taskList";
+    }
+
 //    // DETAILS
 //    @GetMapping("/details/{id}")
 //    public String showProject(@PathVariable Long id, Model model) {
