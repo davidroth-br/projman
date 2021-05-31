@@ -149,7 +149,7 @@ public class TasksController {
 
     // DETAILS
     @GetMapping("/details/{id}")
-    public String showProject(@PathVariable Long id, Model model) {
+    public String showTask(@PathVariable Long id, Model model) {
         Tasks task = tasksService.getTaskById(id);
 
         model.addAttribute("task", task);
