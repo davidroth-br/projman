@@ -38,10 +38,10 @@
             </c:if>
             <tr style="vertical-align:top">
                 <td>&nbsp;</td>
-                <td><a href="<c:url value="/task/details/${task.id}"/>">${task.name}</a></td>
+                <td><a href="<c:url value="/tasks/details/${task.id}"/>">${task.name}</a></td>
                 <td>
                     <c:forEach items="${task.users}" var="user">
-                        <a href="<c:url value="/user/details/${user.id}"/>">${user.firstName} ${user.lastName}</a>
+                        <a href="<c:url value="/users/details/${user.id}"/>">${user.firstName} ${user.lastName}</a>
                         <br>
                     </c:forEach>
                 </td>

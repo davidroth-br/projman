@@ -55,11 +55,10 @@ public class ProjectsController {
     public String validateForm(@ModelAttribute("project") @Valid Projects project,
                                BindingResult errors, Model model) {
 
-        Long leaderId = project.getLeader() == null ? 0L : project.getLeader().getId();
         boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
 
         if (errors.hasErrors() || isEndDateBeforeStartDate) {
-            model.addAttribute("leaderId", leaderId);
+            model.addAttribute("leaderId", project.getLeader() == null ? 0L : project.getLeader().getId());
             model.addAttribute("userList", usersService.showUsers());
             model.addAttribute("isEndDateBeforeStartDate", isEndDateBeforeStartDate);
             return "projects/newProject";
@@ -70,7 +69,6 @@ public class ProjectsController {
 
         model.addAttribute("message", message);
         model.addAttribute("projectList", projectsService.showProjects());
-
         return "projects/projectList";
     }
 
@@ -78,10 +76,9 @@ public class ProjectsController {
     @GetMapping("/edit/{id}")
     public String editProject(@PathVariable Long id, Model model) {
         Projects project = projectsService.getProjectById(id);
-        Long leaderId = project.getLeader() == null ? 0L : project.getLeader().getId();
 
         model.addAttribute("project", project);
-        model.addAttribute("leaderId", leaderId);
+        model.addAttribute("leaderId", project.getLeader() == null ? 0L : project.getLeader().getId());
         model.addAttribute("userList", usersService.showUsers());
         return "projects/editProject";
     }
@@ -90,11 +87,10 @@ public class ProjectsController {
     public Object validateEdit(@ModelAttribute("project") @Valid Projects project,
                                BindingResult errors, Model model) {
 
-        Long leaderId = project.getLeader() == null ? 0L : project.getLeader().getId();
         boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
 
         if (errors.hasErrors() || isEndDateBeforeStartDate) {
-            model.addAttribute("leaderId", leaderId);
+            model.addAttribute("leaderId", project.getLeader() == null ? 0L : project.getLeader().getId());
             model.addAttribute("userList", usersService.showUsers());
             model.addAttribute("isEndDateBeforeStartDate", isEndDateBeforeStartDate);
             return "projects/editProject";

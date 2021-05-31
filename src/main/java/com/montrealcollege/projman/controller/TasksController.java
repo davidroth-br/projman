@@ -15,10 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/tasks")
@@ -64,26 +64,23 @@ public class TasksController {
         model.addAttribute("projectList", projectsService.showProjects());
         model.addAttribute("selectedUsers", null);
         model.addAttribute("userList", usersService.showUsers());
-
-        return "tasks/newTask";
+        model.addAttribute("action", "/tasks/validateNew");
+        return "tasks/taskForm";
     }
 
     @PostMapping("/validateNew")
     public String validateForm(@ModelAttribute("task") @Valid Tasks task,
                                BindingResult errors, Model model) {
 
-        Long projectId = task.getProject() == null ? 0L : task.getProject().getId();
-        Set<Users> selectedUsers = task.getUsers().isEmpty() ? null : task.getUsers();
-
         if (errors.hasErrors()) {
-            System.out.println("ATTENTION: " + errors);
             model.addAttribute("priorityList", constants.priorityList);
             model.addAttribute("stateList", constants.stateList);
-            model.addAttribute("projectId", projectId);
+            model.addAttribute("projectId", task.getProject() == null ? 0L : task.getProject().getId());
             model.addAttribute("projectList", projectsService.showProjects());
-            model.addAttribute("selectedUsers", selectedUsers);
+            model.addAttribute("selectedUsers", task.getUsers().isEmpty() ? null : task.getUsers());
             model.addAttribute("userList", usersService.showUsers());
-            return "tasks/newTask";
+            model.addAttribute("action", "/tasks/validateNew");
+            return "tasks/taskForm";
         }
 
         String message = task.getName() + " was successfully added!";
@@ -93,51 +90,47 @@ public class TasksController {
         model.addAttribute("priorityList", constants.priorityList);
         model.addAttribute("stateList", constants.stateList);
         model.addAttribute("taskList", tasksService.showTasks());
-
         return "tasks/taskList";
     }
 
-//    // EDIT
-//    @GetMapping("/edit/{id}")
-//    public String editProject(@PathVariable Long id, Model model) {
-//        Projects project = service.getProjectById(id);
-//
-//        System.out.println(project);
-//
-//        Long leaderId = project.getLeader() != null ? project.getLeader().getId() : 0;
-//
-//        System.out.println(leaderId);
-//
-//        model.addAttribute("project", project);
-//        model.addAttribute("leaderId", leaderId);
-//        model.addAttribute("userList", usersService.showUsers());
-//        return "projects/editProject";
-//    }
-//
-//    @PostMapping("/validateEdit")
-//    public Object validateEdit(@ModelAttribute("project") @Valid Projects project,
-//                               BindingResult errors, Model model) {
-//
-//        if (errors.hasErrors()) {
-//            model.addAttribute("leaderId", project.getLeader().getId());
-//            model.addAttribute("userList", usersService.showUsers());
-//            return "projects/editProject";
-//        }
-//
-//        if (project.getEndDate().compareTo(project.getStartDate()) <= 0) {
-//            model.addAttribute("leaderId", project.getLeader().getId());
-//            model.addAttribute("isEndDateBeforeStartDate", true);
-//            return "projects/editProject";
-//        }
-//
-//        service.editProject(project);
-//
-//        String message = project.getName() + " was successfully edited!";
-//        model.addAttribute("message", message);
-//        return new ModelAndView("redirect:/projects/list", (Map<String, ?>) model);
-////        return "projects/projectList";
-//    }
-//
+    // EDIT
+    @GetMapping("/edit/{id}")
+    public String editProject(@PathVariable Long id, Model model) {
+        Tasks task = tasksService.getTaskById(id);
+
+        model.addAttribute("task", task);
+        model.addAttribute("priorityList", constants.priorityList);
+        model.addAttribute("stateList", constants.stateList);
+        model.addAttribute("projectId", task.getProject().getId());
+        model.addAttribute("projectList", projectsService.showProjects());
+        model.addAttribute("selectedUsers", task.getUsers().isEmpty() ? null : task.getUsers());
+        model.addAttribute("userList", usersService.showUsers());
+        model.addAttribute("action", "/tasks/validateEdit");
+        return "tasks/taskForm";
+    }
+
+    @PostMapping("/validateEdit")
+    public Object validateEdit(@ModelAttribute("task") @Valid Tasks task,
+                               BindingResult errors, Model model) {
+
+        if (errors.hasErrors()) {
+            model.addAttribute("priorityList", constants.priorityList);
+            model.addAttribute("stateList", constants.stateList);
+            model.addAttribute("projectId", task.getProject().getId());
+            model.addAttribute("projectList", projectsService.showProjects());
+            model.addAttribute("selectedUsers", task.getUsers().isEmpty() ? null : task.getUsers());
+            model.addAttribute("userList", usersService.showUsers());
+            model.addAttribute("action", "/tasks/validateEdit");
+            return "tasks/taskForm";
+        }
+
+        tasksService.editTask(task);
+
+        String message = task.getName() + " was successfully edited!";
+        model.addAttribute("message", message);
+        return new ModelAndView("redirect:/tasks/list", (Map<String, ?>) model);
+    }
+
     // DELETE
     @GetMapping("/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
@@ -154,12 +147,14 @@ public class TasksController {
         return "tasks/taskList";
     }
 
-//    // DETAILS
-//    @GetMapping("/details/{id}")
-//    public String showProject(@PathVariable Long id, Model model) {
-//        Projects project = service.getProjectById(id);
-//
-//        model.addAttribute("project", project);
-//        return "projects/projectDetails";
-//    }
+    // DETAILS
+    @GetMapping("/details/{id}")
+    public String showProject(@PathVariable Long id, Model model) {
+        Tasks task = tasksService.getTaskById(id);
+
+        model.addAttribute("task", task);
+        model.addAttribute("priorityList", constants.priorityList);
+        model.addAttribute("stateList", constants.stateList);
+        return "tasks/taskDetails";
+    }
 }

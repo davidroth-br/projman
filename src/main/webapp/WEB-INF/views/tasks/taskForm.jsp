@@ -10,7 +10,7 @@
 <body>
 <%@include file="../_menu.jsp" %>
 
-<f:form method="post" action="validateNew" modelAttribute="task">
+<f:form method="post" action="${pageContext.request.contextPath}${action}" modelAttribute="task">
 
     Task Name: <f:input path="name"/> <f:errors path="name"/>
     <br><br>
@@ -70,6 +70,7 @@
         </c:choose>
     </f:select>
     <br><br>
+    <f:hidden path="id" value="${task.id}"/>
     <input type="submit"/>
     <br><br>
 </f:form>
