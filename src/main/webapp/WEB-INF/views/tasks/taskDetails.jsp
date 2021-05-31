@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <title>Task ${task.name} Details</title>
+    <title>${task.name} Details</title>
 </head>
 <body>
 Task Name: ${task.name}

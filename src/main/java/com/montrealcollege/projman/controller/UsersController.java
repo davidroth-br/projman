@@ -1,6 +1,9 @@
 package com.montrealcollege.projman.controller;
 
+import com.montrealcollege.projman.model.Projects;
+import com.montrealcollege.projman.model.Tasks;
 import com.montrealcollege.projman.model.Users;
+import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.checkPassword;
 import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.encryptPassword;
@@ -21,7 +28,10 @@ import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.encryptPa
 public class UsersController {
 
     @Autowired
-    private UsersService service;
+    private UsersService usersService;
+
+    @Autowired
+    private ProjectsService projectsService;
 
     // LIST ALL
     @GetMapping("/admin/list")
@@ -29,7 +39,7 @@ public class UsersController {
                                Model model) {
 
         model.addAttribute("message", message);
-        model.addAttribute("userList", service.showUsers());
+        model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
 
@@ -53,18 +63,18 @@ public class UsersController {
         }
 
         user.setEncryptedPassword(encryptPassword(user.getEncryptedPassword()));
-        service.addUser(user);
+        usersService.addUser(user);
 
         String message = user.getFirstName() + " " + user.getLastName() + " was successfully added as " + user.getUserName() + "!";
         model.addAttribute("message", message);
-        model.addAttribute("userList", service.showUsers());
+        model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
 
     // EDIT
     @GetMapping("/admin/edit/{id}")
     public String editUser(@PathVariable Long id, Model model) {
-        model.addAttribute("user", service.getUserById(id));
+        model.addAttribute("user", usersService.getUserById(id));
         return "users/editUser";
     }
 
@@ -76,7 +86,7 @@ public class UsersController {
             return "users/editUser";
         }
 
-        service.editUser(user);
+        usersService.editUser(user);
 
         String message = user.getFirstName() + " " + user.getLastName() + " was successfully edited!";
         model.addAttribute("message", message);
@@ -86,7 +96,7 @@ public class UsersController {
     // CHANGE PASSWORD
     @GetMapping("/admin/newPass/{id}")
     public String editPassword(@PathVariable Long id, Model model) {
-        model.addAttribute("user", service.getUserById(id));
+        model.addAttribute("user", usersService.getUserById(id));
         return "users/changePassword";
     }
 
@@ -105,13 +115,13 @@ public class UsersController {
             return "users/changePassword";
         }
 
-        user.setRole(service.getUserById(user.getId()).getRole());
+        user.setRole(usersService.getUserById(user.getId()).getRole());
         user.setEncryptedPassword(encryptPassword(newPassword));
-        service.editUser(user);
+        usersService.editUser(user);
 
         String message = user.getFirstName() + " " + user.getLastName() + "'s password was successfully changed!";
         model.addAttribute("message", message);
-        model.addAttribute("userList", service.showUsers());
+        model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
 
@@ -119,13 +129,33 @@ public class UsersController {
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
-        Users user = service.getUserById(id);
+        Users user = usersService.getUserById(id);
         String message = user.getFirstName() + " " + user.getLastName() + " was successfully removed!";
 
-        service.removeUser(id);
+        usersService.removeUser(id);
 
         model.addAttribute("message", message);
-        model.addAttribute("userList", service.showUsers());
+        model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
+    }
+
+    // DETAILS
+    @GetMapping("/details/{id}")
+    public String showUser(@PathVariable Long id, Model model) {
+        Users user = usersService.getUserById(id);
+        List<Tasks> taskList = user.getTasks().stream().sorted(Comparator.comparing(Tasks::getName)).sorted(Comparator.comparing(e -> e.getProject().getName())).collect(Collectors.toList());
+        List<Projects> projects = projectsService.showProjects();
+        List<String> userLeads = new ArrayList<>();
+
+        for (Projects project : projects) {
+            if (project.getLeader() != null && project.getLeader().getId().equals(id)) {
+                userLeads.add(project.getName());
+            }
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("taskList", taskList);
+        model.addAttribute("userLeads", userLeads);
+        return "users/userDetails";
     }
 }
