@@ -54,6 +54,7 @@ public class Users {
     private Set<Projects> projects = new HashSet<>();
 
     @ManyToMany(mappedBy = "users")
+    @OrderBy(value = "project asc, name asc")
     private Set<Tasks> tasks = new HashSet<>();
 
     @ManyToOne

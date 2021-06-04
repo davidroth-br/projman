@@ -21,12 +21,12 @@ Role: ${fn:substring(user.role.roleName, 5, fn:length(user.role.roleName))}
 <br><br>
 Projects / Tasks:<br>
 <c:set var="previousProject" value=""/>
-<c:forEach var="task" items="${taskList}">
+<c:forEach var="task" items="${user.tasks}">
     <c:if test="${task.project.name != previousProject}">
         <c:if test="${previousProject != ''}"><br></c:if>
         &emsp;${task.project.name}
-        <c:forEach var="userLead" items="${userLeads}">
-            <c:if test="${task.project.name == userLead}">
+        <c:forEach var="userLead" items="${user.projectsLead}">
+            <c:if test="${task.project == userLead}">
                 (Leader)
             </c:if>
         </c:forEach>

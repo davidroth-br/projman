@@ -142,20 +142,8 @@ public class UsersController {
     // DETAILS
     @GetMapping("/details/{id}")
     public String showUser(@PathVariable Long id, Model model) {
-        Users user = usersService.getUserById(id);
-        List<Tasks> taskList = user.getTasks().stream().sorted(Comparator.comparing(Tasks::getName)).sorted(Comparator.comparing(e -> e.getProject().getName())).collect(Collectors.toList());
-        List<Projects> projects = projectsService.showProjects();
-        List<String> userLeads = new ArrayList<>();
 
-        for (Projects project : projects) {
-            if (project.getLeader() != null && project.getLeader().getId().equals(id)) {
-                userLeads.add(project.getName());
-            }
-        }
-
-        model.addAttribute("user", user);
-        model.addAttribute("taskList", taskList);
-        model.addAttribute("userLeads", userLeads);
+        model.addAttribute("user", usersService.getUserById(id));
         return "users/userDetails";
     }
 }
