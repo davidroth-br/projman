@@ -1,9 +1,6 @@
 package com.montrealcollege.projman.controller;
 
-import com.montrealcollege.projman.model.Projects;
-import com.montrealcollege.projman.model.Tasks;
 import com.montrealcollege.projman.model.Users;
-import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,11 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.checkPassword;
 import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.encryptPassword;
@@ -29,9 +22,6 @@ public class UsersController {
 
     @Autowired
     private UsersService usersService;
-
-    @Autowired
-    private ProjectsService projectsService;
 
     // LIST ALL
     @GetMapping("/admin/list")
@@ -140,9 +130,10 @@ public class UsersController {
     }
 
     // DETAILS
-    @GetMapping("/details/{id}")
-    public String showUser(@PathVariable Long id, Model model) {
+    @GetMapping("/admin/details/{id}/{from}")
+    public String showUser(@PathVariable("id") Long id, @PathVariable("from") String from, Model model) {
 
+        model.addAttribute("from", from);
         model.addAttribute("user", usersService.getUserById(id));
         return "users/userDetails";
     }

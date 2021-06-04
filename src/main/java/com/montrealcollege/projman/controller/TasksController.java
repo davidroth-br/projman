@@ -42,7 +42,7 @@ public class TasksController {
     }
 
     //LIST ALL
-    @GetMapping("/list")
+    @GetMapping("/admin/list")
     public String showAllTasks(@RequestParam("message") String message,
                                   Model model) {
 
@@ -54,7 +54,7 @@ public class TasksController {
     }
 
     //NEW
-    @GetMapping("/new")
+    @GetMapping("/admin/new")
     public String showForm(Model model) {
 
         model.addAttribute("task", new Tasks());
@@ -66,7 +66,7 @@ public class TasksController {
         return "tasks/taskForm";
     }
 
-    @PostMapping("/validateNew")
+    @PostMapping("/admin/validateNew")
     public String validateForm(@ModelAttribute("task") @Valid Tasks task,
                                BindingResult errors, Model model) {
 
@@ -90,7 +90,7 @@ public class TasksController {
     }
 
     // EDIT
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/edit/{id}")
     public String editProject(@PathVariable Long id, Model model) {
         Tasks task = tasksService.getTaskById(id);
 
@@ -103,7 +103,7 @@ public class TasksController {
         return "tasks/taskForm";
     }
 
-    @PostMapping("/validateEdit")
+    @PostMapping("/admin/validateEdit")
     public Object validateEdit(@ModelAttribute("task") @Valid Tasks task,
                                BindingResult errors, Model model) {
 
@@ -124,7 +124,7 @@ public class TasksController {
     }
 
     // DELETE
-    @GetMapping("/remove/{id}")
+    @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
         Tasks task = tasksService.getTaskById(id);
@@ -140,7 +140,7 @@ public class TasksController {
     }
 
     // DETAILS
-    @GetMapping("/details/{id}")
+    @GetMapping("/admin/details/{id}")
     public String showTask(@PathVariable Long id, Model model) {
         Tasks task = tasksService.getTaskById(id);
 

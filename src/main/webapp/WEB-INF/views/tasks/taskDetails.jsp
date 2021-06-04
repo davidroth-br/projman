@@ -27,13 +27,13 @@ Completion Date:
     </c:otherwise>
 </c:choose>
 <br><br>
-Project: ${task.project.name}
+Project: ${task.project.name} (Leader: ${task.project.leader.firstName} ${task.project.leader.lastName})
 <br><br>
 Allocated to:<br>
 <c:forEach var="user" items="${task.users}">
     &emsp;${user.firstName} ${user.lastName}<br>
 </c:forEach>
 <br>
-<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/tasks/list?message='">Back</button>
+<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/tasks/admin/list?message='">Back</button>
 </body>
 </html>

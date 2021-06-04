@@ -29,7 +29,7 @@
         </tr>
         <c:forEach items="${userList}" var="user">
             <tr>
-                <td>${user.firstName} ${user.lastName}</td>
+                <td><a href="<c:url value="/users/admin/details/${user.id}/users"/>">${user.firstName} ${user.lastName}</a></td>
                 <td>${user.userName}</td>
                 <td>${user.email}</td>
                 <td>${user.phone}</td>

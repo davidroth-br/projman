@@ -32,7 +32,7 @@ public class ProjectsController {
     }
 
     //LIST ALL
-    @GetMapping("/list")
+    @GetMapping("/admin/list")
     public String showAllProjects(@RequestParam("message") String message,
                                   Model model) {
 
@@ -42,7 +42,7 @@ public class ProjectsController {
     }
 
     //NEW
-    @GetMapping("/new")
+    @GetMapping("/admin/new")
     public String showForm(Model model) {
 
         model.addAttribute("project", new Projects());
@@ -51,7 +51,7 @@ public class ProjectsController {
         return "projects/projectForm";
     }
 
-    @PostMapping("/validateNew")
+    @PostMapping("/admin/validateNew")
     public String validateForm(@ModelAttribute("project") @Valid Projects project,
                                BindingResult errors, Model model) {
 
@@ -82,7 +82,7 @@ public class ProjectsController {
     }
 
     // EDIT
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/edit/{id}")
     public String editProject(@PathVariable Long id, Model model) {
         Projects project = projectsService.getProjectById(id);
 
@@ -92,7 +92,7 @@ public class ProjectsController {
         return "projects/projectForm";
     }
 
-    @PostMapping("/validateEdit")
+    @PostMapping("/admin/validateEdit")
     public Object validateEdit(@ModelAttribute("project") @Valid Projects project,
                                BindingResult errors, Model model) {
 
@@ -122,7 +122,7 @@ public class ProjectsController {
     }
 
     // DELETE
-    @GetMapping("/remove/{id}")
+    @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
         Projects project = projectsService.getProjectById(id);
@@ -136,7 +136,7 @@ public class ProjectsController {
     }
 
     // DETAILS
-    @GetMapping("/details/{id}")
+    @GetMapping("/admin/details/{id}")
     public String showProject(@PathVariable Long id, Model model) {
         Projects project = projectsService.getProjectById(id);
 

@@ -23,7 +23,7 @@ Alocated Users:
     &emsp;${user.firstName} ${user.lastName}<br>
 </c:forEach>
 <br><br>
-<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/projects/list?message='">Back
+<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/projects/admin/list?message='">Back
 </button>
 </body>
 </html>

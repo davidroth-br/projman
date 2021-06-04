@@ -14,7 +14,7 @@
     <h2>${message}</h2>
 </c:if>
 
-<a href="<c:url value="/projects/new"/>"><h2>Add New Project</h2></a>
+<a href="<c:url value="/projects/admin/new"/>"><h2>Add New Project</h2></a>
 <br>
 <h2>Project List</h2>
 <c:if test="${!empty projectList}">
@@ -27,12 +27,12 @@
         </tr>
         <c:forEach items="${projectList}" var="project">
             <tr>
-                <td><a href="<c:url value="/projects/details/${project.id}"/>">${project.name}</a></td>
+                <td><a href="<c:url value="/projects/admin/details/${project.id}"/>">${project.name}</a></td>
                 <td><fmt:formatDate value="${project.startDate}" type="date"/></td>
                 <td><fmt:formatDate value="${project.endDate}" type="date"/></td>
                 <td>${project.leader.firstName} ${project.leader.lastName}</td>
-                <td><a href="<c:url value="/projects/edit/${project.id}"/>">Edit</a></td>
-                <td><a href="<c:url value="/projects/remove/${project.id}"/>">Delete</a></td>
+                <td><a href="<c:url value="/projects/admin/edit/${project.id}"/>">Edit</a></td>
+                <td><a href="<c:url value="/projects/admin/remove/${project.id}"/>">Delete</a></td>
             </tr>
         </c:forEach>
     </table>

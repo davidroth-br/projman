@@ -8,8 +8,8 @@
                 <c:when test="${sessionScope.values().toString().contains('ROLE_ADMIN')}">
                     <a href="<c:url value="/welcome"/>">Home</a> |
                     <a href="<c:url value="/users/admin/list?message="/>">Users</a> |
-                    <a href="<c:url value="/projects/list?message="/>">Projects</a> |
-                    <a href="<c:url value="/tasks/list?message="/>">Tasks</a> |
+                    <a href="<c:url value="/projects/admin/list?message="/>">Projects</a> |
+                    <a href="<c:url value="/tasks/admin/list?message="/>">Tasks</a> |
                     <a href="<c:url value="/logout"/>">Logout</a>
                 </c:when>
                 <c:otherwise>
