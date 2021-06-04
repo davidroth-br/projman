@@ -8,8 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -55,6 +53,7 @@ public class Projects {
     @JoinTable(name = "USERS_PROJECTS",
             joinColumns = {@JoinColumn(name = "PROJECT_ID")},
             inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
+    @OrderBy(value = "firstName ASC")
     private Set<Users> users = new HashSet<>();
 
     public Long getId() {

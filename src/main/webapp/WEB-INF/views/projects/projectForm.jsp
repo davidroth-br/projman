@@ -28,7 +28,7 @@
         <f:option value="0" label="--- Select Leader ---"/>
         <c:forEach items="${userList}" var="user">
             <c:choose>
-                <c:when test="${user.id == leaderId}">
+                <c:when test="${user.id == project.leader.id}">
                     <f:option value="${user.id}" label="${user.firstName} ${user.lastName}" selected="true"/>
                 </c:when>
                 <c:otherwise>
@@ -38,11 +38,11 @@
         </c:forEach>
     </f:select>
     <br><br>
-    Alocated Users:
+    Allocated Users:
     <f:select path="users" multiple="true">
           <c:forEach items="${userList}" var="user">
               <c:set var="isSelected" value="false"/>
-              <c:forEach items="${selectedUsers}" var="selected">
+              <c:forEach items="${project.users}" var="selected">
                   <c:if test="${user.id == selected.id}">
                       <c:set var="isSelected" value="true"/>
                   </c:if>
