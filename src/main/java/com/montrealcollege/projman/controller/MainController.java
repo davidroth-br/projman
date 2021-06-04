@@ -22,20 +22,8 @@ public class MainController {
         return "welcomePage";
     }
 
-    @GetMapping(value = "/admin")
-    public String adminPage(Model model, Principal principal) {
-        model.addAttribute("title", "Admin Info");
-
-        User loggedInUser = (User) ((Authentication) principal).getPrincipal();
-        String userInfo = WebUtils.toString(loggedInUser);
-        model.addAttribute("userInfo", userInfo);
-
-        return "adminPage";
-    }
-
     @GetMapping(value = {"/", "/login"})
     public String loginPage(Model model) {
-
         return "loginPage";
     }
 
@@ -43,21 +31,6 @@ public class MainController {
     public String logoutSuccessfulPage(Model model) {
         model.addAttribute("title", "Logout");
         return "logoutSuccessfulPage";
-    }
-
-    @GetMapping(value = "/userInfo")
-    public String userInfo(Model model, Principal principal) {
-
-        model.addAttribute("title", "User Info");
-
-        String userName = principal.getName();
-        System.out.println("User Name: " + userName);
-
-        User loggedInUser = (User) ((Authentication) principal).getPrincipal();
-        String userInfo = WebUtils.toString(loggedInUser);
-        model.addAttribute("userInfo", userInfo);
-
-        return "userInfoPage";
     }
 
     @GetMapping(value = "/403")
@@ -75,8 +48,6 @@ public class MainController {
             model.addAttribute("message", message);
 
         }
-
         return "403Page";
     }
-
 }

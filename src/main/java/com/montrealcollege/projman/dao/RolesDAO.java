@@ -7,6 +7,4 @@ import java.util.List;
 public interface RolesDAO {
 
     String getRoleName(Long roll);
-//    List<String> getRoleNames(Long roleId);
-
 }

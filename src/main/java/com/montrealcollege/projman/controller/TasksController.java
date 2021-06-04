@@ -43,13 +43,10 @@ public class TasksController {
 
     //LIST ALL
     @GetMapping("/admin/list")
-    public String showAllTasks(@RequestParam("message") String message,
-                                  Model model) {
+    public String showAllTasks(@RequestParam("message") String message, Model model) {
 
         model.addAttribute("message", message);
-        model.addAttribute("priorityList", constants.priorityList);
-        model.addAttribute("stateList", constants.stateList);
-        model.addAttribute("taskList", tasksService.showTasks());
+        setModelAttributes(model, "priorityList", "stateList", "taskList");
         return "tasks/taskList";
     }
 
@@ -58,95 +55,99 @@ public class TasksController {
     public String showForm(Model model) {
 
         model.addAttribute("task", new Tasks());
-        model.addAttribute("priorityList", constants.priorityList);
-        model.addAttribute("stateList", constants.stateList);
-        model.addAttribute("projectList", projectsService.showProjects());
-        model.addAttribute("userList", usersService.showUsers());
-        model.addAttribute("action", "/tasks/validateNew");
+        setModelAttributes(model, "priorityList", "stateList", "projectList", "userList", "Add");
+        model.addAttribute("action", "/tasks/admin/validateNew");
         return "tasks/taskForm";
     }
 
     @PostMapping("/admin/validateNew")
-    public String validateForm(@ModelAttribute("task") @Valid Tasks task,
-                               BindingResult errors, Model model) {
+    public String validateForm(@ModelAttribute("task") @Valid Tasks task, BindingResult errors, Model model) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("priorityList", constants.priorityList);
-            model.addAttribute("stateList", constants.stateList);
-            model.addAttribute("projectList", projectsService.showProjects());
-            model.addAttribute("userList", usersService.showUsers());
-            model.addAttribute("action", "/tasks/validateNew");
+            model.addAttribute("action", "/tasks/admin/validateNew");
+            setModelAttributes(model, "priorityList", "stateList", "projectList", "userList", "Add");
             return "tasks/taskForm";
         }
 
-        String message = task.getName() + " was successfully added!";
         tasksService.addTask(task);
 
-        model.addAttribute("message", message);
-        model.addAttribute("priorityList", constants.priorityList);
-        model.addAttribute("stateList", constants.stateList);
-        model.addAttribute("taskList", tasksService.showTasks());
+        model.addAttribute("message", task.getName() + " was successfully added!");
+        setModelAttributes(model, "priorityList", "stateList", "taskList");
         return "tasks/taskList";
     }
 
     // EDIT
     @GetMapping("/admin/edit/{id}")
     public String editProject(@PathVariable Long id, Model model) {
-        Tasks task = tasksService.getTaskById(id);
 
-        model.addAttribute("task", task);
-        model.addAttribute("priorityList", constants.priorityList);
-        model.addAttribute("stateList", constants.stateList);
-        model.addAttribute("projectList", projectsService.showProjects());
-        model.addAttribute("userList", usersService.showUsers());
-        model.addAttribute("action", "/tasks/validateEdit");
+        model.addAttribute("task", tasksService.getTaskById(id));
+        model.addAttribute("action", "/tasks/admin/validateEdit");
+        setModelAttributes(model, "priorityList", "stateList", "projectList", "userList", "Edit");
         return "tasks/taskForm";
     }
 
     @PostMapping("/admin/validateEdit")
-    public Object validateEdit(@ModelAttribute("task") @Valid Tasks task,
-                               BindingResult errors, Model model) {
+    public Object validateEdit(@ModelAttribute("task") @Valid Tasks task, BindingResult errors, Model model) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("priorityList", constants.priorityList);
-            model.addAttribute("stateList", constants.stateList);
-            model.addAttribute("projectList", projectsService.showProjects());
-            model.addAttribute("userList", usersService.showUsers());
-            model.addAttribute("action", "/tasks/validateEdit");
+            model.addAttribute("action", "/tasks/admin/validateEdit");
+            setModelAttributes(model, "priorityList", "stateList", "projectList", "userList", "Edit");
             return "tasks/taskForm";
         }
 
         tasksService.editTask(task);
 
-        String message = task.getName() + " was successfully edited!";
-        model.addAttribute("message", message);
-        return new ModelAndView("redirect:/tasks/list", (Map<String, ?>) model);
+        model.addAttribute("message", task.getName() + " was successfully edited!");
+        return new ModelAndView("redirect:/tasks/admin/list", (Map<String, ?>) model);
     }
 
     // DELETE
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
-        Tasks task = tasksService.getTaskById(id);
-        String message = task.getName() + " was successfully removed!";
+        String message = tasksService.getTaskById(id).getName() + " was successfully removed!";
 
         tasksService.removeTask(id);
 
         model.addAttribute("message", message);
-        model.addAttribute("priorityList", constants.priorityList);
-        model.addAttribute("stateList", constants.stateList);
-        model.addAttribute("taskList", tasksService.showTasks());
+        setModelAttributes(model, "priorityList", "stateList", "taskList");
         return "tasks/taskList";
     }
 
     // DETAILS
     @GetMapping("/admin/details/{id}")
     public String showTask(@PathVariable Long id, Model model) {
-        Tasks task = tasksService.getTaskById(id);
 
-        model.addAttribute("task", task);
-        model.addAttribute("priorityList", constants.priorityList);
-        model.addAttribute("stateList", constants.stateList);
+        model.addAttribute("task", tasksService.getTaskById(id));
+        setModelAttributes(model, "priorityList", "stateList");
         return "tasks/taskDetails";
+    }
+
+    private void setModelAttributes(Model model, String... attributes) {
+        for (String attribute : attributes) {
+            switch (attribute) {
+                case "priorityList":
+                    model.addAttribute("priorityList", constants.priorityList);
+                    break;
+                case "stateList":
+                    model.addAttribute("stateList", constants.stateList);
+                    break;
+                case "projectList":
+                    model.addAttribute("projectList", projectsService.showProjects());
+                    break;
+                case "userList":
+                    model.addAttribute("userList", usersService.showUsers());
+                    break;
+                case "taskList":
+                    model.addAttribute("taskList", tasksService.showTasks());
+                    break;
+                case "Add":
+                    model.addAttribute("addOrEdit", "Add");
+                    break;
+                case "Edit":
+                    model.addAttribute("addOrEdit", "Edit");
+                    break;
+            }
+        }
     }
 }

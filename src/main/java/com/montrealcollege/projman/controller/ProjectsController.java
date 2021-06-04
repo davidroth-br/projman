@@ -33,8 +33,7 @@ public class ProjectsController {
 
     //LIST ALL
     @GetMapping("/admin/list")
-    public String showAllProjects(@RequestParam("message") String message,
-                                  Model model) {
+    public String showAllProjects(@RequestParam("message") String message, Model model) {
 
         model.addAttribute("message", message);
         model.addAttribute("projectList", projectsService.showProjects());
@@ -47,36 +46,29 @@ public class ProjectsController {
 
         model.addAttribute("project", new Projects());
         model.addAttribute("userList", usersService.showUsers());
-        model.addAttribute("action", "/projects/validateNew");
+        model.addAttribute("addOrEdit", "Add");
+        model.addAttribute("action", "/projects/admin/validateNew");
         return "projects/projectForm";
     }
 
     @PostMapping("/admin/validateNew")
-    public String validateForm(@ModelAttribute("project") @Valid Projects project,
-                               BindingResult errors, Model model) {
+    public String validateForm(@ModelAttribute("project") @Valid Projects project, BindingResult errors, Model model) {
 
-        boolean leaderNotSelected = true;
-        for (Users selectedUser : project.getUsers()) {
-            if (selectedUser.equals(project.getLeader())) {
-                leaderNotSelected = false;
-                break;
-            }
-        }
-        if (leaderNotSelected) project.getUsers().add(project.getLeader());
+        if (leaderNotSelected(project)) project.getUsers().add(project.getLeader());
 
         boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
 
         if (errors.hasErrors() || isEndDateBeforeStartDate) {
             model.addAttribute("userList", usersService.showUsers());
             model.addAttribute("isEndDateBeforeStartDate", isEndDateBeforeStartDate);
-            model.addAttribute("action", "/projects/validateNew");
+            model.addAttribute("addOrEdit", "Add");
+            model.addAttribute("action", "/projects/admin/validateNew");
             return "projects/projectForm";
         }
 
-        String message = project.getName() + " was successfully added!";
         projectsService.addProject(project);
 
-        model.addAttribute("message", message);
+        model.addAttribute("message", project.getName() + " was successfully added!");
         model.addAttribute("projectList", projectsService.showProjects());
         return "projects/projectList";
     }
@@ -84,49 +76,40 @@ public class ProjectsController {
     // EDIT
     @GetMapping("/admin/edit/{id}")
     public String editProject(@PathVariable Long id, Model model) {
-        Projects project = projectsService.getProjectById(id);
 
-        model.addAttribute("project", project);
+        model.addAttribute("project", projectsService.getProjectById(id));
         model.addAttribute("userList", usersService.showUsers());
-        model.addAttribute("action", "/projects/validateEdit");
+        model.addAttribute("addOrEdit", "Edit");
+        model.addAttribute("action", "/projects/admin/validateEdit");
         return "projects/projectForm";
     }
 
     @PostMapping("/admin/validateEdit")
-    public Object validateEdit(@ModelAttribute("project") @Valid Projects project,
-                               BindingResult errors, Model model) {
+    public Object validateEdit(@ModelAttribute("project") @Valid Projects project, BindingResult errors, Model model) {
 
-        boolean leaderNotSelected = true;
-        for (Users selectedUser : project.getUsers()) {
-            if (selectedUser.equals(project.getLeader())) {
-                leaderNotSelected = false;
-                break;
-            }
-        }
-        if (leaderNotSelected) project.getUsers().add(project.getLeader());
+        if (leaderNotSelected(project)) project.getUsers().add(project.getLeader());
 
         boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
 
         if (errors.hasErrors() || isEndDateBeforeStartDate) {
             model.addAttribute("userList", usersService.showUsers());
             model.addAttribute("isEndDateBeforeStartDate", isEndDateBeforeStartDate);
-            model.addAttribute("action", "/projects/validateEdit");
+            model.addAttribute("addOrEdit", "Edit");
+            model.addAttribute("action", "/projects/admin/validateEdit");
             return "projects/projectForm";
         }
 
         projectsService.editProject(project);
 
-        String message = project.getName() + " was successfully edited!";
-        model.addAttribute("message", message);
-        return new ModelAndView("redirect:/projects/list", (Map<String, ?>) model);
+        model.addAttribute("message", project.getName() + " was successfully edited!");
+        return new ModelAndView("redirect:/projects/admin/list", (Map<String, ?>) model);
     }
 
     // DELETE
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
-        Projects project = projectsService.getProjectById(id);
-        String message = project.getName() + " was successfully removed!";
+        String message = projectsService.getProjectById(id).getName() + " was successfully removed!";
 
         projectsService.removeProject(id);
 
@@ -138,9 +121,19 @@ public class ProjectsController {
     // DETAILS
     @GetMapping("/admin/details/{id}")
     public String showProject(@PathVariable Long id, Model model) {
-        Projects project = projectsService.getProjectById(id);
 
-        model.addAttribute("project", project);
+        model.addAttribute("project", projectsService.getProjectById(id));
         return "projects/projectDetails";
+    }
+
+    private boolean leaderNotSelected(Projects project) {
+        boolean notSelected = true;
+        for (Users selectedUser : project.getUsers()) {
+            if (selectedUser.equals(project.getLeader())) {
+                notSelected = false;
+                break;
+            }
+        }
+        return notSelected;
     }
 }

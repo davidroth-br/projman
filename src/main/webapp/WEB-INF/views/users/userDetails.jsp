@@ -26,7 +26,7 @@ Projects / Tasks:<br>
         <c:if test="${previousProject != ''}"><br></c:if>
         &emsp;${task.project.name}
         <c:forEach var="userLead" items="${user.projectsLead}">
-            <c:if test="${task.project == userLead}">
+            <c:if test="${task.project.id == userLead.id}">
                 (Leader)
             </c:if>
         </c:forEach>

@@ -159,13 +159,4 @@ public class Users {
     public void setProjectsLead(Set<Projects> project) {
         this.projectsLead = project;
     }
-
-    @Override
-    public String toString() {
-        return "Users{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
-    }
 }

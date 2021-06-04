@@ -6,8 +6,6 @@
     <title>Login</title>
 </head>
 <body>
-<%--<%@include file="_menu.jsp" %>--%>
-
 <h1>Login</h1>
 
 <!-- /login?error=true -->
@@ -41,14 +39,5 @@
         </tr>
     </table>
 </form>
-
-<br>
-Username/pass:
-<ul>
-    <li>dbuser1/123</li>
-    <li>dbadmin1/123</li>
-</ul>
-
 </body>
-
 </html>
