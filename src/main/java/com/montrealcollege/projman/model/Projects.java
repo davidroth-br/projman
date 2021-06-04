@@ -53,7 +53,7 @@ public class Projects {
     @JoinTable(name = "USERS_PROJECTS",
             joinColumns = {@JoinColumn(name = "PROJECT_ID")},
             inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
-    @OrderBy(value = "firstName ASC")
+    @OrderBy(value = "firstName ASC, lastName ASC")
     private Set<Users> users = new HashSet<>();
 
     public Long getId() {

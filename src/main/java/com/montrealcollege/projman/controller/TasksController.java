@@ -60,9 +60,7 @@ public class TasksController {
         model.addAttribute("task", new Tasks());
         model.addAttribute("priorityList", constants.priorityList);
         model.addAttribute("stateList", constants.stateList);
-        model.addAttribute("projectId", 0);
         model.addAttribute("projectList", projectsService.showProjects());
-        model.addAttribute("selectedUsers", null);
         model.addAttribute("userList", usersService.showUsers());
         model.addAttribute("action", "/tasks/validateNew");
         return "tasks/taskForm";
@@ -75,9 +73,7 @@ public class TasksController {
         if (errors.hasErrors()) {
             model.addAttribute("priorityList", constants.priorityList);
             model.addAttribute("stateList", constants.stateList);
-            model.addAttribute("projectId", task.getProject() == null ? 0L : task.getProject().getId());
             model.addAttribute("projectList", projectsService.showProjects());
-            model.addAttribute("selectedUsers", task.getUsers().isEmpty() ? null : task.getUsers());
             model.addAttribute("userList", usersService.showUsers());
             model.addAttribute("action", "/tasks/validateNew");
             return "tasks/taskForm";
@@ -101,9 +97,7 @@ public class TasksController {
         model.addAttribute("task", task);
         model.addAttribute("priorityList", constants.priorityList);
         model.addAttribute("stateList", constants.stateList);
-        model.addAttribute("projectId", task.getProject().getId());
         model.addAttribute("projectList", projectsService.showProjects());
-        model.addAttribute("selectedUsers", task.getUsers().isEmpty() ? null : task.getUsers());
         model.addAttribute("userList", usersService.showUsers());
         model.addAttribute("action", "/tasks/validateEdit");
         return "tasks/taskForm";
@@ -116,9 +110,7 @@ public class TasksController {
         if (errors.hasErrors()) {
             model.addAttribute("priorityList", constants.priorityList);
             model.addAttribute("stateList", constants.stateList);
-            model.addAttribute("projectId", task.getProject().getId());
             model.addAttribute("projectList", projectsService.showProjects());
-            model.addAttribute("selectedUsers", task.getUsers().isEmpty() ? null : task.getUsers());
             model.addAttribute("userList", usersService.showUsers());
             model.addAttribute("action", "/tasks/validateEdit");
             return "tasks/taskForm";

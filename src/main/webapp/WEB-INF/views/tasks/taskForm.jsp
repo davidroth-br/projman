@@ -31,7 +31,7 @@
         <f:option value="0" label="--- Select Project ---"/>
         <c:forEach items="${projectList}" var="projectItem">
             <c:choose>
-                <c:when test="${projectItem.id == projectId}">
+                <c:when test="${projectItem.id == task.project.id}">
                     <f:option value="${projectItem.id}" label="${projectItem.name}" selected="true"/>
                 </c:when>
                 <c:otherwise>
@@ -43,31 +43,22 @@
     <br><br>
     User(s) Responsible:
     <f:select path="users" multiple="true">
-        <c:choose>
-            <c:when test="${selectedUsers == null}">
-                <c:forEach items="${userList}" var="user">
+        <c:forEach items="${userList}" var="user">
+            <c:set var="isSelected" value="false"/>
+            <c:forEach items="${task.users}" var="selected">
+                <c:if test="${user.id == selected.id}">
+                    <c:set var="isSelected" value="true"/>
+                </c:if>
+            </c:forEach>
+            <c:choose>
+                <c:when test="${isSelected}">
+                    <f:option value="${user.id}" label="${user.firstName} ${user.lastName}" selected="true"/>
+                </c:when>
+                <c:otherwise>
                     <f:option value="${user.id}" label="${user.firstName} ${user.lastName}"/>
-                </c:forEach>
-            </c:when>
-            <c:otherwise>
-                <c:forEach items="${userList}" var="user">
-                    <c:set var="isSelected" value="false"/>
-                    <c:forEach items="${selectedUsers}" var="selected">
-                        <c:if test="${user.id == selected.id}">
-                            <c:set var="isSelected" value="true"/>
-                        </c:if>
-                    </c:forEach>
-                    <c:choose>
-                        <c:when test="${isSelected}">
-                            <f:option value="${user.id}" label="${user.firstName} ${user.lastName}" selected="true"/>
-                        </c:when>
-                        <c:otherwise>
-                            <f:option value="${user.id}" label="${user.firstName} ${user.lastName}"/>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </c:otherwise>
-        </c:choose>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
     </f:select>
     <br><br>
     <f:hidden path="id" value="${task.id}"/>

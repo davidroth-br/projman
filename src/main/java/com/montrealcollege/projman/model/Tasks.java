@@ -56,6 +56,7 @@ public class Tasks {
     @JoinTable(name = "USERS_TASKS",
             joinColumns = {@JoinColumn(name = "TASK_ID")},
             inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
+    @OrderBy(value = "firstName ASC, lastName ASC")
     private Set<Users> users = new HashSet<>();
 
     public Long getId() {
