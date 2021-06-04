@@ -5,12 +5,12 @@
 
 <html>
 <head>
-    <title>Add Project</title>
+    <title>Edit Project</title>
 </head>
 <body>
 <%@include file="../_menu.jsp" %>
 
-<f:form method="post" action="validateNew" modelAttribute="project">
+<f:form method="post" action="${pageContext.request.contextPath}${action}" modelAttribute="project">
 
     Project Name: <f:input path="name"/> <f:errors path="name"/>
     <br><br>
@@ -38,6 +38,27 @@
         </c:forEach>
     </f:select>
     <br><br>
+    Alocated Users:
+    <f:select path="users" multiple="true">
+          <c:forEach items="${userList}" var="user">
+              <c:set var="isSelected" value="false"/>
+              <c:forEach items="${selectedUsers}" var="selected">
+                  <c:if test="${user.id == selected.id}">
+                      <c:set var="isSelected" value="true"/>
+                  </c:if>
+              </c:forEach>
+              <c:choose>
+                  <c:when test="${isSelected}">
+                      <f:option value="${user.id}" label="${user.firstName} ${user.lastName}" selected="true"/>
+                  </c:when>
+                  <c:otherwise>
+                      <f:option value="${user.id}" label="${user.firstName} ${user.lastName}"/>
+                  </c:otherwise>
+              </c:choose>
+          </c:forEach>
+    </f:select>
+    <br><br>
+    <f:hidden path="id" value="${project.id}"/>
     <input type="submit"/>
     <br><br>
 </f:form>

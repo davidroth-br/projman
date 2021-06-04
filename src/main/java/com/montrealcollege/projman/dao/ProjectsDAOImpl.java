@@ -46,6 +46,7 @@ public class ProjectsDAOImpl implements ProjectsDAO{
         dbProject.setStartDate(project.getStartDate());
         dbProject.setEndDate(project.getEndDate());
         dbProject.setLeader(project.getLeader());
+        dbProject.setUsers(project.getUsers());
 
         entityManager.persist(dbProject);
         entityManager.flush();

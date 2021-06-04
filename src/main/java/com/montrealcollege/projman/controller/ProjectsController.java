@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/projects")
@@ -47,21 +48,35 @@ public class ProjectsController {
 
         model.addAttribute("project", new Projects());
         model.addAttribute("leaderId", 0);
+        model.addAttribute("selectedUsers", null);
         model.addAttribute("userList", usersService.showUsers());
-        return "projects/newProject";
+        model.addAttribute("action", "/projects/validateNew");
+        return "projects/projectForm";
     }
 
     @PostMapping("/validateNew")
     public String validateForm(@ModelAttribute("project") @Valid Projects project,
                                BindingResult errors, Model model) {
 
+        Set<Users> selectedUsers = project.getUsers();
+        boolean leaderNotSelected = true;
+        for (Users selectedUser : selectedUsers) {
+            if (selectedUser.equals(project.getLeader())) {
+                leaderNotSelected = false;
+                break;
+            }
+        }
+        if (leaderNotSelected) selectedUsers.add(project.getLeader());
+
         boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
 
         if (errors.hasErrors() || isEndDateBeforeStartDate) {
             model.addAttribute("leaderId", project.getLeader() == null ? 0L : project.getLeader().getId());
+            model.addAttribute("selectedUsers", selectedUsers);
             model.addAttribute("userList", usersService.showUsers());
             model.addAttribute("isEndDateBeforeStartDate", isEndDateBeforeStartDate);
-            return "projects/newProject";
+            model.addAttribute("action", "/projects/validateNew");
+            return "projects/projectForm";
         }
 
         String message = project.getName() + " was successfully added!";
@@ -79,21 +94,35 @@ public class ProjectsController {
 
         model.addAttribute("project", project);
         model.addAttribute("leaderId", project.getLeader() == null ? 0L : project.getLeader().getId());
+        model.addAttribute("selectedUsers", project.getUsers());
         model.addAttribute("userList", usersService.showUsers());
-        return "projects/editProject";
+        model.addAttribute("action", "/projects/validateEdit");
+        return "projects/projectForm";
     }
 
     @PostMapping("/validateEdit")
     public Object validateEdit(@ModelAttribute("project") @Valid Projects project,
                                BindingResult errors, Model model) {
 
+        Set<Users> selectedUsers = project.getUsers();
+        boolean leaderNotSelected = true;
+        for (Users selectedUser : selectedUsers) {
+            if (selectedUser.equals(project.getLeader())) {
+                leaderNotSelected = false;
+                break;
+            }
+        }
+        if (leaderNotSelected) selectedUsers.add(project.getLeader());
+
         boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
 
         if (errors.hasErrors() || isEndDateBeforeStartDate) {
             model.addAttribute("leaderId", project.getLeader() == null ? 0L : project.getLeader().getId());
+            model.addAttribute("selectedUsers", selectedUsers);
             model.addAttribute("userList", usersService.showUsers());
             model.addAttribute("isEndDateBeforeStartDate", isEndDateBeforeStartDate);
-            return "projects/editProject";
+            model.addAttribute("action", "/projects/validateEdit");
+            return "projects/projectForm";
         }
 
         projectsService.editProject(project);
