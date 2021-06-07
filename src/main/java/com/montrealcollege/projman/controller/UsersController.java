@@ -3,6 +3,8 @@ package com.montrealcollege.projman.controller;
 import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -75,10 +77,27 @@ public class UsersController {
             return "users/editUser";
         }
 
+        if (isEditingSelf(user)) {
+            boolean isChangingOwnRole = user.getRole().getRoleId() != 1;
+            boolean isDisablingSelf = !user.isEnabled();
+
+            if (isChangingOwnRole || isDisablingSelf) {
+                user.getRole().setRoleId(1L);
+                user.setEnabled(true);
+                model.addAttribute("isChangingOwnRole", isChangingOwnRole);
+                model.addAttribute("isDisablingSelf", isDisablingSelf);
+                return "users/editUser";
+            }
+        }
+
         usersService.editUser(user);
 
         model.addAttribute("message", user.getFirstName() + " " + user.getLastName() + " was successfully edited!");
         return new ModelAndView("redirect:/users/admin/list", (Map<String, ?>) model);
+    }
+
+    private boolean isEditingSelf(Users user) {
+        return user.getUserName().equals(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
     }
 
     // CHANGE PASSWORD
@@ -95,12 +114,16 @@ public class UsersController {
                                    @RequestParam("passCheck") String passCheck,
                                    @ModelAttribute("user") Users user, Model model) {
 
-        if (!currentPassword.equals("") && !checkPassword(currentPassword, user.getEncryptedPassword())) {
-            model.addAttribute("isNotPassword", true);
-            return "users/changePassword";
-        }
-        if (!newPassword.equals(passCheck)) {
-            model.addAttribute("isNotMatch", true);
+        boolean isBlank = newPassword.isEmpty();
+        boolean isSamePassword = !isBlank && currentPassword.equals(newPassword);
+        boolean isNotPassword = !checkPassword(currentPassword, user.getEncryptedPassword());
+        boolean isNotMatch = !newPassword.equals(passCheck);
+
+        if (isBlank || isSamePassword || isNotPassword || isNotMatch) {
+            model.addAttribute("isBlank", isBlank);
+            model.addAttribute("isSamePassword", isSamePassword);
+            model.addAttribute("isNotPassword", isNotPassword);
+            model.addAttribute("isNotMatch", isNotMatch);
             return "users/changePassword";
         }
 

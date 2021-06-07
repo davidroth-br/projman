@@ -13,4 +13,11 @@ public class EncryptedPasswordUtils {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.matches(raw, encoded);
     }
+//
+//    public static void main(String[] args) {
+//        String password = "123";
+//        String encryptedPassword = encryptPassword(password);
+//
+//        System.out.println("Encrypted Password: " + encryptedPassword);
+//    }
 }

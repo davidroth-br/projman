@@ -21,6 +21,9 @@
         path="phone"/>
     <br><br>
     Role:
+    <c:if test="${isChangingOwnRole}">
+        You cannot edit your own role
+    </c:if>
     <br>
     User <f:radiobutton path="role.roleId" value="2"/>
     <br>
@@ -28,6 +31,9 @@
     <br><br>
     Enabled
     <f:checkbox path="enabled"/>
+    <c:if test="${isDisablingSelf}">
+        You cannot disable yourself
+    </c:if>
     <br><br>
     <f:hidden path="id" value="${user.id}"/>
     <f:hidden path="encryptedPassword" value="${user.encryptedPassword}"/>

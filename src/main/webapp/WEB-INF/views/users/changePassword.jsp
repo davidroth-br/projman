@@ -11,17 +11,20 @@
 <f:form method="POST" action="${pageContext.request.contextPath}/users/admin/validateNewPass" modelAttribute="user">
     Current Password: <input name="currentPassword" type="password">
     <c:if test="${isNotPassword}">
-        Incorrect password. Please try again.
+        Incorrect password.
     </c:if>
     <br><br>
     New Password: <input name="newPassword" type="password"/>
-    <c:if test="${isNotMatch}">
-        Passwords did not match. Please try again.
+    <c:if test="${isBlank}">
+        New password can't be blank.
+    </c:if>
+    <c:if test="${isSamePassword}">
+        New password can't be the same as old one.
     </c:if>
     <br><br>
     Repeat New Password: <input name="passCheck" type="password"/>
     <c:if test="${isNotMatch}">
-        Passwords did not match. Please try again.
+        Passwords did not match.
     </c:if>
     <f:hidden path="id" value="${user.id}"/>
     <f:hidden path="userName" value="${user.userName}"/>
