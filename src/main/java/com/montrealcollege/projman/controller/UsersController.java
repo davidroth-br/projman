@@ -84,8 +84,8 @@ public class UsersController {
             if (isChangingOwnRole || isDisablingSelf) {
                 user.getRole().setRoleId(1L);
                 user.setEnabled(true);
-                model.addAttribute("isChangingOwnRole", isChangingOwnRole);
-                model.addAttribute("isDisablingSelf", isDisablingSelf);
+                model.addAttribute("roleMessage", isChangingOwnRole ? "You cannot change your own role" : "");
+                model.addAttribute("enabledMessage", isDisablingSelf ? "You cannot disable yourself" : "");
                 return "users/editUser";
             }
         }
@@ -120,10 +120,9 @@ public class UsersController {
         boolean isNotMatch = !newPassword.equals(passCheck);
 
         if (isBlank || isSamePassword || isNotPassword || isNotMatch) {
-            model.addAttribute("isBlank", isBlank);
-            model.addAttribute("isSamePassword", isSamePassword);
-            model.addAttribute("isNotPassword", isNotPassword);
-            model.addAttribute("isNotMatch", isNotMatch);
+            model.addAttribute("newPasswordMessage", isBlank ? "New password can't be blank." : isSamePassword ? "New password can't be the same as old one." : "");
+            model.addAttribute("currentPasswordMessage", isNotPassword ? "Incorrect password." : "");
+            model.addAttribute("repeatMessage", isNotMatch ? "Passwords did not match." : "");
             return "users/changePassword";
         }
 

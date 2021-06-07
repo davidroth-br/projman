@@ -9,31 +9,19 @@
 <body>
 <%@include file="../_menu.jsp" %>
 <f:form method="POST" action="${pageContext.request.contextPath}/users/admin/validateNewPass" modelAttribute="user">
-    Current Password: <input name="currentPassword" type="password">
-    <c:if test="${isNotPassword}">
-        Incorrect password.
-    </c:if>
+    Current Password: <input name="currentPassword" type="password"> ${currentPasswordMessage}
     <br><br>
-    New Password: <input name="newPassword" type="password"/>
-    <c:if test="${isBlank}">
-        New password can't be blank.
-    </c:if>
-    <c:if test="${isSamePassword}">
-        New password can't be the same as old one.
-    </c:if>
+    New Password: <input name="newPassword" type="password"/> ${newPasswordMessage}
     <br><br>
-    Repeat New Password: <input name="passCheck" type="password"/>
-    <c:if test="${isNotMatch}">
-        Passwords did not match.
-    </c:if>
+    Repeat New Password: <input name="passCheck" type="password"/> ${repeatMessage}
     <f:hidden path="id" value="${user.id}"/>
     <f:hidden path="userName" value="${user.userName}"/>
     <f:hidden path="encryptedPassword" value="${user.encryptedPassword}"/>
+    <f:hidden path="enabled" value="${user.enabled}"/>
     <f:hidden path="firstName" value="${user.firstName}"/>
     <f:hidden path="lastName" value="${user.lastName}"/>
     <f:hidden path="email" value="${user.email}"/>
     <f:hidden path="phone" value="${user.phone}"/>
-    <f:hidden path="enabled" value="${user.enabled}"/>
     <br><br>
     <input type="submit"/>
 </f:form>

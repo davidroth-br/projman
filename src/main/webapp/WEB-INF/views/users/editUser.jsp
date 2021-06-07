@@ -20,20 +20,14 @@
     Phone: <f:input path="phone" type="tel" value="${user.phone}" placeholder="(999) 999-9999"/> <f:errors
         path="phone"/>
     <br><br>
-    Role:
-    <c:if test="${isChangingOwnRole}">
-        You cannot edit your own role
-    </c:if>
+    Role: ${roleMessage}
     <br>
     User <f:radiobutton path="role.roleId" value="2"/>
     <br>
     Admin: <f:radiobutton path="role.roleId" value="1"/>
     <br><br>
     Enabled
-    <f:checkbox path="enabled"/>
-    <c:if test="${isDisablingSelf}">
-        You cannot disable yourself
-    </c:if>
+    <f:checkbox path="enabled"/> ${enabledMessage}
     <br><br>
     <f:hidden path="id" value="${user.id}"/>
     <f:hidden path="encryptedPassword" value="${user.encryptedPassword}"/>
