@@ -21,6 +21,10 @@ public class TasksService {
         return tasksDAO.listTasks();
     }
 
+    public List<Tasks> showUserTasks() {
+        return tasksDAO.listUserTasks();
+    }
+
     public Tasks getTaskById(Long id) {
         return tasksDAO.findTaskById(id);
     }

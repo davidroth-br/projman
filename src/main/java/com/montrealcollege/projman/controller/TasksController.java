@@ -50,6 +50,15 @@ public class TasksController {
         return "tasks/taskList";
     }
 
+    //LIST USER'S TASKS
+    @GetMapping("/user/list")
+    public String showUserTasks(@RequestParam("message") String message, Model model) {
+
+        model.addAttribute("message", message);
+        setModelAttributes(model, "priorityList", "stateList", "userTaskList");
+        return "tasks/userTaskList";
+    }
+
     //NEW
     @GetMapping("/admin/new")
     public String showForm(Model model) {
@@ -140,6 +149,9 @@ public class TasksController {
                     break;
                 case "taskList":
                     model.addAttribute("taskList", tasksService.showTasks());
+                    break;
+                case "userTaskList":
+                    model.addAttribute("taskList", tasksService.showUserTasks());
                     break;
                 case "Add":
                     model.addAttribute("addOrEdit", "Add");
