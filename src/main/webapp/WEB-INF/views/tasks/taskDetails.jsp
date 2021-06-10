@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
@@ -17,15 +16,7 @@ Priority: ${priorityList[task.priority]}
 <br><br>
 State: ${stateList[task.state]}
 <br><br>
-Completion Date:
-<c:choose>
-    <c:when test="${task.completionDate == null}">
-        Not Complete
-    </c:when>
-    <c:otherwise>
-        <fmt:formatDate value="${task.completionDate}" type="date"/>
-    </c:otherwise>
-</c:choose>
+Completion Date: ${completionDate}
 <br><br>
 Project: ${task.project.name} (Leader: ${task.project.leader.firstName} ${task.project.leader.lastName})
 <br><br>
@@ -34,6 +25,6 @@ Allocated to:<br>
     &emsp;${user.firstName} ${user.lastName}<br>
 </c:forEach>
 <br>
-<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/tasks/admin/list?message='">Back</button>
+<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/tasks/${from}/list?message='">Back</button>
 </body>
 </html>

@@ -38,7 +38,7 @@
             </c:if>
             <tr style="vertical-align:top">
                 <td>&nbsp;</td>
-                <td><a href="<c:url value="/tasks/admin/details/${task.id}"/>">${task.name}</a></td>
+                <td><a href="<c:url value="/tasks/details/${task.id}/admin"/>">${task.name}</a></td>
                 <td>
                     <c:forEach items="${task.users}" var="user">
                         <a href="<c:url value="/users/admin/details/${user.id}/tasks"/>">${user.firstName} ${user.lastName}</a>

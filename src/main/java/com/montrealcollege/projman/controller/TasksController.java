@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 @Controller
@@ -124,10 +125,15 @@ public class TasksController {
     }
 
     // DETAILS
-    @GetMapping("/admin/details/{id}")
-    public String showTask(@PathVariable Long id, Model model) {
+    @GetMapping("/details/{id}/{from}")
+    public String showTask(@PathVariable Long id, @PathVariable("from") String from, Model model) {
 
-        model.addAttribute("task", tasksService.getTaskById(id));
+        Tasks task = tasksService.getTaskById(id);
+
+
+        model.addAttribute("from", from);
+        model.addAttribute("task", task);
+        model.addAttribute("completionDate", task.getCompletionDate() == null ? "" : new SimpleDateFormat("MMM dd, yyyy").format(task.getCompletionDate()));
         setModelAttributes(model, "priorityList", "stateList");
         return "tasks/taskDetails";
     }
