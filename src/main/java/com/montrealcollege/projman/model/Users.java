@@ -159,4 +159,8 @@ public class Users {
     public void setProjectsLead(Set<Projects> project) {
         this.projectsLead = project;
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

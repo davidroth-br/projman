@@ -15,7 +15,7 @@
     <br><br>
     Password: <f:input path="encryptedPassword" type="password"/> <f:errors path="encryptedPassword"/>
     <br><br>
-    Repeat Password: <input name="passCheck" type="password"/> <c:if test="${isNotMatch}">Passwords did not match</c:if>
+    Repeat Password: <input name="passCheck" type="password"/> ${repeatMessage}
     <br><br>
     First Name: <f:input path="firstName"/> <f:errors path="firstName"/>
     <br><br>
@@ -30,7 +30,7 @@
     <br>
     Admin: <f:radiobutton path="role.roleId" value="1"/>
     <br><br>
-    Enabled <f:checkbox path="enabled" checked="checked"/>
+    Enabled <f:checkbox path="enabled"/>
     <br><br>
     <input type="submit"/>
     <br><br>

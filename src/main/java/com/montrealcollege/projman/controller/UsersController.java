@@ -1,5 +1,6 @@
 package com.montrealcollege.projman.controller;
 
+import com.montrealcollege.projman.model.Roles;
 import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,9 @@ public class UsersController {
     // NEW
     @GetMapping("/admin/new")
     public String showForm(Model model) {
-
-        model.addAttribute("user", new Users());
+        Users user = new Users();
+        user.setEnabled(true);
+        model.addAttribute("user", user);
         return "users/newUser";
     }
 
@@ -46,18 +48,17 @@ public class UsersController {
     public String validateNewUser(@RequestParam("passCheck") String passCheck,
                                   @ModelAttribute("user") @Valid Users user,
                                   BindingResult errors, Model model) {
-        if (errors.hasErrors())
-            return "users/newUser";
+        boolean isNotMatch = !user.getEncryptedPassword().equals(passCheck);
 
-        if (!user.getEncryptedPassword().equals(passCheck)) {
-            model.addAttribute("isNotMatch", true);
+        if (errors.hasErrors() || isNotMatch) {
+            model.addAttribute("repeatMessage", isNotMatch ? "Passwords did not match." : "");
             return "users/newUser";
         }
 
         user.setEncryptedPassword(encryptPassword(user.getEncryptedPassword()));
         usersService.addUser(user);
 
-        model.addAttribute("message", user.getFirstName() + " " + user.getLastName() + " was successfully added as " + user.getUserName() + "!");
+        model.addAttribute("message", user.getFullName() + " was successfully added as " + user.getUserName() + "!");
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
@@ -92,7 +93,7 @@ public class UsersController {
 
         usersService.editUser(user);
 
-        model.addAttribute("message", user.getFirstName() + " " + user.getLastName() + " was successfully edited!");
+        model.addAttribute("message", user.getFullName() + " was successfully edited!");
         return new ModelAndView("redirect:/users/admin/list", (Map<String, ?>) model);
     }
 
@@ -114,23 +115,24 @@ public class UsersController {
                                    @RequestParam("passCheck") String passCheck,
                                    @ModelAttribute("user") Users user, Model model) {
 
+        boolean isNotPassword = !checkPassword(currentPassword, user.getEncryptedPassword());
         boolean isBlank = newPassword.isEmpty();
         boolean isSamePassword = !isBlank && currentPassword.equals(newPassword);
-        boolean isNotPassword = !checkPassword(currentPassword, user.getEncryptedPassword());
         boolean isNotMatch = !newPassword.equals(passCheck);
 
-        if (isBlank || isSamePassword || isNotPassword || isNotMatch) {
-            model.addAttribute("newPasswordMessage", isBlank ? "New password can't be blank." : isSamePassword ? "New password can't be the same as old one." : "");
+        if (isNotPassword || isBlank || isSamePassword || isNotMatch) {
             model.addAttribute("currentPasswordMessage", isNotPassword ? "Incorrect password." : "");
+            model.addAttribute("newPasswordMessage", isBlank ? "New password can't be blank." : isSamePassword ? "New password can't be the same as old one." : "");
             model.addAttribute("repeatMessage", isNotMatch ? "Passwords did not match." : "");
             return "users/changePassword";
         }
+
 
         user.setRole(usersService.getUserById(user.getId()).getRole());
         user.setEncryptedPassword(encryptPassword(newPassword));
         usersService.editUser(user);
 
-        model.addAttribute("message", user.getFirstName() + " " + user.getLastName() + "'s password was successfully changed!");
+        model.addAttribute("message", user.getFullName() + "'s password was successfully changed!");
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
@@ -143,7 +145,7 @@ public class UsersController {
 
         usersService.removeUser(id);
 
-        model.addAttribute("message", user.getFirstName() + " " + user.getLastName() + " was successfully removed!");
+        model.addAttribute("message", user.getFullName() + " was successfully removed!");
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
