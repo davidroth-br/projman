@@ -9,14 +9,8 @@
 </head>
 <body>
 <%@include file="../_menu.jsp" %>
-
-<c:if test="${message != null}">
-    <h2>${message}</h2>
-</c:if>
-
-<a href="<c:url value="/tasks/admin/new"/>"><h2>Add New Task</h2></a>
 <br>
-<h2>Task List</h2>
+<h2>Your Tasks</h2>
 <c:if test="${!empty taskList}">
     <c:set var="projectName" value=""/>
     <table>
@@ -29,7 +23,7 @@
                 <tr style="text-align:left">
                     <th>&nbsp;</th>
                     <th>Task</th>
-                    <th>Allocated to</th>
+<%--                    <th>Allocated to</th>--%>
                     <th>Deadline</th>
                     <th>Priority</th>
                     <th>State</th>
@@ -39,12 +33,12 @@
             <tr style="vertical-align:top">
                 <td>&nbsp;</td>
                 <td><a href="<c:url value="/tasks/details/${task.id}/user"/>">${task.name}</a></td>
-                <td>
-                    <c:forEach items="${task.users}" var="user">
-                        <a href="<c:url value="/users/admin/details/${user.id}/tasks"/>">${user.firstName} ${user.lastName}</a>
-                        <br>
-                    </c:forEach>
-                </td>
+<%--                <td>--%>
+<%--                    <c:forEach items="${task.users}" var="user">--%>
+<%--                        <a href="<c:url value="/users/admin/details/${user.id}/tasks"/>">${user.firstName} ${user.lastName}</a>--%>
+<%--                        <br>--%>
+<%--                    </c:forEach>--%>
+<%--                </td>--%>
                 <td><fmt:formatDate value="${task.deadline}" type="date"/></td>
                 <td>${priorityList[task.priority]}</td>
                 <td>${stateList[task.state]}</td>

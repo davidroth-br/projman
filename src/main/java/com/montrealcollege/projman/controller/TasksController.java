@@ -53,9 +53,8 @@ public class TasksController {
 
     //LIST USER'S TASKS
     @GetMapping("/user/list")
-    public String showUserTasks(@RequestParam("message") String message, Model model) {
+    public String showUserTasks(Model model) {
 
-        model.addAttribute("message", message);
         setModelAttributes(model, "priorityList", "stateList", "userTaskList");
         return "tasks/userTaskList";
     }
@@ -129,7 +128,6 @@ public class TasksController {
     public String showTask(@PathVariable Long id, @PathVariable("from") String from, Model model) {
 
         Tasks task = tasksService.getTaskById(id);
-
 
         model.addAttribute("from", from);
         model.addAttribute("task", task);
