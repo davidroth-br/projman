@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -51,14 +52,25 @@ public class TasksController {
         return "tasks/taskList";
     }
 
-    //LIST USER'S TASKS
+    //LIST USER'S TASKS AND CHANGE TASK'S STATE
     @GetMapping("/user/list")
     public String showUserTasks(Model model) {
 
+        model.addAttribute("action", "/tasks/user/changeState");
         setModelAttributes(model, "priorityList", "stateList", "userTaskList");
         return "tasks/userTaskList";
     }
 
+    @PostMapping("/user/changeState")
+    public Object changeState(@RequestParam("id") Long id, @RequestParam("state") int state) {
+        Tasks task = tasksService.getTaskById(id);
+        task.setState(state);
+        task.setCompletionDate(state == 4 ? new Date() : null);
+
+        tasksService.editTask(task);
+
+        return new ModelAndView("redirect:/tasks/user/list");
+    }
     //NEW
     @GetMapping("/admin/new")
     public String showForm(Model model) {

@@ -59,7 +59,7 @@ public class Users {
 
     @ManyToOne
     @JoinColumn(name = "ROLE_ID")
-    Roles role;
+    private Roles role;
 
     @OneToMany(mappedBy = "leader")
     private Set<Projects> projectsLead;
