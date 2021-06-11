@@ -1,6 +1,8 @@
 package com.montrealcollege.projman.dao;
 
 import com.montrealcollege.projman.model.Users;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,11 @@ public class UsersDAOImpl implements UsersDAO {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    @Override
+    public Users findCurrentUser() {
+        return findUserAccount(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
     }
 
     @Override

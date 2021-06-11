@@ -16,4 +16,6 @@ public interface UsersDAO {
     void updateUser(Users user);
 
     void deleteUser(Long id);
+
+    Users findCurrentUser();
 }

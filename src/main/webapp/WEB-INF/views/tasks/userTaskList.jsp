@@ -22,7 +22,6 @@
                 <tr style="text-align:left">
                     <th>&nbsp;</th>
                     <th>Task</th>
-<%--                    <th>Allocated to</th>--%>
                     <th>Deadline</th>
                     <th>Priority</th>
                     <th>State</th>
@@ -33,12 +32,6 @@
                 <form method="post" action="${pageContext.request.contextPath}${action}" name="changeState">
                     <td>&nbsp;</td>
                     <td><a href="<c:url value="/tasks/details/${task.id}/user"/>">${task.name}</a></td>
-<%--                    <td>--%>
-<%--                        <c:forEach items="${task.users}" var="user">--%>
-<%--                            <a href="<c:url value="/users/admin/details/${user.id}/tasks"/>">${user.firstName} ${user.lastName}</a>--%>
-<%--                            <br>--%>
-<%--                        </c:forEach>--%>
-<%--                    </td>--%>
                     <td><fmt:formatDate value="${task.deadline}" type="date"/></td>
                     <td>${priorityList[task.priority]}</td>
                     <td>

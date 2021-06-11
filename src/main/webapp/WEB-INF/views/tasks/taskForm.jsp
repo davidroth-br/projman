@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <title>${addOrEdit} Project</title>
+    <title>${addOrEdit} Task</title>
 </head>
 <body>
 <%@include file="../_menu.jsp" %>

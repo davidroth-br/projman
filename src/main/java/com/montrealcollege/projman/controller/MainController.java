@@ -1,6 +1,11 @@
 package com.montrealcollege.projman.controller;
 
+import com.montrealcollege.projman.model.Users;
+import com.montrealcollege.projman.service.TasksService;
+import com.montrealcollege.projman.service.UserDetailsServiceImpl;
+import com.montrealcollege.projman.service.UsersService;
 import com.montrealcollege.projman.utils.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -12,13 +17,13 @@ import java.security.Principal;
 @Controller
 public class MainController {
 
+    @Autowired
+    private UsersService usersService;
+
     @GetMapping(value = "/welcome")
     public String welcomePage(Model model, Principal principal) {
 
-        // After user login successfully.
-        User loggedInUser = (User) ((Authentication) principal).getPrincipal();
-        model.addAttribute("userName", loggedInUser.getUsername());
-        model.addAttribute("title", "Welcome");
+        model.addAttribute("user", usersService.getCurrentUser());
         return "welcomePage";
     }
 

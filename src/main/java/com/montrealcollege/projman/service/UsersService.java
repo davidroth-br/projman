@@ -25,6 +25,10 @@ public class UsersService {
         return usersDAO.findUserById(id);
     }
 
+    public Users getUserByName(String userName) {
+        return usersDAO.findUserAccount(userName);
+    }
+
     public void editUser(Users user) {
         usersDAO.updateUser(user);
     }
@@ -33,4 +37,7 @@ public class UsersService {
         usersDAO.deleteUser(id);
     }
 
+    public Users getCurrentUser() {
+        return usersDAO.findCurrentUser();
+    }
 }

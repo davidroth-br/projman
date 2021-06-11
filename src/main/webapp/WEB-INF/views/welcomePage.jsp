@@ -3,14 +3,10 @@
 
 <html>
 <head>
-    <title>${title}</title>
+    <title>Dashboard</title>
 </head>
-
 <body>
 <%@include file="_menu.jsp" %>
-
-<h2>Welcome ${userName}!</h2>
-
-
+<h2>${user.fullName}'s Dashboard</h2>
 </body>
 </html>

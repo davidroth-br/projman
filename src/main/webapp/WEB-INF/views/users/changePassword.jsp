@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <title>Edit User</title>
+    <title>Change Password</title>
 </head>
 <body>
 <%@include file="../_menu.jsp" %>
