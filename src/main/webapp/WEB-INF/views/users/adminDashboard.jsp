@@ -6,7 +6,7 @@
     <title>Dashboard</title>
 </head>
 <body>
-<%@include file="_menu.jsp" %>
+<%@include file="../_menu.jsp" %>
 <h2>${user.fullName}'s Dashboard</h2>
 </body>
 </html>
