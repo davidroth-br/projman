@@ -105,6 +105,17 @@ public class ProjectsController {
         return new ModelAndView("redirect:/projects/admin/list", (Map<String, ?>) model);
     }
 
+    private boolean leaderNotSelected(Projects project) {
+        boolean notSelected = true;
+        for (Users selectedUser : project.getUsers()) {
+            if (selectedUser.equals(project.getLeader())) {
+                notSelected = false;
+                break;
+            }
+        }
+        return notSelected;
+    }
+
     // DELETE
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
@@ -126,14 +137,11 @@ public class ProjectsController {
         return "projects/projectDetails";
     }
 
-    private boolean leaderNotSelected(Projects project) {
-        boolean notSelected = true;
-        for (Users selectedUser : project.getUsers()) {
-            if (selectedUser.equals(project.getLeader())) {
-                notSelected = false;
-                break;
-            }
-        }
-        return notSelected;
+    // SHOW PROJECT MEMBERS
+    @GetMapping("/user/members/{id}")
+    public String showMembers(@PathVariable Long id, Model model) {
+
+        model.addAttribute("project", projectsService.getProjectById(id));
+        return "projects/projectMembers";
     }
 }

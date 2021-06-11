@@ -17,7 +17,7 @@ End Date: <fmt:formatDate value="${project.endDate}" type="date"/>
 <br><br>
 Leader: ${project.leader.firstName} ${project.leader.lastName}
 <br><br>
-Allocated Users:
+Members:
 <br>
 <c:forEach items="${project.users}" var="user">
     &emsp;${user.firstName} ${user.lastName}<br>
