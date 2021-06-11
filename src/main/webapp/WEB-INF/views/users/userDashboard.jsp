@@ -9,6 +9,13 @@
 <%@include file="../_menu.jsp" %>
 <h2>${user.fullName}'s Dashboard</h2>
 
+<c:if test="${user.projectsLead.size() != 0}">
+    You are the leader of these projects:<br>
+    <c:forEach var="project" items="${user.projectsLead}">
+        &emsp;${project.name}<br>
+    </c:forEach>
+    <br>
+</c:if>
 Assigned Tasks: ${tasks}
 <br><br>
 &emsp;Completed: ${completed}

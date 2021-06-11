@@ -1,6 +1,5 @@
 package com.montrealcollege.projman.dao;
 
-import com.montrealcollege.projman.model.Projects;
 import com.montrealcollege.projman.model.Tasks;
 
 import com.montrealcollege.projman.model.Users;
@@ -14,8 +13,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
 import java.util.List;
 
 @Repository

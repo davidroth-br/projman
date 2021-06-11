@@ -14,7 +14,7 @@
                 </c:when>
                 <c:otherwise>
                     <a href="<c:url value="/welcome"/>">Home</a> |
-                    <a href="<c:url value="/tasks/user/list?message="/>">Tasks</a> |
+                    <a href="<c:url value="/tasks/user/list?message="/>">Your Tasks</a> |
                     <a href="<c:url value="/logout"/>">Logout</a>
                 </c:otherwise>
             </c:choose>
