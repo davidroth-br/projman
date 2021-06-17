@@ -54,4 +54,8 @@ public class MemberStats {
     public void setCompletedTasksLate(int completedTasksLate) {
         this.completedTasksLate = completedTasksLate;
     }
+
+    public int getTotalTasks(){
+        return this.completedTasksLate + this.completedTasksOnTime + this.pendingTasksOverdue + this.pendingTasksOnTime;
+    }
 }

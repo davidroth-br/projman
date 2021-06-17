@@ -75,12 +75,11 @@ public class MainController {
             if (task.getDeadline().compareTo(new Date()) < 0) overdue++;
         }
         model.addAttribute("user", user);
-        model.addAttribute("tasks", totalTasks);
-        model.addAttribute("completed", completed);
-        model.addAttribute("onTime", onTime);
-        model.addAttribute("late", completed - onTime);
-        model.addAttribute("pending", totalTasks - completed);
-        model.addAttribute("overdue", overdue);
+        model.addAttribute("totalTasks", totalTasks);
+        model.addAttribute("completedOnTime", onTime);
+        model.addAttribute("completedLate", completed - onTime);
+        model.addAttribute("pendingOnTime", totalTasks - completed - overdue);
+        model.addAttribute("pendingOverdue", overdue);
         model.addAttribute("stateList", constants.stateList);
         return user.getRole().getRoleId() == 2 ? "users/userDashboard" : "users/adminDashboard";
     }
