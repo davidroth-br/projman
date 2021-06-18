@@ -13,8 +13,7 @@
     <h2>${message}</h2>
 </c:if>
 
-<a href="<c:url value="/tasks/admin/new"/>"><h2>Add New Task</h2></a>
-<br>
+<a href="<c:url value="/tasks/leader/new"/>"><h2>Add New Task</h2></a>
 <h2>Task List</h2>
 <c:if test="${!empty taskList}">
     <c:set var="projectName" value=""/>
@@ -37,10 +36,10 @@
             </c:if>
             <tr style="vertical-align:top">
                 <td>&nbsp;</td>
-                <td><a href="<c:url value="/tasks/details/${task.id}/admin"/>">${task.name}</a></td>
+                <td><a href="<c:url value="/tasks/details/${task.id}/leader"/>">${task.name}</a></td>
                 <td>
                     <c:forEach items="${task.users}" var="user">
-                        <a href="<c:url value="/users/admin/details/${user.id}/tasks"/>">${user.firstName} ${user.lastName}</a>
+                        <a href="<c:url value="/users/leader/details/${user.id}/tasks"/>">${user.firstName} ${user.lastName}</a>
                         <br>
                     </c:forEach>
                 </td>
@@ -48,8 +47,8 @@
                 <td>${priorityList[task.priority]}</td>
                 <td>${stateList[task.state]}</td>
                 <td><fmt:formatDate value="${task.completionDate}" type="date"/></td>
-                <td><a href="<c:url value="/tasks/admin/edit/${task.id}"/>">Edit</a></td>
-                <td><a href="<c:url value="/tasks/admin/remove/${task.id}"/>">Delete</a></td>
+                <td><a href="<c:url value="/tasks/leader/edit/${task.id}"/>">Edit</a></td>
+                <td><a href="<c:url value="/tasks/leader/remove/${task.id}"/>">Delete</a></td>
             </tr>
         </c:forEach>
     </table>

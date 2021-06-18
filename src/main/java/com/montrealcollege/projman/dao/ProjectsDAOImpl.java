@@ -1,6 +1,7 @@
 package com.montrealcollege.projman.dao;
 
 import com.montrealcollege.projman.model.Projects;
+import com.montrealcollege.projman.model.Users;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,17 @@ public class ProjectsDAOImpl implements ProjectsDAO{
         CriteriaQuery<Projects> criteria = builder.createQuery(Projects.class);
         Root<Projects> projectsRoot = criteria.from(Projects.class);
         criteria.select(projectsRoot).orderBy(builder.asc(projectsRoot.get("name")));
+
+        return entityManager.createQuery(criteria).getResultList();
+    }
+
+    @Override
+    public List<Projects> listLeaderProjects(Users user) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Projects> criteria = builder.createQuery(Projects.class);
+        Root<Projects> projectsRoot = criteria.from(Projects.class);
+        criteria.select(projectsRoot).where(builder.equal(projectsRoot.get("leader"), user))
+                .orderBy(builder.asc(projectsRoot.get("name")));
 
         return entityManager.createQuery(criteria).getResultList();
     }

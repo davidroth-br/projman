@@ -2,6 +2,7 @@ package com.montrealcollege.projman.service;
 
 import com.montrealcollege.projman.dao.ProjectsDAO;
 import com.montrealcollege.projman.model.Projects;
+import com.montrealcollege.projman.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +32,9 @@ public class ProjectsService {
 
     public void removeProject(Long id) {
         projectsDAO.deleteProject(id);
+    }
+
+    public List<Projects> showLeaderProjects(Users user) {
+        return projectsDAO.listLeaderProjects(user);
     }
 }
