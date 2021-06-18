@@ -33,7 +33,8 @@ public class MainController {
     public String welcomePage(Model model, Principal principal) {
 
         Users user = usersService.getCurrentUser();
-        if (isLeader(user)) {
+        boolean isLeader = usersService.isLeader(user);
+        if (isLeader) {
             int projectAmount = user.getProjectsLead().size();
             List<ProjectStats> projectStats = new ArrayList<>();
             for (Projects project : user.getProjectsLead()) {
@@ -59,6 +60,7 @@ public class MainController {
                 }
                 projectStats.add(new ProjectStats(project.getName(), memberStats));
             }
+            model.addAttribute("isLeader", isLeader);
             model.addAttribute("projectAmount", projectAmount);
             model.addAttribute("projectStats", projectStats);
         }
@@ -84,10 +86,6 @@ public class MainController {
         return user.getRole().getRoleId() == 2 ? "users/userDashboard" : "users/adminDashboard";
     }
 
-    private boolean isLeader(Users user) {
-        return user.getProjectsLead().size() != 0;
-    }
-
     @GetMapping(value = {"/", "/login"})
     public String loginPage(Model model) {
         return "loginPage";
@@ -103,15 +101,8 @@ public class MainController {
     public String accessDenied(Model model, Principal principal) {
 
         if (principal != null) {
-            model.addAttribute("title", "Access Denied");
-
-            User loggedInUser = (User) ((Authentication) principal).getPrincipal();
-            String userInfo = WebUtils.toString(loggedInUser);
-            model.addAttribute("userInfo", userInfo);
-
-            String message = "Hi " + principal.getName() //
-                    + "<br> You do not have permission to access this page!";
-            model.addAttribute("message", message);
+            model.addAttribute("userFullName", usersService.getCurrentUser().getFullName());
+            return "403Page";
         }
         return "403Page";
     }

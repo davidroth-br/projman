@@ -17,4 +17,6 @@ public interface TasksDAO {
     void updateTask(Tasks task);
 
     void deleteTask(Long id);
+
+    List<Tasks> listLeaderTasks();
 }

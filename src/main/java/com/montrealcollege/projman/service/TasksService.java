@@ -36,4 +36,8 @@ public class TasksService {
     public void removeTask(Long id) {
         tasksDAO.deleteTask(id);
     }
+
+    public List<Tasks> showLeaderTasks() {
+        return tasksDAO.listLeaderTasks();
+    }
 }

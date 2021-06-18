@@ -55,6 +55,21 @@ public class TasksDAOImpl implements TasksDAO{
     }
 
     @Override
+    public List<Tasks> listLeaderTasks() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tasks> criteria = criteriaBuilder.createQuery(Tasks.class);
+        Root<Tasks> tasksRoot = criteria.from(Tasks.class);
+        criteria.select(tasksRoot)
+                .where(criteriaBuilder.equal(tasksRoot.get("project").get("leader").get("userName"), getCurrentUser()));
+//                .orderBy(
+//                        criteriaBuilder.asc(tasksRoot.get("project").get("name")),
+//                        criteriaBuilder.asc(tasksRoot.get("users").get("firstName")),
+//                        criteriaBuilder.asc(tasksRoot.get("users").get("lastName")),
+//                        criteriaBuilder.asc(tasksRoot.get("name")));
+        return entityManager.createQuery(criteria).getResultList();
+    }
+
+    @Override
     public Tasks findTaskById(Long id) {
         return entityManager.find(Tasks.class, id);
     }

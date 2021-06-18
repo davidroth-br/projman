@@ -3,10 +3,10 @@ package com.montrealcollege.projman.controller;
 import com.montrealcollege.projman.model.Projects;
 import com.montrealcollege.projman.model.Tasks;
 import com.montrealcollege.projman.model.Users;
-import com.montrealcollege.projman.utils.Constants;
 import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.TasksService;
 import com.montrealcollege.projman.service.UsersService;
+import com.montrealcollege.projman.utils.Constants;
 import com.montrealcollege.projman.utils.ProjectsConverter;
 import com.montrealcollege.projman.utils.UsersConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +43,17 @@ public class TasksController {
         binder.registerCustomEditor(Users.class, new UsersConverter(usersService));
     }
 
-    //LIST ALL
-    @GetMapping("/admin/list")
+    //LIST ALL TASKS IN ALL PROJECTS LEAD BY CURRENT USER
+    @GetMapping("/leader/list")
     public String showAllTasks(@RequestParam("message") String message, Model model) {
 
+        if (!usersService.isLeader(usersService.getCurrentUser())){
+            model.addAttribute("userFullName", usersService.getCurrentUser().getFullName());
+            return "403Page";
+        }
+
         model.addAttribute("message", message);
-        setModelAttributes(model, "priorityList", "stateList", "taskList");
+        setModelAttributes(model, "priorityList", "stateList", "leaderTaskList");
         return "tasks/taskList";
     }
 
@@ -71,8 +76,9 @@ public class TasksController {
 
         return new ModelAndView("redirect:/tasks/user/list");
     }
+
     //NEW
-    @GetMapping("/admin/new")
+    @GetMapping("/leader/new")
     public String showForm(Model model) {
 
         model.addAttribute("task", new Tasks());
@@ -81,7 +87,7 @@ public class TasksController {
         return "tasks/taskForm";
     }
 
-    @PostMapping("/admin/validateNew")
+    @PostMapping("/leader/validateNew")
     public String validateForm(@ModelAttribute("task") @Valid Tasks task, BindingResult errors, Model model) {
 
         if (errors.hasErrors()) {
@@ -98,7 +104,7 @@ public class TasksController {
     }
 
     // EDIT
-    @GetMapping("/admin/edit/{id}")
+    @GetMapping("/leader/edit/{id}")
     public String editProject(@PathVariable Long id, Model model) {
 
         model.addAttribute("task", tasksService.getTaskById(id));
@@ -107,7 +113,7 @@ public class TasksController {
         return "tasks/taskForm";
     }
 
-    @PostMapping("/admin/validateEdit")
+    @PostMapping("/leader/validateEdit")
     public Object validateEdit(@ModelAttribute("task") @Valid Tasks task, BindingResult errors, Model model) {
 
         if (errors.hasErrors()) {
@@ -123,7 +129,7 @@ public class TasksController {
     }
 
     // DELETE
-    @GetMapping("/admin/remove/{id}")
+    @GetMapping("/leader/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
         String message = tasksService.getTaskById(id).getName() + " was successfully removed!";
@@ -163,8 +169,8 @@ public class TasksController {
                 case "userList":
                     model.addAttribute("userList", usersService.showUsers());
                     break;
-                case "taskList":
-                    model.addAttribute("taskList", tasksService.showTasks());
+                case "leaderTaskList":
+                    model.addAttribute("taskList", tasksService.showLeaderTasks());
                     break;
                 case "userTaskList":
                     model.addAttribute("taskList", tasksService.showUserTasks());

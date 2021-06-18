@@ -3,18 +3,16 @@
 
 <html>
 <head>
-    <title>${title}</title>
+    <title>Access Denied</title>
 </head>
 
 <body>
 <%@include file="_menu.jsp" %>
 
-<c:if test="${message != null}">
-    <h3 style="color: red;">${message}</h3>
-</c:if>
+<h3 style="color: red;">
+    Hi ${userFullName}.
+    <br> You do not have permission to access this page!
+</h3>
 
-<c:if test="${userInfo != null}">
-    <div>${userInfo}"></div>
-</c:if>
 </body>
 </html>

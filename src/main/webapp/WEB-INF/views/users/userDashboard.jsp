@@ -22,7 +22,7 @@
 <%@include file="../_menu.jsp" %>
 <h2>${user.fullName}'s Dashboard</h2>
 <c:set var="today" value="<%= new java.util.Date()%>"/>
-<c:if test="${projectAmount != 0}">
+<c:if test="${isLeader}">
     <h3>Stats of the ${projectAmount} projects you lead:</h3>
     <table>
         <c:forEach var="project" items="${projectStats}">
@@ -54,8 +54,8 @@
             </c:forEach>
         </c:forEach>
     </table>
+    <br>
 </c:if>
-<br>
 <h3>Your tasks stats:</h3>
 <table>
     <tr>
