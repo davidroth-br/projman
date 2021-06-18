@@ -12,16 +12,17 @@
 <c:if test="${message != null}">
     <h2>${message}</h2>
 </c:if>
-
-<a href="<c:url value="/tasks/leader/new"/>"><h2>Add New Task</h2></a>
 <h2>Task List</h2>
 <c:if test="${!empty taskList}">
     <c:set var="projectName" value=""/>
     <table>
         <c:forEach items="${taskList}" var="task">
             <c:if test="${projectName != task.project.name}">
+                <c:if test="${projectName != ''}">
+                    <tr><td><br></td></tr>
+                </c:if>
                 <tr>
-                    <th>${task.project.name}</th>
+                    <th>${task.project.name} - <a href="<c:url value="/tasks/leader/new"/>">Add New Task</a></th>
                 </tr>
                 <c:set var="projectName" value="${task.project.name}"/>
                 <tr style="text-align:left">
