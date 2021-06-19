@@ -60,12 +60,11 @@ public class TasksDAOImpl implements TasksDAO{
         CriteriaQuery<Tasks> criteria = criteriaBuilder.createQuery(Tasks.class);
         Root<Tasks> tasksRoot = criteria.from(Tasks.class);
         criteria.select(tasksRoot)
-                .where(criteriaBuilder.equal(tasksRoot.get("project").get("leader").get("userName"), getCurrentUser()));
-//                .orderBy(
-//                        criteriaBuilder.asc(tasksRoot.get("project").get("name")),
-//                        criteriaBuilder.asc(tasksRoot.get("users").get("firstName")),
-//                        criteriaBuilder.asc(tasksRoot.get("users").get("lastName")),
-//                        criteriaBuilder.asc(tasksRoot.get("name")));
+                .where(criteriaBuilder.equal(tasksRoot.get("project").get("leader").get("userName"), getCurrentUser()))
+                .orderBy(
+                        criteriaBuilder.asc(tasksRoot.get("project").get("name")),
+                        criteriaBuilder.asc(tasksRoot.get("name"))
+                        );
         return entityManager.createQuery(criteria).getResultList();
     }
 

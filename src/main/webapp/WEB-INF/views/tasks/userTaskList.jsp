@@ -32,6 +32,7 @@
                     <th>Deadline</th>
                     <th>Priority</th>
                     <th>State</th>
+                    <th></th>
                     <th>Completion Date</th>
                 </tr>
             </c:if>
@@ -52,9 +53,10 @@
                             </c:forEach>
                         </select>
                     </td>
+                    <td><input name="submit" type="submit" value="update"/></td>
                     <td><fmt:formatDate value="${task.completionDate}" type="date"/></td>
                     <input type="hidden" name="id" value="${task.id}"/>
-                    <td><input name="submit" type="submit" value="update"/></td>
+
                 </form>
             </tr>
         </c:forEach>

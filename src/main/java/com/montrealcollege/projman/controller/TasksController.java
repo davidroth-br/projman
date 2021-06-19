@@ -48,13 +48,17 @@ public class TasksController {
     public String showAllTasks(@RequestParam("message") String message, Model model) {
 
         Users currentUser = usersService.getCurrentUser();
+        String userFullName = currentUser.getFullName();
+
         if (!usersService.isLeader(currentUser)){
-            model.addAttribute("userFullName", currentUser.getFullName());
             return "403Page";
         }
 
+        model.addAttribute("userFullName", userFullName);
         model.addAttribute("message", message);
-        setModelAttributes(model, currentUser, "priorityList", "stateList", "leaderTaskList");
+        model.addAttribute("action", "/tasks/leader/changeState");
+        model.addAttribute("taskList", tasksService.showLeaderTasks());
+        addPriorityAndStateAttributes(model);
         return "tasks/leaderTaskList";
     }
 
@@ -63,28 +67,41 @@ public class TasksController {
     public String showUserTasks(Model model) {
 
         model.addAttribute("action", "/tasks/user/changeState");
-        setModelAttributes(model, "priorityList", "stateList", "userTaskList");
+        model.addAttribute("taskList", tasksService.showUserTasks());
+        addPriorityAndStateAttributes(model);
         return "tasks/userTaskList";
     }
 
-    @PostMapping("/user/changeState")
-    public Object changeState(@RequestParam("id") Long id, @RequestParam("state") int state) {
+    @PostMapping("/{from}/changeState")
+    public Object changeState(@PathVariable("from") String from, @RequestParam("id") Long id, @RequestParam("state") int state, Model model) {
         Tasks task = tasksService.getTaskById(id);
         task.setState(state);
         task.setCompletionDate(state == 4 ? new Date() : null);
 
         tasksService.editTask(task);
 
-        return new ModelAndView("redirect:/tasks/user/list");
-    }
+        addPriorityAndStateAttributes(model);
+        if (from.equals("user")) {
+            model.addAttribute("taskList", tasksService.showUserTasks());
+            return "tasks/userTaskList";
+        } else {
+            model.addAttribute("userFullName", usersService.getCurrentUser().getFullName());
+            model.addAttribute("taskList", tasksService.showLeaderTasks());
+            return "tasks/leaderTaskList";
+        }
+     }
 
     //NEW
-    @GetMapping("/leader/new")
-    public String showForm(Model model) {
+    @GetMapping("/leader/new/{id}")
+    public String showForm(@PathVariable Long id, Model model) {
 
-        model.addAttribute("task", new Tasks());
-        setModelAttributes(model, usersService.getCurrentUser(), "priorityList", "stateList", "projectList", "userList", "Add");
+        Projects project = projectsService.getProjectById(id);
+        Tasks task = new Tasks();
+        task.setProject(project);
+        model.addAttribute("task", task);
+        model.addAttribute("addOrEdit", "Add");
         model.addAttribute("action", "/tasks/leader/validateNew");
+        addPriorityAndStateAttributes(model);
         return "tasks/taskForm";
     }
 
@@ -93,14 +110,17 @@ public class TasksController {
 
         if (errors.hasErrors()) {
             model.addAttribute("action", "/tasks/leader/validateNew");
-            setModelAttributes(model, usersService.getCurrentUser(), "priorityList", "stateList", "projectList", "userList", "Add");
+            model.addAttribute("project", task.getProject());
+            model.addAttribute("addOrEdit", "Add");
+            addPriorityAndStateAttributes(model);
             return "tasks/taskForm";
         }
-
         tasksService.addTask(task);
 
         model.addAttribute("message", task.getName() + " was successfully added!");
-        setModelAttributes(model, "priorityList", "stateList", "taskList");
+        model.addAttribute("userFullName", usersService.getCurrentUser().getFullName());
+        model.addAttribute("taskList", tasksService.showLeaderTasks());
+        addPriorityAndStateAttributes(model);
         return "tasks/leaderTaskList";
     }
 
@@ -109,8 +129,8 @@ public class TasksController {
     public String editProject(@PathVariable Long id, Model model) {
 
         model.addAttribute("task", tasksService.getTaskById(id));
-        model.addAttribute("action", "/tasks/leader/validateEdit");
-        setModelAttributes(model, usersService.getCurrentUser(), "priorityList", "stateList", "projectList", "userList", "Edit");
+        model.addAttribute("addOrEdit", "Edit");
+        addPriorityAndStateAttributes(model);
         return "tasks/taskForm";
     }
 
@@ -119,7 +139,8 @@ public class TasksController {
 
         if (errors.hasErrors()) {
             model.addAttribute("action", "/tasks/leader/validateEdit");
-            setModelAttributes(model, usersService.getCurrentUser(), "priorityList", "stateList", "projectList", "userList", "Edit");
+            model.addAttribute("addOrEdit", "Edit");
+            addPriorityAndStateAttributes(model);
             return "tasks/taskForm";
         }
 
@@ -138,8 +159,10 @@ public class TasksController {
         tasksService.removeTask(id);
 
         model.addAttribute("message", message);
-        setModelAttributes(model, "priorityList", "stateList", "taskList");
-        return "leaderTaskList";
+        model.addAttribute("userFullName", usersService.getCurrentUser().getFullName());
+        model.addAttribute("taskList", tasksService.showLeaderTasks());
+        addPriorityAndStateAttributes(model);
+        return "tasks/leaderTaskList";
     }
 
     // DETAILS
@@ -151,42 +174,12 @@ public class TasksController {
         model.addAttribute("from", from);
         model.addAttribute("task", task);
         model.addAttribute("completionDate", task.getCompletionDate() == null ? "" : new SimpleDateFormat("MMM dd, yyyy").format(task.getCompletionDate()));
-        setModelAttributes(model, "priorityList", "stateList");
+        addPriorityAndStateAttributes(model);
         return "tasks/taskDetails";
     }
 
-    private void setModelAttributes(Model model, String... attributes) {
-        setModelAttributes(model, null, attributes);
-    }
-
-    private void setModelAttributes(Model model, Users user, String... attributes) {
-        for (String attribute : attributes) {
-            switch (attribute) {
-                case "priorityList":
-                    model.addAttribute("priorityList", constants.priorityList);
-                    break;
-                case "stateList":
-                    model.addAttribute("stateList", constants.stateList);
-                    break;
-                case "projectList":
-                    model.addAttribute("projectList", projectsService.showLeaderProjects(user));
-                    break;
-                case "userList":
-                    model.addAttribute("userList", usersService.showUsers());
-                    break;
-                case "leaderTaskList":
-                    model.addAttribute("taskList", tasksService.showLeaderTasks());
-                    break;
-                case "userTaskList":
-                    model.addAttribute("taskList", tasksService.showUserTasks());
-                    break;
-                case "Add":
-                    model.addAttribute("addOrEdit", "Add");
-                    break;
-                case "Edit":
-                    model.addAttribute("addOrEdit", "Edit");
-                    break;
-            }
-        }
+    private void addPriorityAndStateAttributes(Model model) {
+        model.addAttribute("priorityList", constants.priorityList);
+        model.addAttribute("stateList", constants.stateList);
     }
 }

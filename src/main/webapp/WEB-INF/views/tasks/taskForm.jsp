@@ -9,9 +9,8 @@
 </head>
 <body>
 <%@include file="../_menu.jsp" %>
-
+<h2>${task.project.name} - New Task</h2>
 <f:form method="post" action="${pageContext.request.contextPath}${action}" modelAttribute="task">
-
     Task Name: <f:input path="name"/> <f:errors path="name"/>
     <br><br>
     Description: <f:textarea path="description"/> <f:errors path="description"/>
@@ -26,24 +25,9 @@
     <br><br>
     State: <f:select path="state" items="${stateList}"/>
     <br><br>
-    Project:
-    <f:select path="project">
-        <f:option value="0" label="--- Select Project ---"/>
-        <c:forEach items="${projectList}" var="projectItem">
-            <c:choose>
-                <c:when test="${projectItem.id == task.project.id}">
-                    <f:option value="${projectItem.id}" label="${projectItem.name}" selected="true"/>
-                </c:when>
-                <c:otherwise>
-                    <f:option value="${projectItem.id}" label="${projectItem.name}"/>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-    </f:select> <f:errors path="project"/>
-    <br><br>
-    User(s) Responsible:
+    Assigned to:
     <f:select path="users" multiple="true">
-        <c:forEach items="${userList}" var="user">
+        <c:forEach items="${task.project.users}" var="user">
             <c:set var="isSelected" value="false"/>
             <c:forEach items="${task.users}" var="selected">
                 <c:if test="${user.id == selected.id}">
@@ -62,6 +46,7 @@
     </f:select>
     <br><br>
     <f:hidden path="id" value="${task.id}"/>
+    <f:hidden path="project" value="${task.project.id}"/>
     <input type="submit"/>
     <br><br>
 </f:form>

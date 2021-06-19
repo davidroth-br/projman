@@ -73,8 +73,9 @@ public class MainController {
             if (task.getState() == 4) {
                 completed ++;
                 if (task.getCompletionDate().compareTo(task.getDeadline()) <= 0) onTime++;
+            } else {
+                if (task.getDeadline().compareTo(new Date()) < 0) overdue++;
             }
-            if (task.getDeadline().compareTo(new Date()) < 0) overdue++;
         }
         model.addAttribute("user", user);
         model.addAttribute("totalTasks", totalTasks);

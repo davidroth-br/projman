@@ -42,15 +42,17 @@
                 <th class="underline">Total Assigned</th>
             </tr>
             <c:forEach var="member" items="${project.memberStats}">
-                <tr>
-                    <td></td>
-                    <td>${member.memberName}</td>
-                    <td class="center">${member.pendingTasksOnTime}</td>
-                    <td class="center">${member.pendingTasksOverdue}</td>
-                    <td class="center">${member.completedTasksOnTime}</td>
-                    <td class="center">${member.completedTasksLate}</td>
-                    <td class="center">${member.totalTasks}</td>
-                </tr>
+                <c:if test="${member.totalTasks != 0}">
+                    <tr>
+                        <td></td>
+                        <td>${member.memberName}</td>
+                        <td class="center">${member.pendingTasksOnTime}</td>
+                        <td class="center">${member.pendingTasksOverdue}</td>
+                        <td class="center">${member.completedTasksOnTime}</td>
+                        <td class="center">${member.completedTasksLate}</td>
+                        <td class="center">${member.totalTasks}</td>
+                    </tr>
+                </c:if>
             </c:forEach>
         </c:forEach>
     </table>
