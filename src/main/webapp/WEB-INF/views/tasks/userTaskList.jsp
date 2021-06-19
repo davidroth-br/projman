@@ -56,7 +56,6 @@
                     <td><input name="submit" type="submit" value="update"/></td>
                     <td><fmt:formatDate value="${task.completionDate}" type="date"/></td>
                     <input type="hidden" name="id" value="${task.id}"/>
-
                 </form>
             </tr>
         </c:forEach>
