@@ -148,11 +148,14 @@ public class UsersController {
     }
 
     // DETAILS
-    @GetMapping("/admin/details/{id}/{from}")
+    @GetMapping("/leader/details/{id}/{from}")
     public String showUser(@PathVariable("id") Long id, @PathVariable("from") String from, Model model) {
 
-        model.addAttribute("from", from);
-        model.addAttribute("user", usersService.getUserById(id));
-        return "users/userDetails";
+        if (usersService.isLeader(usersService.getCurrentUser()) || usersService.getCurrentUser().getRole().getRoleId() != 1) {
+            model.addAttribute("from", from);
+            model.addAttribute("user", usersService.getUserById(id));
+            return "users/userDetails";
+        }
+        return "403Page";
     }
 }
