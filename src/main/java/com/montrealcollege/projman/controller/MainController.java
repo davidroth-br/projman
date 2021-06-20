@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
+@SessionAttributes("isLeader")
 public class MainController {
 
     @Autowired
@@ -60,7 +62,6 @@ public class MainController {
                 }
                 projectStats.add(new ProjectStats(project.getName(), memberStats));
             }
-            model.addAttribute("isLeader", isLeader);
             model.addAttribute("projectAmount", projectAmount);
             model.addAttribute("projectStats", projectStats);
         }
@@ -83,6 +84,7 @@ public class MainController {
         model.addAttribute("completedLate", completed - onTime);
         model.addAttribute("pendingOnTime", totalTasks - completed - overdue);
         model.addAttribute("pendingOverdue", overdue);
+        model.addAttribute("isLeader", isLeader);
         model.addAttribute("stateList", constants.stateList);
         return user.getRole().getRoleId() == 2 ? "users/userDashboard" : "users/adminDashboard";
     }
