@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/projects")
@@ -143,5 +143,22 @@ public class ProjectsController {
 
         model.addAttribute("project", projectsService.getProjectById(id));
         return "projects/projectMembers";
+    }
+
+    // MANAGE PROJECT MEMBERS
+    @GetMapping("/leader/manageMembers/{id}")
+    public String manageMembers(@PathVariable Long id, Model model) {
+
+        Projects project = projectsService.getProjectById(id);
+        Map<Long, String> availableUsers = new LinkedHashMap<>();
+        for (Users user : usersService.showUsers()) {
+            if (!project.getUsers().contains(user)) {
+                availableUsers.put(user.getId(), user.getFullName());
+            }
+        }
+
+        model.addAttribute("availableUserList", availableUsers);
+        model.addAttribute("project", project);
+        return "projects/manageMembers";
     }
 }
