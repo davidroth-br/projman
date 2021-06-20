@@ -124,7 +124,6 @@ public class UsersController {
             return "users/changePassword";
         }
 
-
         user.setRole(usersService.getUserById(user.getId()).getRole());
         user.setEncryptedPassword(encryptPassword(newPassword));
         usersService.editUser(user);
@@ -138,11 +137,11 @@ public class UsersController {
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
-        Users user = usersService.getUserById(id);
+        String userFullName = usersService.getUserById(id).getFullName();
 
         usersService.removeUser(id);
 
-        model.addAttribute("message", user.getFullName() + " was successfully removed!");
+        model.addAttribute("message", userFullName + " was successfully removed!");
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
