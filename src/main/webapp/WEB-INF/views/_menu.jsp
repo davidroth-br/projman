@@ -4,22 +4,16 @@
 <div style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;">
     <c:choose>
         <c:when test="${pageContext.request.userPrincipal != null}">
-            <c:choose>
-                <c:when test="${sessionScope.values().toString().contains('ROLE_ADMIN')}">
-                    <a href="<c:url value="/welcome"/>">Home</a> |
-                    <a href="<c:url value="/users/admin/list?message="/>">Users</a> |
-                    <a href="<c:url value="/projects/admin/list?message="/>">Projects</a> |
-                    <a href="<c:url value="/logout"/>">Logout</a>
-                </c:when>
-                <c:otherwise>
-                    <a href="<c:url value="/welcome"/>">Home</a> |
-                    <a href="<c:url value="/tasks/user/list?message="/>">Your Tasks</a> |
-                    <c:if test="${sessionScope.currentUser.isLeader()}">
-                        <a href="<c:url value="/tasks/leader/list?message="/>">Your Projects</a> |
-                    </c:if>
-                    <a href="<c:url value="/logout"/>">Logout</a>
-                </c:otherwise>
-            </c:choose>
+            <a href="<c:url value="/welcome"/>">Home</a> |
+            <a href="<c:url value="/tasks/user/list?message="/>">Your Tasks</a> |
+            <c:if test="${sessionScope.currentUser.isLeader()}">
+                <a href="<c:url value="/tasks/leader/list?message="/>">Your Projects</a> |
+            </c:if>
+            <c:if test="${sessionScope.currentUser.isAdmin()}">
+                <a href="<c:url value="/users/admin/list?message="/>">All Users</a> |
+                <a href="<c:url value="/projects/admin/list?message="/>">All Projects</a> |
+            </c:if>
+            <a href="<c:url value="/logout"/>">Logout</a>
         </c:when>
         <c:otherwise>
             <a href="<c:url value="/login"/>">Login</a>

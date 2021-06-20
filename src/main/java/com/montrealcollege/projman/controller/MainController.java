@@ -5,6 +5,7 @@ import com.montrealcollege.projman.dto.ProjectStats;
 import com.montrealcollege.projman.model.Projects;
 import com.montrealcollege.projman.model.Tasks;
 import com.montrealcollege.projman.model.Users;
+import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.UsersService;
 import com.montrealcollege.projman.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +26,19 @@ public class MainController {
     @Autowired
     private UsersService usersService;
 
+    @Autowired
+    private ProjectsService projectsService;
+
     private final Constants constants = new Constants();
 
     @GetMapping(value = "/welcome")
     public String welcomePage(Model model) {
 
         Users currentUser = usersService.getCurrentUser();
-        if (currentUser.isLeader()) {
+        if (currentUser.isLeader() || currentUser.isAdmin()) {
             int projectAmount = currentUser.getProjectsLead().size();
             List<ProjectStats> projectStats = new ArrayList<>();
-            for (Projects project : currentUser.getProjectsLead()) {
+            for (Projects project : currentUser.isLeader() ? currentUser.getProjectsLead() : projectsService.showProjects()) {
                 List<MemberStats> memberStats = new ArrayList<>();
                 for (Users member : project.getUsers()) {
                     int pendingTasksOnTime = 0;
@@ -57,7 +61,7 @@ public class MainController {
                 }
                 projectStats.add(new ProjectStats(project.getName(), memberStats));
             }
-            model.addAttribute("projectAmount", projectAmount);
+            model.addAttribute("projectsMessage", currentUser.isLeader() ? "Stats of the " + projectAmount + " projects you lead:" : "All projects stats:");
             model.addAttribute("projectStats", projectStats);
         }
         Set<Tasks> tasks = currentUser.getTasks();
@@ -80,7 +84,7 @@ public class MainController {
         model.addAttribute("pendingOverdue", overdue);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("stateList", constants.stateList);
-        return currentUser.getRole().getRoleId() == 2 ? "users/userDashboard" : "users/adminDashboard";
+        return "users/dashboard";
     }
 
     @GetMapping(value = {"/", "/login"})

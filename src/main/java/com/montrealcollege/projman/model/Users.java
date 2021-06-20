@@ -167,4 +167,8 @@ public class Users {
     public boolean isLeader() {
         return projectsLead.size() != 0;
     }
+
+    public boolean isAdmin() {
+        return role.getRoleId() == 1;
+    }
 }

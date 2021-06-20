@@ -22,8 +22,8 @@
 <%@include file="../_menu.jsp" %>
 <h2>${sessionScope.currentUser.fullName}'s Dashboard</h2>
 <c:set var="today" value="<%= new java.util.Date()%>"/>
-<c:if test="${sessionScope.currentUser.isLeader()}">
-    <h3>Stats of the ${projectAmount} projects you lead:</h3>
+<c:if test="${sessionScope.currentUser.isLeader() || sessionScope.currentUser.isAdmin()}">
+    <h3>${projectsMessage}</h3>
     <table>
         <c:forEach var="project" items="${projectStats}">
             <tr style="text-align:left">

@@ -8,7 +8,6 @@
 <body>
 <h1>Login</h1>
 
-<!-- /login?error=true -->
 <c:if test="${param.error == 'true'}">
     <div style="color:red; margin:10px 0;">
         Login Failed!!!<br/>
