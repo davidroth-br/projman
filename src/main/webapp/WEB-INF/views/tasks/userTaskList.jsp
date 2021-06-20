@@ -37,8 +37,8 @@
                         <th>Completion Date</th>
                     </tr>
                 </c:if>
-                <tr style="vertical-align:top">
-                    <form method="post" action="${pageContext.request.contextPath}${action}" name="changeState">
+                <form method="post" action="${pageContext.request.contextPath}${action}" name="changeState">
+                    <tr style="vertical-align:top">
                         <td></td>
                         <td><a href="<c:url value="/tasks/details/${task.id}/user"/>">${task.name}</a></td>
                         <td><fmt:formatDate value="${task.deadline}" type="date"/></td>
@@ -57,8 +57,8 @@
                         <td><input name="submit" type="submit" value="update"/></td>
                         <td><fmt:formatDate value="${task.completionDate}" type="date"/></td>
                         <input type="hidden" name="id" value="${task.id}"/>
-                    </form>
-                </tr>
+                    </tr>
+                </form>
             </c:forEach>
         </table>
     </c:when>

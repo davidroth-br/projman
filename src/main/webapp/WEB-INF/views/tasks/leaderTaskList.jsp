@@ -19,7 +19,9 @@
         <c:forEach items="${taskList}" var="task">
             <c:if test="${projectName != task.project.name}">
                 <c:if test="${projectName != ''}">
-                    <tr><td><br></td></tr>
+                    <tr>
+                        <td><br></td>
+                    </tr>
                 </c:if>
                 <tr>
                     <th>${task.project.name}</th>
@@ -37,8 +39,8 @@
                     <th>Completion Date</th>
                 </tr>
             </c:if>
-            <tr style="vertical-align:top">
-                <form method="post" action="${pageContext.request.contextPath}${action}" name="changeState">
+            <form method="post" action="${pageContext.request.contextPath}${action}" name="changeState">
+                <tr style="vertical-align:top">
                     <td></td>
                     <td><a href="<c:url value="/tasks/details/${task.id}/leader"/>">${task.name}</a></td>
                     <td>
@@ -65,8 +67,8 @@
                     <td><a href="<c:url value="/tasks/leader/edit/${task.id}"/>">Edit</a></td>
                     <td><a href="<c:url value="/tasks/leader/remove/${task.id}"/>">Delete</a></td>
                     <input type="hidden" name="id" value="${task.id}"/>
-                </form>
-            </tr>
+                </tr>
+            </form>
         </c:forEach>
     </table>
 </c:if>
