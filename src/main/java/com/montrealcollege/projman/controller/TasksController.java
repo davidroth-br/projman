@@ -124,6 +124,7 @@ public class TasksController {
     public String editProject(@PathVariable Long id, Model model) {
 
         model.addAttribute("task", tasksService.getTaskById(id));
+        model.addAttribute("action", "/tasks/leader/validateEdit");
         model.addAttribute("addOrEdit", "Edit");
         addPriorityAndStateAttributes(model);
         return "tasks/taskForm";
@@ -131,8 +132,9 @@ public class TasksController {
 
     @PostMapping("/leader/validateEdit")
     public Object validateEdit(@ModelAttribute("task") @Valid Tasks task, BindingResult errors, Model model) {
-
+System.out.println("VALIDATE EDIT");
         if (errors.hasErrors()) {
+            System.out.println("HAS ERRORS");
             model.addAttribute("action", "/tasks/leader/validateEdit");
             model.addAttribute("addOrEdit", "Edit");
             addPriorityAndStateAttributes(model);
@@ -142,7 +144,9 @@ public class TasksController {
         tasksService.editTask(task);
 
         model.addAttribute("message", task.getName() + " was successfully edited!");
-        return new ModelAndView("redirect:/tasks/leader/list", (Map<String, ?>) model);
+        model.addAttribute("taskList", tasksService.showLeaderTasks());
+        addPriorityAndStateAttributes(model);
+        return "tasks/leaderTaskList";
     }
 
     // DELETE
