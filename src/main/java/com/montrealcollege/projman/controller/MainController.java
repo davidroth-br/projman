@@ -7,23 +7,19 @@ import com.montrealcollege.projman.model.Tasks;
 import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.UsersService;
 import com.montrealcollege.projman.utils.Constants;
-import com.montrealcollege.projman.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 @Controller
-@SessionAttributes("isLeader")
+@SessionAttributes("currentUser")
 public class MainController {
 
     @Autowired
@@ -32,14 +28,13 @@ public class MainController {
     private final Constants constants = new Constants();
 
     @GetMapping(value = "/welcome")
-    public String welcomePage(Model model, Principal principal) {
+    public String welcomePage(Model model) {
 
-        Users user = usersService.getCurrentUser();
-        boolean isLeader = usersService.isLeader(user);
-        if (isLeader) {
-            int projectAmount = user.getProjectsLead().size();
+        Users currentUser = usersService.getCurrentUser();
+        if (currentUser.isLeader()) {
+            int projectAmount = currentUser.getProjectsLead().size();
             List<ProjectStats> projectStats = new ArrayList<>();
-            for (Projects project : user.getProjectsLead()) {
+            for (Projects project : currentUser.getProjectsLead()) {
                 List<MemberStats> memberStats = new ArrayList<>();
                 for (Users member : project.getUsers()) {
                     int pendingTasksOnTime = 0;
@@ -65,7 +60,7 @@ public class MainController {
             model.addAttribute("projectAmount", projectAmount);
             model.addAttribute("projectStats", projectStats);
         }
-        Set<Tasks> tasks = user.getTasks();
+        Set<Tasks> tasks = currentUser.getTasks();
         int totalTasks = tasks.size();
         int completed = 0;
         int onTime = 0;
@@ -78,19 +73,18 @@ public class MainController {
                 if (task.getDeadline().compareTo(new Date()) < 0) overdue++;
             }
         }
-        model.addAttribute("user", user);
         model.addAttribute("totalTasks", totalTasks);
         model.addAttribute("completedOnTime", onTime);
         model.addAttribute("completedLate", completed - onTime);
         model.addAttribute("pendingOnTime", totalTasks - completed - overdue);
         model.addAttribute("pendingOverdue", overdue);
-        model.addAttribute("isLeader", isLeader);
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("stateList", constants.stateList);
-        return user.getRole().getRoleId() == 2 ? "users/userDashboard" : "users/adminDashboard";
+        return currentUser.getRole().getRoleId() == 2 ? "users/userDashboard" : "users/adminDashboard";
     }
 
     @GetMapping(value = {"/", "/login"})
-    public String loginPage(Model model) {
+    public String loginPage() {
         return "loginPage";
     }
 
@@ -101,12 +95,7 @@ public class MainController {
     }
 
     @GetMapping(value = "/403")
-    public String accessDenied(Model model, Principal principal) {
-
-        if (principal != null) {
-            model.addAttribute("userFullName", usersService.getCurrentUser().getFullName());
-            return "403Page";
-        }
+    public String accessDenied() {
         return "403Page";
     }
 }

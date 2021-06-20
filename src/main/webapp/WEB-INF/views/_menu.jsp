@@ -14,7 +14,7 @@
                 <c:otherwise>
                     <a href="<c:url value="/welcome"/>">Home</a> |
                     <a href="<c:url value="/tasks/user/list?message="/>">Your Tasks</a> |
-                    <c:if test="${sessionScope.isLeader}">
+                    <c:if test="${sessionScope.currentUser.isLeader()}">
                         <a href="<c:url value="/tasks/leader/list?message="/>">Your Projects</a> |
                     </c:if>
                     <a href="<c:url value="/logout"/>">Logout</a>

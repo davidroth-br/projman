@@ -41,7 +41,4 @@ public class UsersService {
         return usersDAO.findCurrentUser();
     }
 
-    public boolean isLeader(Users user){
-        return user.getProjectsLead().size() != 0;
-    }
 }

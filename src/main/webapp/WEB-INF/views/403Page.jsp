@@ -10,7 +10,7 @@
 <%@include file="_menu.jsp" %>
 
 <h3 style="color: red;">
-    Hi ${userFullName}.
+    Hi ${sessionScope.currentUser.fullName}.
     <br> You do not have permission to access this page!
 </h3>
 

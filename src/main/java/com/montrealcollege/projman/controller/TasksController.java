@@ -45,16 +45,12 @@ public class TasksController {
 
     //LIST ALL TASKS IN ALL PROJECTS LEAD BY CURRENT USER
     @GetMapping("/leader/list")
-    public String showAllTasks(@RequestParam("message") String message, Model model) {
+    public String showAllTasks(@SessionAttribute("currentUser") Users currentUser, @RequestParam("message") String message, Model model) {
 
-        Users currentUser = usersService.getCurrentUser();
-        String userFullName = currentUser.getFullName();
-
-        if (!usersService.isLeader(currentUser)){
+        if (!currentUser.isLeader()){
             return "403Page";
         }
 
-        model.addAttribute("userFullName", userFullName);
         model.addAttribute("message", message);
         model.addAttribute("action", "/tasks/leader/changeState");
         model.addAttribute("taskList", tasksService.showLeaderTasks());
@@ -85,7 +81,6 @@ public class TasksController {
             model.addAttribute("taskList", tasksService.showUserTasks());
             return "tasks/userTaskList";
         } else {
-            model.addAttribute("userFullName", usersService.getCurrentUser().getFullName());
             model.addAttribute("taskList", tasksService.showLeaderTasks());
             return "tasks/leaderTaskList";
         }
@@ -109,6 +104,7 @@ public class TasksController {
     public String validateForm(@ModelAttribute("task") @Valid Tasks task, BindingResult errors, Model model) {
 
         if (errors.hasErrors()) {
+            System.out.println(errors);
             model.addAttribute("action", "/tasks/leader/validateNew");
             model.addAttribute("project", task.getProject());
             model.addAttribute("addOrEdit", "Add");
@@ -118,7 +114,6 @@ public class TasksController {
         tasksService.addTask(task);
 
         model.addAttribute("message", task.getName() + " was successfully added!");
-        model.addAttribute("userFullName", usersService.getCurrentUser().getFullName());
         model.addAttribute("taskList", tasksService.showLeaderTasks());
         addPriorityAndStateAttributes(model);
         return "tasks/leaderTaskList";
@@ -159,7 +154,6 @@ public class TasksController {
         tasksService.removeTask(id);
 
         model.addAttribute("message", message);
-        model.addAttribute("userFullName", usersService.getCurrentUser().getFullName());
         model.addAttribute("taskList", tasksService.showLeaderTasks());
         addPriorityAndStateAttributes(model);
         return "tasks/leaderTaskList";

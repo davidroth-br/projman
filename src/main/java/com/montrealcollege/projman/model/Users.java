@@ -163,4 +163,8 @@ public class Users {
     public String getFullName() {
         return firstName + " " + lastName;
     }
+
+    public boolean isLeader() {
+        return projectsLead.size() != 0;
+    }
 }

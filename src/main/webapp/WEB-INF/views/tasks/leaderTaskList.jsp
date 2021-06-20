@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <title>${userFullName}'s Projects</title>
+    <title>${sessionScope.currentUser.fullName}'s Projects</title>
 </head>
 <body>
 <%@include file="../_menu.jsp" %>
@@ -12,7 +12,7 @@
 <c:if test="${message != null}">
     <h2>${message}</h2>
 </c:if>
-<h2>${userFullName}'s Project's Task List</h2>
+<h2>${sessionScope.currentUser.fullName}'s Project's Task List</h2>
 <c:if test="${!empty taskList}">
     <c:set var="projectName" value=""/>
     <table>
