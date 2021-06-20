@@ -5,17 +5,9 @@
 <head>
     <title>Dashboard</title>
     <style>
-        .bottom {
-            vertical-align: bottom;
-        }
-
-        .center {
-            text-align: center;
-        }
-
-        .underline {
-            text-decoration: underline;
-        }
+        .bottom {vertical-align: bottom;}
+        .center {text-align: center;}
+        .underline {text-decoration: underline;}
     </style>
 </head>
 <body>
