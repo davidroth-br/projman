@@ -5,6 +5,7 @@ import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.UsersService;
 import com.montrealcollege.projman.utils.UsersConverter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -150,15 +151,32 @@ public class ProjectsController {
     public String manageMembers(@PathVariable Long id, Model model) {
 
         Projects project = projectsService.getProjectById(id);
+
+        model.addAttribute("availableUserList", getAvailableUsers(project));
+        model.addAttribute("project", project);
+        return "projects/manageMembers";
+    }
+
+    @PostMapping("/leader/addProjectMember")
+    public Object changeState(@RequestParam("projectId") Long id, @RequestParam("availableUsers") Long newMemberId, Model model) {
+        Projects project = projectsService.getProjectById(id);
+        project.getUsers().add(usersService.getUserById(newMemberId));
+
+        projectsService.editProject(project);
+
+        model.addAttribute("availableUserList", getAvailableUsers(project));
+        model.addAttribute("project", project);
+        return "projects/manageMembers";
+    }
+
+    @NotNull
+    private Map<Long, String> getAvailableUsers(Projects project) {
         Map<Long, String> availableUsers = new LinkedHashMap<>();
         for (Users user : usersService.showUsers()) {
             if (!project.getUsers().contains(user)) {
                 availableUsers.put(user.getId(), user.getFullName());
             }
         }
-
-        model.addAttribute("availableUserList", availableUsers);
-        model.addAttribute("project", project);
-        return "projects/manageMembers";
+        return availableUsers;
     }
 }

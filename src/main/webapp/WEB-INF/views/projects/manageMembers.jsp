@@ -9,19 +9,28 @@
 <%@include file="../_menu.jsp" %>
 <h2>${project.name} Members</h2>
 <table>
+    <form method="post" action="${pageContext.request.contextPath}/projects/leader/addProjectMember" name="addProjectMember">
+        <tr>
+
+            <th>
+                <label for="availableUsers">Add User to Project:
+                    <select name="availableUsers" id="availableUsers">
+                        <c:forEach items="${availableUserList}" var="availableUserOption">
+                            <option value="${availableUserOption.key}">${availableUserOption.value}</option>
+                        </c:forEach>
+                    </select>
+                </label>
+            </th>
+            <th>
+                <input name="submit" type="submit" value="submit"/>
+                <input type="hidden" name="projectId" value="${project.id}"/>
+            </th>
+
+        </tr>
+    </form>
     <tr>
-        <th>
-            <label for="availableUsers">Add User to Project:
-                <select name="availableUsers" id="availableUsers">
-                    <c:forEach items="${availableUserList}" var="availableUserOption">
-                        <option value="${availableUserOption.key}">${availableUserOption.value}</option>
-                    </c:forEach>
-                </select>
-            </label>
-        </th>
-        <th><input name="submit" type="submit" value="Add"/></th>
+        <td></td>
     </tr>
-    <tr><td></td></tr>
     <c:forEach items="${project.users}" var="user">
         <tr>
             <td>${user.fullName}</td>
