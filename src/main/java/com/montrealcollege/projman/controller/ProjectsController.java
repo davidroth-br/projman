@@ -1,6 +1,7 @@
 package com.montrealcollege.projman.controller;
 
 import com.montrealcollege.projman.model.Projects;
+import com.montrealcollege.projman.model.Tasks;
 import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.UsersService;
@@ -157,12 +158,40 @@ public class ProjectsController {
         return "projects/manageMembers";
     }
 
-    @PostMapping("/leader/addProjectMember")
-    public Object changeState(@RequestParam("projectId") Long id, @RequestParam("availableUsers") Long newMemberId, Model model) {
+    @PostMapping("/leader/addMember")
+    public Object addMember(@RequestParam("projectId") Long id, @RequestParam("availableUsers") Long newMemberId, Model model) {
         Projects project = projectsService.getProjectById(id);
         project.getUsers().add(usersService.getUserById(newMemberId));
 
         projectsService.editProject(project);
+
+        model.addAttribute("availableUserList", getAvailableUsers(project));
+        model.addAttribute("project", project);
+        return "projects/manageMembers";
+    }
+
+    @GetMapping("/leader/removeMember/{userId}/{projectId}")
+    public String removeMember(@PathVariable Long userId, @PathVariable Long projectId, Model model) {
+        Projects project = projectsService.getProjectById(projectId);
+        Users member = usersService.getUserById(userId);
+
+        boolean canRemove = true;
+        for (Tasks task : project.getTasks()) {
+            if (task.getUsers().contains(member)) {
+                canRemove = false;
+                model.addAttribute("message", "Unable to remove " + member.getFullName() + ".<br>There are tasks associated to this member.");
+                break;
+            } else if (task.getProject().getLeader().getId().equals(userId)) {
+                canRemove = false;
+                model.addAttribute("message", "You are the project leader and cannot be removed.");
+                break;
+            }
+        }
+
+        if(canRemove) {
+            project.getUsers().remove(member);
+            projectsService.editProject(project);
+        }
 
         model.addAttribute("availableUserList", getAvailableUsers(project));
         model.addAttribute("project", project);

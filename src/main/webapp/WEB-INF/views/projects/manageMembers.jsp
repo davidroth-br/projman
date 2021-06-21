@@ -8,8 +8,11 @@
 <body>
 <%@include file="../_menu.jsp" %>
 <h2>${project.name} Members</h2>
+<c:if test="${message != null}">
+    <h3 style="color: red">${message}</h3>
+</c:if>
 <table>
-    <form method="post" action="${pageContext.request.contextPath}/projects/leader/addProjectMember" name="addProjectMember">
+    <form method="post" action="${pageContext.request.contextPath}/projects/leader/addMember" name="addMember">
         <tr>
 
             <th>
@@ -22,7 +25,7 @@
                 </label>
             </th>
             <th>
-                <input name="submit" type="submit" value="submit"/>
+                <input name="submit" type="submit" value="Add"/>
                 <input type="hidden" name="projectId" value="${project.id}"/>
             </th>
 
@@ -34,7 +37,7 @@
     <c:forEach items="${project.users}" var="user">
         <tr>
             <td>${user.fullName}</td>
-            <td><a href="<c:url value="/projects/leader/removeMember/${user.id}"/>">Remove</a></td>
+            <td><a href="<c:url value="/projects/leader/removeMember/${user.id}/${project.id}"/>">Remove</a></td>
         </tr>
     </c:forEach>
 </table>
