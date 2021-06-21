@@ -26,8 +26,7 @@
                 <th>${task.project.name}</th>
                 <th colspan="3">
                     - <a href="<c:url value="/tasks/leader/new/${task.project.id}"/>">Add New Task</a>
-                    | <a href="<c:url value="/projects/leader/manageMembers/${task.project.id}"/>">Manage Project
-                    Members</a>
+                    | <a href="<c:url value="/projects/leader/manageMembers/${task.project.id}"/>">Manage Members</a>
                 </th>
             </tr>
             <c:set var="projectName" value="${task.project.name}"/>

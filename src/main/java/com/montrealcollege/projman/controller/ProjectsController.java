@@ -56,7 +56,7 @@ public class ProjectsController {
     @PostMapping("/admin/validateNew")
     public String validateForm(@ModelAttribute("project") @Valid Projects project, BindingResult errors, Model model) {
 
-        if (leaderNotSelected(project)) project.getUsers().add(project.getLeader());
+        project.getUsers().add(project.getLeader());
 
         boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
 
@@ -89,8 +89,6 @@ public class ProjectsController {
     @PostMapping("/admin/validateEdit")
     public Object validateEdit(@ModelAttribute("project") @Valid Projects project, BindingResult errors, Model model) {
 
-        if (leaderNotSelected(project)) project.getUsers().add(project.getLeader());
-
         boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
 
         if (errors.hasErrors() || isEndDateBeforeStartDate) {
@@ -101,21 +99,13 @@ public class ProjectsController {
             return "projects/projectForm";
         }
 
+        project.setUsers(projectsService.getProjectById(project.getId()).getUsers());
+        project.getUsers().add(project.getLeader());
+
         projectsService.editProject(project);
 
         model.addAttribute("message", project.getName() + " was successfully edited!");
         return new ModelAndView("redirect:/projects/admin/list", (Map<String, ?>) model);
-    }
-
-    private boolean leaderNotSelected(Projects project) {
-        boolean notSelected = true;
-        for (Users selectedUser : project.getUsers()) {
-            if (selectedUser.equals(project.getLeader())) {
-                notSelected = false;
-                break;
-            }
-        }
-        return notSelected;
     }
 
     // DELETE
@@ -177,15 +167,17 @@ public class ProjectsController {
 
         boolean canRemove = true;
         for (Tasks task : project.getTasks()) {
+            System.out.println(task.toString());
             if (task.getUsers().contains(member)) {
                 canRemove = false;
                 model.addAttribute("message", "Unable to remove " + member.getFullName() + ".<br>There are tasks associated to this member.");
                 break;
-            } else if (task.getProject().getLeader().getId().equals(userId)) {
-                canRemove = false;
-                model.addAttribute("message", "You are the project leader and cannot be removed.");
-                break;
             }
+        }
+
+        if (project.getLeader().getId().equals(userId)) {
+            canRemove = false;
+            model.addAttribute("message", member.getFullName() + " is the project leader and cannot be removed.");
         }
 
         if(canRemove) {

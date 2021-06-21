@@ -14,7 +14,6 @@
 <table>
     <form method="post" action="${pageContext.request.contextPath}/projects/leader/addMember" name="addMember">
         <tr>
-
             <th>
                 <label for="availableUsers">Add User to Project:
                     <select name="availableUsers" id="availableUsers">
@@ -28,7 +27,6 @@
                 <input name="submit" type="submit" value="Add"/>
                 <input type="hidden" name="projectId" value="${project.id}"/>
             </th>
-
         </tr>
     </form>
     <tr>
