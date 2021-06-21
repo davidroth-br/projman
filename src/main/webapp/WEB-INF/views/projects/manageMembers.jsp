@@ -34,7 +34,12 @@
     </tr>
     <c:forEach items="${project.users}" var="user">
         <tr>
-            <td>${user.fullName}</td>
+            <td>${user.fullName}
+                <c:if test="${user == project.leader}">
+                    (Leader)
+                </c:if>
+            </td>
+
             <td><a href="<c:url value="/projects/leader/removeMember/${user.id}/${project.id}"/>">Remove</a></td>
         </tr>
     </c:forEach>
