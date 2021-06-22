@@ -5,9 +5,9 @@
     <c:choose>
         <c:when test="${pageContext.request.userPrincipal != null}">
             <a href="<c:url value="/welcome"/>">Home</a> |
-            <a href="<c:url value="/tasks/user/list?message="/>">Your Tasks</a> |
+            <a href="<c:url value="/tasks/user/list"/>">Your Tasks</a> |
             <c:if test="${sessionScope.currentUser.isLeader()}">
-                <a href="<c:url value="/tasks/leader/list?message="/>">Your Projects</a> |
+                <a href="<c:url value="/tasks/leader/list"/>">Your Projects</a> |
             </c:if>
             <c:if test="${sessionScope.currentUser.isAdmin()}">
                 <a href="<c:url value="/users/admin/list"/>">All Users</a> |
