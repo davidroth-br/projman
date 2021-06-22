@@ -3,6 +3,7 @@ package com.montrealcollege.projman.controller;
 import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -131,11 +132,15 @@ public class UsersController {
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
-        String userFullName = usersService.getUserById(id).getFullName();
+        String message = usersService.getUserById(id).getFullName() + " was successfully deleted!";
 
-        usersService.removeUser(id);
+        try {
+            usersService.removeUser(id);
+        } catch (DataIntegrityViolationException e) {
+            message = "Unable to delete.<br>" + usersService.getUserById(id).getFullName() + " is associated to projects.";
+        }
 
-        model.addAttribute("message", userFullName + " was successfully deleted!");
+        model.addAttribute("message", message);
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }

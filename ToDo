@@ -1,5 +1,6 @@
 1. If current user is both admin and leader show admin dashboard
 2. Fix delete user (admin)
+    - don't allow user to delete himself
 3. Make user details better in general
     3.1. Make all calls go back to the right place
 4. Make all error messages red and all success messages blue
