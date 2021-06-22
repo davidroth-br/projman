@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.*;
@@ -37,9 +36,8 @@ public class ProjectsController {
 
     //LIST ALL
     @GetMapping("/admin/list")
-    public String showAllProjects(@RequestParam("message") String message, Model model) {
+    public String showAllProjects(Model model) {
 
-        model.addAttribute("message", message);
         model.addAttribute("projectList", projectsService.showProjects());
         return "projects/projectList";
     }
@@ -121,7 +119,8 @@ public class ProjectsController {
         projectsService.editProject(project);
 
         model.addAttribute("message", project.getName() + " was successfully edited!");
-        return new ModelAndView("redirect:/projects/admin/list", (Map<String, ?>) model);
+        model.addAttribute("projectList", projectsService.showProjects());
+        return "projects/projectList";
     }
 
     // DELETE

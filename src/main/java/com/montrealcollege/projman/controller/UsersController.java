@@ -7,11 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-
-import java.util.Map;
 
 import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.checkPassword;
 import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.encryptPassword;
@@ -25,9 +22,8 @@ public class UsersController {
 
     // LIST ALL
     @GetMapping("/admin/list")
-    public String showAllUsers(@RequestParam("message") String message, Model model) {
+    public String showAllUsers(Model model) {
 
-        model.addAttribute("message", message);
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
@@ -91,7 +87,8 @@ public class UsersController {
         usersService.editUser(user);
 
         model.addAttribute("message", user.getFullName() + " was successfully edited!");
-        return new ModelAndView("redirect:/users/admin/list", (Map<String, ?>) model);
+        model.addAttribute("userList", usersService.showUsers());
+        return "users/userList";
     }
 
     private boolean isEditingSelf(Users user) {
@@ -141,13 +138,13 @@ public class UsersController {
 
         usersService.removeUser(id);
 
-        model.addAttribute("message", userFullName + " was successfully removed!");
+        model.addAttribute("message", userFullName + " was successfully deleted!");
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
 
     // DETAILS
-    @GetMapping("/leader/details/{id}/{from}")
+    @GetMapping("/{from}/details/{id}")
     public String showUser(@SessionAttribute("currentUser") Users currentUser,
                            @PathVariable("id") Long id,
                            @PathVariable("from") String from, Model model) {

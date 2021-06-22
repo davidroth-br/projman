@@ -36,6 +36,6 @@ Projects / Tasks:<br>
     &emsp;&emsp;${task.name}<br>
 </c:forEach>
 <br><br>
-<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/${from}/leader/list?message='">Back</button>
+<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/users/${from}/list'">Back</button>
 </body>
 </html>

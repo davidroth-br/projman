@@ -11,11 +11,14 @@
 <%@include file="../_menu.jsp" %>
 
 <c:if test="${message != null}">
-    <h2>${message}</h2>
+    <c:set var="messageColor" value="color: blue"/>
+    <c:if test="${message.startsWith('Unable')}">
+        <c:set var="messageColor" value="color: red"/>
+    </c:if>
+    <h3 style="${messageColor}">${message}</h3>
 </c:if>
 
 <a href="<c:url value="/users/admin/new"/>"><h2>Add New User</h2></a>
-<br>
 <h2>User List</h2>
 <c:if test="${!empty userList}">
     <table>
@@ -29,7 +32,9 @@
         </tr>
         <c:forEach items="${userList}" var="user">
             <tr>
-                <td><a href="<c:url value="/users/admin/details/${user.id}/users"/>">${user.firstName} ${user.lastName}</a></td>
+                <td>
+                    <a href="<c:url value="/users/admin/details/${user.id}"/>">${user.firstName} ${user.lastName}</a>
+                </td>
                 <td>${user.userName}</td>
                 <td>${user.email}</td>
                 <td>${user.phone}</td>

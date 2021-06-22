@@ -10,8 +10,8 @@
                 <a href="<c:url value="/tasks/leader/list?message="/>">Your Projects</a> |
             </c:if>
             <c:if test="${sessionScope.currentUser.isAdmin()}">
-                <a href="<c:url value="/users/admin/list?message="/>">All Users</a> |
-                <a href="<c:url value="/projects/admin/list?message="/>">All Projects</a> |
+                <a href="<c:url value="/users/admin/list"/>">All Users</a> |
+                <a href="<c:url value="/projects/admin/list"/>">All Projects</a> |
             </c:if>
             <a href="<c:url value="/logout"/>">Logout</a>
         </c:when>
