@@ -17,11 +17,10 @@
     Description: <f:textarea path="description"/> <f:errors path="description"/>
     <br><br>
     Start Date:
-    <f:input path="startDate" type="date"/> <f:errors path="startDate"/>
+    <f:input path="startDate" type="date"/> <f:errors path="startDate"/> ${startDateMessage}
     <br><br>
     End Date:
-    <f:input path="endDate" type="date"/> <f:errors path="endDate"/>
-    <c:if test="${isEndDateBeforeStartDate}">End date must be after start date.</c:if>
+    <f:input path="endDate" type="date"/> <f:errors path="endDate"/> ${endDateMessage}
     <br><br>
     Leader:
     <f:select path="leader">

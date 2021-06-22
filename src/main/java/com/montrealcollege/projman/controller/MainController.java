@@ -8,6 +8,7 @@ import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.UsersService;
 import com.montrealcollege.projman.utils.Constants;
+import com.montrealcollege.projman.utils.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -48,11 +48,11 @@ public class MainController {
                     for (Tasks memberTask : member.getTasks()) {
                         if (memberTask.getProject().getId().equals(project.getId())) {
                             if (memberTask.getState() == 4) {
-                                if (memberTask.getCompletionDate().compareTo(memberTask.getDeadline()) <= 0)
+                                if (!memberTask.getCompletionDate().after(memberTask.getDeadline()))
                                     completedTasksOnTime++;
                                 else completedTasksLate++;
                             } else {
-                                if (memberTask.getDeadline().compareTo(new Date()) < 0) pendingTasksOverdue++;
+                                if (memberTask.getDeadline().before(DateHelper.today())) pendingTasksOverdue++;
                                 else pendingTasksOnTime++;
                             }
                         }
@@ -72,9 +72,9 @@ public class MainController {
         for (Tasks task : tasks) {
             if (task.getState() == 4) {
                 completed ++;
-                if (task.getCompletionDate().compareTo(task.getDeadline()) <= 0) onTime++;
+                if (!task.getCompletionDate().after(task.getDeadline())) onTime++;
             } else {
-                if (task.getDeadline().compareTo(new Date()) < 0) overdue++;
+                if (task.getDeadline().before(DateHelper.today())) overdue++;
             }
         }
         model.addAttribute("totalTasks", totalTasks);

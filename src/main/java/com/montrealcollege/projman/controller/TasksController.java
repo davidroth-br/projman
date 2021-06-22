@@ -7,6 +7,7 @@ import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.TasksService;
 import com.montrealcollege.projman.service.UsersService;
 import com.montrealcollege.projman.utils.Constants;
+import com.montrealcollege.projman.utils.DateHelper;
 import com.montrealcollege.projman.utils.ProjectsConverter;
 import com.montrealcollege.projman.utils.UsersConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/tasks")
@@ -72,7 +70,7 @@ public class TasksController {
     public Object changeState(@PathVariable("from") String from, @RequestParam("id") Long id, @RequestParam("state") int state, Model model) {
         Tasks task = tasksService.getTaskById(id);
         task.setState(state);
-        task.setCompletionDate(state == 4 ? new Date() : null);
+        task.setCompletionDate(state == 4 ? DateHelper.today() : null);
 
         tasksService.editTask(task);
 

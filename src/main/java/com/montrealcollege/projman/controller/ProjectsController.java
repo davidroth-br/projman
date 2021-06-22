@@ -5,6 +5,7 @@ import com.montrealcollege.projman.model.Tasks;
 import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.UsersService;
+import com.montrealcollege.projman.utils.DateHelper;
 import com.montrealcollege.projman.utils.UsersConverter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +60,16 @@ public class ProjectsController {
 
         project.getUsers().add(project.getLeader());
 
-        boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
+        boolean isEndDateBeforeStartDate = project.getEndDate() != null &&
+                project.getStartDate() != null &&
+                !project.getEndDate().after(project.getStartDate());
+        boolean isStartDateInPast = project.getStartDate() != null && project.getStartDate().before(DateHelper.today());
+        boolean isEndDateInPast = project.getEndDate() != null && !project.getEndDate().after(DateHelper.today());
 
-        if (errors.hasErrors() || isEndDateBeforeStartDate) {
+        if (errors.hasErrors() || isEndDateBeforeStartDate || isEndDateInPast || isStartDateInPast) {
             model.addAttribute("userList", usersService.showUsers());
-            model.addAttribute("isEndDateBeforeStartDate", isEndDateBeforeStartDate);
+            model.addAttribute("startDateMessage", isStartDateInPast ? "Start date must not be in the past." : "");
+            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? "End date must be after start date." : isEndDateInPast ? "End date must be in the future." : "");
             model.addAttribute("addOrEdit", "Add");
             model.addAttribute("action", "/projects/admin/validateNew");
             return "projects/projectForm";
@@ -90,11 +96,20 @@ public class ProjectsController {
     @PostMapping("/admin/validateEdit")
     public Object validateEdit(@ModelAttribute("project") @Valid Projects project, BindingResult errors, Model model) {
 
-        boolean isEndDateBeforeStartDate = project.getEndDate() != null && project.getStartDate() != null && project.getEndDate().compareTo(project.getStartDate()) <= 0;
+        boolean isEndDateBeforeStartDate = project.getEndDate() != null &&
+                project.getStartDate() != null &&
+                !project.getEndDate().after(project.getStartDate());
+        boolean isStartDateInPast = project.getStartDate() != null &&
+                !project.getStartDate().equals(projectsService.getProjectById(project.getId()).getStartDate()) &&
+                project.getStartDate().before(DateHelper.today());
+        boolean isEndDateInPast = project.getEndDate() != null &&
+                !project.getEndDate().equals(projectsService.getProjectById(project.getId()).getEndDate()) &&
+                !project.getEndDate().after(DateHelper.today());
 
-        if (errors.hasErrors() || isEndDateBeforeStartDate) {
+        if (errors.hasErrors() || isEndDateBeforeStartDate || isEndDateInPast || isStartDateInPast) {
             model.addAttribute("userList", usersService.showUsers());
-            model.addAttribute("isEndDateBeforeStartDate", isEndDateBeforeStartDate);
+            model.addAttribute("startDateMessage", isStartDateInPast ? "Start date must not be in the past." : "");
+            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? "End date must be after start date." : isEndDateInPast ? "End date must be in the future." : "");
             model.addAttribute("addOrEdit", "Edit");
             model.addAttribute("action", "/projects/admin/validateEdit");
             return "projects/projectForm";

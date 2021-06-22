@@ -39,7 +39,6 @@ public class Projects {
     @Column(name = "END_DATE")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message="Please enter an end date.")
-    @Future(message="End date must be in the future.")
     private Date endDate;
 
     @ManyToOne
