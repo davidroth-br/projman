@@ -11,7 +11,11 @@
 <%@include file="../_menu.jsp" %>
 
 <c:if test="${message != null}">
-    <h2>${message}</h2>
+    <c:set var="messageColor" value="color: blue"/>
+    <c:if test="${message.startsWith('Unable')}">
+        <c:set var="messageColor" value="color: red"/>
+    </c:if>
+    <h3 style="${messageColor}">${message}</h3>
 </c:if>
 
 <h2><a href="<c:url value="/projects/admin/new"/>">Add New Project</a></h2>

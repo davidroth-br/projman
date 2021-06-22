@@ -8,6 +8,7 @@ import com.montrealcollege.projman.service.UsersService;
 import com.montrealcollege.projman.utils.UsersConverter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -112,9 +113,14 @@ public class ProjectsController {
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
-        String message = projectsService.getProjectById(id).getName() + " was successfully removed!";
+        String message = projectsService.getProjectById(id).getName() + " was successfully deleted!";
 
-        projectsService.removeProject(id);
+        try {
+            projectsService.removeProject(id);
+        } catch (DataIntegrityViolationException e) {
+            message = "Unable to delete.<br>" + projectsService.getProjectById(id).getName() + " has tasks associated to it.";
+        }
+
 
         model.addAttribute("message", message);
         model.addAttribute("projectList", projectsService.showProjects());
