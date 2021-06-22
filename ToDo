@@ -2,9 +2,4 @@
 2. Fix delete user (admin)
 3. Make user details better in general
     3.1. Make all calls go back to the right place
-4. Force capital letters for first letters of:
-    - Users.firstName
-    - Users.lasName
-    - Projects.name
-    - Tasks.name
-5. Make all error messages red and all success messages blue
+4. Make all error messages red and all success messages blue
