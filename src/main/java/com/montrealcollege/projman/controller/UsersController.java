@@ -120,9 +120,7 @@ public class UsersController {
             return "users/changePassword";
         }
 
-        user.setRole(usersService.getUserById(user.getId()).getRole());
-        user.setEncryptedPassword(encryptPassword(newPassword));
-        usersService.editUser(user);
+        usersService.editUser(user, newPassword);
 
         model.addAttribute("message", user.getFullName() + "'s password was successfully changed!");
         model.addAttribute("userList", usersService.showUsers());

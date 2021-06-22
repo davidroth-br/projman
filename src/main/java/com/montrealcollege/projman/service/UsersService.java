@@ -36,8 +36,15 @@ public class UsersService {
     }
 
     public void editUser(Users user) {
+        editUser(user, "");
+    }
+    public void editUser(Users user, String newPassword) {
         user.setFirstName(capitalizeFirstLetter(user.getFirstName()));
         user.setLastName(capitalizeFirstLetter(user.getLastName()));
+        if (!newPassword.isEmpty()) {
+            user.setRole(getUserById(user.getId()).getRole());
+            user.setEncryptedPassword(encryptPassword(newPassword));
+        }
         usersDAO.updateUser(user);
     }
 
