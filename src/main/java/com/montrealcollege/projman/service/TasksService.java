@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.montrealcollege.projman.utils.Helpers.capitalizeFirstLetter;
+
 @Service
 public class TasksService {
 
@@ -14,6 +16,7 @@ public class TasksService {
     TasksDAO tasksDAO;
 
     public void addTask(Tasks task) {
+        task.setName(capitalizeFirstLetter(task.getName()));
         tasksDAO.createTask(task);
     }
 
@@ -30,6 +33,7 @@ public class TasksService {
     }
 
     public void editTask(Tasks task) {
+        task.setName(capitalizeFirstLetter(task.getName()));
         tasksDAO.updateTask(task);
     }
 

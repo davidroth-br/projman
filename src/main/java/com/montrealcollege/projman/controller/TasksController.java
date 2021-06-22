@@ -7,7 +7,7 @@ import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.TasksService;
 import com.montrealcollege.projman.service.UsersService;
 import com.montrealcollege.projman.utils.Constants;
-import com.montrealcollege.projman.utils.DateHelper;
+import com.montrealcollege.projman.utils.Helpers;
 import com.montrealcollege.projman.utils.ProjectsConverter;
 import com.montrealcollege.projman.utils.UsersConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +70,7 @@ public class TasksController {
     public Object changeState(@PathVariable("from") String from, @RequestParam("id") Long id, @RequestParam("state") int state, Model model) {
         Tasks task = tasksService.getTaskById(id);
         task.setState(state);
-        task.setCompletionDate(state == 4 ? DateHelper.today() : null);
+        task.setCompletionDate(state == 4 ? Helpers.today() : null);
 
         tasksService.editTask(task);
 

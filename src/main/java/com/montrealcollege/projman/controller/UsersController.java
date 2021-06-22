@@ -48,7 +48,6 @@ public class UsersController {
             return "users/newUser";
         }
 
-        user.setEncryptedPassword(encryptPassword(user.getEncryptedPassword()));
         usersService.addUser(user);
 
         model.addAttribute("message", user.getFullName() + " was successfully added as " + user.getUserName() + "!");

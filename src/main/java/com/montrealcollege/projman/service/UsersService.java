@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.encryptPassword;
+import static com.montrealcollege.projman.utils.Helpers.capitalizeFirstLetter;
+
 @Service
 public class UsersService {
 
@@ -14,6 +17,9 @@ public class UsersService {
     UsersDAO usersDAO;
 
     public void addUser(Users user) {
+        user.setFirstName(capitalizeFirstLetter(user.getFirstName()));
+        user.setLastName(capitalizeFirstLetter(user.getLastName()));
+        user.setEncryptedPassword(encryptPassword(user.getEncryptedPassword()));
         usersDAO.createUser(user);
     }
 
@@ -30,6 +36,8 @@ public class UsersService {
     }
 
     public void editUser(Users user) {
+        user.setFirstName(capitalizeFirstLetter(user.getFirstName()));
+        user.setLastName(capitalizeFirstLetter(user.getLastName()));
         usersDAO.updateUser(user);
     }
 

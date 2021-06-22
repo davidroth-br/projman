@@ -7,3 +7,4 @@
     - Users.lasName
     - Projects.name
     - Tasks.name
+5. Make all error messages red and all success messages blue

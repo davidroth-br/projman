@@ -3,7 +3,7 @@ package com.montrealcollege.projman.utils;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateHelper {
+public class Helpers {
     public static Date today() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -12,5 +12,9 @@ public class DateHelper {
         calendar.set(Calendar.MILLISECOND, 0);
 
         return calendar.getTime();
+    }
+
+    public static String capitalizeFirstLetter(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }

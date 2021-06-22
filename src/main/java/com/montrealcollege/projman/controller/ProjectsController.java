@@ -5,7 +5,6 @@ import com.montrealcollege.projman.model.Tasks;
 import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.UsersService;
-import com.montrealcollege.projman.utils.DateHelper;
 import com.montrealcollege.projman.utils.UsersConverter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
+
+import static com.montrealcollege.projman.utils.Helpers.today;
 
 @Controller
 @RequestMapping("/projects")
@@ -61,8 +62,8 @@ public class ProjectsController {
         boolean isEndDateBeforeStartDate = project.getEndDate() != null &&
                 project.getStartDate() != null &&
                 !project.getEndDate().after(project.getStartDate());
-        boolean isStartDateInPast = project.getStartDate() != null && project.getStartDate().before(DateHelper.today());
-        boolean isEndDateInPast = project.getEndDate() != null && !project.getEndDate().after(DateHelper.today());
+        boolean isStartDateInPast = project.getStartDate() != null && project.getStartDate().before(today());
+        boolean isEndDateInPast = project.getEndDate() != null && !project.getEndDate().after(today());
 
         if (errors.hasErrors() || isEndDateBeforeStartDate || isEndDateInPast || isStartDateInPast) {
             model.addAttribute("userList", usersService.showUsers());
@@ -99,10 +100,10 @@ public class ProjectsController {
                 !project.getEndDate().after(project.getStartDate());
         boolean isStartDateInPast = project.getStartDate() != null &&
                 !project.getStartDate().equals(projectsService.getProjectById(project.getId()).getStartDate()) &&
-                project.getStartDate().before(DateHelper.today());
+                project.getStartDate().before(today());
         boolean isEndDateInPast = project.getEndDate() != null &&
                 !project.getEndDate().equals(projectsService.getProjectById(project.getId()).getEndDate()) &&
-                !project.getEndDate().after(DateHelper.today());
+                !project.getEndDate().after(today());
 
         if (errors.hasErrors() || isEndDateBeforeStartDate || isEndDateInPast || isStartDateInPast) {
             model.addAttribute("userList", usersService.showUsers());

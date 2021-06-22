@@ -8,7 +8,7 @@ import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.UsersService;
 import com.montrealcollege.projman.utils.Constants;
-import com.montrealcollege.projman.utils.DateHelper;
+import com.montrealcollege.projman.utils.Helpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,7 +52,7 @@ public class MainController {
                                     completedTasksOnTime++;
                                 else completedTasksLate++;
                             } else {
-                                if (memberTask.getDeadline().before(DateHelper.today())) pendingTasksOverdue++;
+                                if (memberTask.getDeadline().before(Helpers.today())) pendingTasksOverdue++;
                                 else pendingTasksOnTime++;
                             }
                         }
@@ -74,7 +74,7 @@ public class MainController {
                 completed ++;
                 if (!task.getCompletionDate().after(task.getDeadline())) onTime++;
             } else {
-                if (task.getDeadline().before(DateHelper.today())) overdue++;
+                if (task.getDeadline().before(Helpers.today())) overdue++;
             }
         }
         model.addAttribute("totalTasks", totalTasks);

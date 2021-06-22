@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.montrealcollege.projman.utils.Helpers.capitalizeFirstLetter;
+
 @Service
 public class ProjectsService {
 
@@ -15,6 +17,7 @@ public class ProjectsService {
     ProjectsDAO projectsDAO;
 
     public void addProject(Projects project) {
+        project.setName(capitalizeFirstLetter(project.getName()));
         projectsDAO.createProject(project);
     }
 
@@ -27,6 +30,7 @@ public class ProjectsService {
     }
 
     public void editProject(Projects project) {
+        project.setName(capitalizeFirstLetter(project.getName()));
         projectsDAO.updateProject(project);
     }
 
