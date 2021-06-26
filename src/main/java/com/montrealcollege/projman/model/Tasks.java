@@ -32,7 +32,7 @@ public class Tasks {
     @Column(name = "DEADLINE")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Please enter a deadline")
-    @Future(message="Deadline must be in the future.")
+//    @Future(message="Deadline must be in the future.")
     private Date deadline;
 
     @Column(name = "PRIORITY")

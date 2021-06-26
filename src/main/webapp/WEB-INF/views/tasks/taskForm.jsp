@@ -9,14 +9,14 @@
 </head>
 <body>
 <%@include file="../_menu.jsp" %>
-<h2>${task.project.name} - New Task</h2>
+<h2>${task.project.name} - ${addOrEdit} Task</h2>
 <f:form method="post" action="${pageContext.request.contextPath}${action}" modelAttribute="task">
     Task Name: <f:input path="name"/> <f:errors path="name"/>
     <br><br>
     Description: <f:textarea path="description"/> <f:errors path="description"/>
     <br><br>
     Deadline:
-    <f:input path="deadline" type="date"/> <f:errors path="deadline"/>
+    <f:input path="deadline" type="date"/> <f:errors path="deadline"/> ${deadlineMessage}
     <br><br>
     Completion Date:
     <f:input path="completionDate" type="date"/> <f:errors path="completionDate"/>

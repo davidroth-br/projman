@@ -2,6 +2,7 @@ package com.montrealcollege.projman.service;
 
 import com.montrealcollege.projman.dao.TasksDAO;
 import com.montrealcollege.projman.model.Tasks;
+import com.montrealcollege.projman.utils.Helpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,13 @@ public class TasksService {
 
     public Tasks getTaskById(Long id) {
         return tasksDAO.findTaskById(id);
+    }
+
+    public void editTask(Long id, int state) {
+        Tasks task = getTaskById(id);
+        task.setState(state);
+        task.setCompletionDate(state == 4 ? Helpers.today() : null);
+        editTask(task);
     }
 
     public void editTask(Tasks task) {

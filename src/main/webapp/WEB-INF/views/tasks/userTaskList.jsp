@@ -18,12 +18,16 @@
                 <c:if test="${projectName != task.project.name}">
                     <tr style="text-align:left">
                         <th>
+                            <h3>
                             <c:if test="${projectName != ''}"><br></c:if>
                                 ${task.project.name}
+                            </h3>
                         </th>
                         <th colspan="5" style="vertical-align:bottom">
+                            <h3>
                             (Project Leader: ${task.project.leader.fullName})
                             <a href="<c:url value="/projects/user/members/${task.project.id}"/>">Show members</a>
+                            </h3>
                         </th>
                     </tr>
                     <c:set var="projectName" value="${task.project.name}"/>

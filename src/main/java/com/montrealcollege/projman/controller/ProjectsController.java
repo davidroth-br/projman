@@ -49,7 +49,7 @@ public class ProjectsController {
 
         model.addAttribute("project", new Projects());
         model.addAttribute("userList", usersService.showUsers());
-        model.addAttribute("addOrEdit", "Add");
+        model.addAttribute("addOrEdit", "New");
         model.addAttribute("action", "/projects/admin/validateNew");
         return "projects/projectForm";
     }
@@ -69,7 +69,7 @@ public class ProjectsController {
             model.addAttribute("userList", usersService.showUsers());
             model.addAttribute("startDateMessage", isStartDateInPast ? "Start date must not be in the past." : "");
             model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? "End date must be after start date." : isEndDateInPast ? "End date must be in the future." : "");
-            model.addAttribute("addOrEdit", "Add");
+            model.addAttribute("addOrEdit", "New");
             model.addAttribute("action", "/projects/admin/validateNew");
             return "projects/projectForm";
         }

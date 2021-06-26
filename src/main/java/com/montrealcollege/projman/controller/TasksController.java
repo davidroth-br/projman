@@ -7,7 +7,6 @@ import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.TasksService;
 import com.montrealcollege.projman.service.UsersService;
 import com.montrealcollege.projman.utils.Constants;
-import com.montrealcollege.projman.utils.Helpers;
 import com.montrealcollege.projman.utils.ProjectsConverter;
 import com.montrealcollege.projman.utils.UsersConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+
+import static com.montrealcollege.projman.utils.Helpers.today;
 
 @Controller
 @RequestMapping("/tasks")
@@ -43,13 +44,13 @@ public class TasksController {
 
     //LIST ALL TASKS IN ALL PROJECTS LEAD BY CURRENT USER
     @GetMapping("/leader/list")
-    public String showAllTasks(@SessionAttribute("currentUser") Users currentUser, @RequestParam("message") String message, Model model) {
+    public String showAllTasks(@SessionAttribute("currentUser") Users currentUser, Model model) {
 
         if (!currentUser.isLeader()){
             return "403Page";
         }
 
-        model.addAttribute("message", message);
+//        model.addAttribute("message", message);
         model.addAttribute("action", "/tasks/leader/changeState");
         model.addAttribute("taskList", tasksService.showLeaderTasks());
         addPriorityAndStateAttributes(model);
@@ -68,20 +69,16 @@ public class TasksController {
 
     @PostMapping("/{from}/changeState")
     public Object changeState(@PathVariable("from") String from, @RequestParam("id") Long id, @RequestParam("state") int state, Model model) {
-        Tasks task = tasksService.getTaskById(id);
-        task.setState(state);
-        task.setCompletionDate(state == 4 ? Helpers.today() : null);
 
-        tasksService.editTask(task);
+        tasksService.editTask(id, state);
 
         addPriorityAndStateAttributes(model);
-        if (from.equals("user")) {
-            model.addAttribute("taskList", tasksService.showUserTasks());
-            return "tasks/userTaskList";
-        } else {
-            model.addAttribute("taskList", tasksService.showLeaderTasks());
-            return "tasks/leaderTaskList";
-        }
+
+        String returnString = "tasks/" + from + "TaskList";
+        model.addAttribute("action", "/tasks/" + from + "/changeState" );
+        model.addAttribute("taskList", from.equals("user") ? tasksService.showUserTasks() : tasksService.showLeaderTasks());
+        System.out.println(returnString);
+        return returnString;
      }
 
     //NEW
@@ -92,7 +89,7 @@ public class TasksController {
         Tasks task = new Tasks();
         task.setProject(project);
         model.addAttribute("task", task);
-        model.addAttribute("addOrEdit", "Add");
+        model.addAttribute("addOrEdit", "New");
         model.addAttribute("action", "/tasks/leader/validateNew");
         addPriorityAndStateAttributes(model);
         return "tasks/taskForm";
@@ -101,14 +98,17 @@ public class TasksController {
     @PostMapping("/leader/validateNew")
     public String validateForm(@ModelAttribute("task") @Valid Tasks task, BindingResult errors, Model model) {
 
-        if (errors.hasErrors()) {
-            System.out.println(errors);
+        boolean isDeadlineInPast = task.getDeadline() != null && !task.getDeadline().after(today());
+
+        if (errors.hasErrors() || isDeadlineInPast) {
+            model.addAttribute("deadlineMessage", isDeadlineInPast ? "Deadline must be in the future." : "");
             model.addAttribute("action", "/tasks/leader/validateNew");
             model.addAttribute("project", task.getProject());
-            model.addAttribute("addOrEdit", "Add");
+            model.addAttribute("addOrEdit", "New");
             addPriorityAndStateAttributes(model);
             return "tasks/taskForm";
         }
+
         tasksService.addTask(task);
 
         model.addAttribute("message", task.getName() + " was successfully added!");
@@ -130,9 +130,8 @@ public class TasksController {
 
     @PostMapping("/leader/validateEdit")
     public Object validateEdit(@ModelAttribute("task") @Valid Tasks task, BindingResult errors, Model model) {
-System.out.println("VALIDATE EDIT");
+
         if (errors.hasErrors()) {
-            System.out.println("HAS ERRORS");
             model.addAttribute("action", "/tasks/leader/validateEdit");
             model.addAttribute("addOrEdit", "Edit");
             addPriorityAndStateAttributes(model);

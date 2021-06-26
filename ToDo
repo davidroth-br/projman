@@ -4,3 +4,4 @@
 3. Make user details better in general
     3.1. Make all calls go back to the right place
 4. Make all error messages red and all success messages blue
+5. Refactor TaskController
