@@ -10,7 +10,7 @@
 <%@include file="../_menu.jsp" %>
 
 <c:if test="${message != null}">
-    <h2>${message}</h2>
+    <h3 style="${messageColor}">${message}</h3>
 </c:if>
 <h2>Projects You Lead</h2>
 <c:set var="projectName" value=""/>

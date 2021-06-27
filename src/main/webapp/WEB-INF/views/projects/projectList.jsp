@@ -13,7 +13,6 @@
 <c:if test="${message != null}">
     <h3 style="${messageColor}">${message}</h3>
 </c:if>
-
 <h2><a href="<c:url value="/projects/admin/new"/>">Add New Project</a></h2>
 <h2>Project List</h2>
 <c:if test="${!empty projectList}">

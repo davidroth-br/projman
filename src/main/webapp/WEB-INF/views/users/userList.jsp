@@ -11,13 +11,8 @@
 <%@include file="../_menu.jsp" %>
 
 <c:if test="${message != null}">
-    <c:set var="messageColor" value="color: blue"/>
-    <c:if test="${message.startsWith('Unable')}">
-        <c:set var="messageColor" value="color: red"/>
-    </c:if>
     <h3 style="${messageColor}">${message}</h3>
 </c:if>
-
 <a href="<c:url value="/users/admin/new"/>"><h2>Add New User</h2></a>
 <h2>User List</h2>
 <c:if test="${!empty userList}">
