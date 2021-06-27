@@ -6,20 +6,25 @@
 <html>
 <head>
     <title>${addOrEdit} Task</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <%@include file="../_menu.jsp" %>
 <h2>${task.project.name} - ${addOrEdit} Task</h2>
 <f:form method="post" action="${pageContext.request.contextPath}${action}" modelAttribute="task">
-    Task Name: <f:input path="name"/> <f:errors path="name"/>
+    Task Name: <f:input path="name"/> <f:errors cssClass="error" path="name"/>
     <br><br>
-    Description: <f:textarea path="description"/> <f:errors path="description"/>
+    Description: <f:textarea path="description"/> <f:errors cssClass="error" path="description"/>
     <br><br>
     Deadline:
-    <f:input path="deadline" type="date"/> <f:errors path="deadline"/> ${deadlineMessage}
+    <f:input path="deadline" type="date"/> <f:errors cssClass="error" path="deadline"/> <nobr class="error"> ${deadlineMessage}</nobr>
     <br><br>
     Completion Date:
-    <f:input path="completionDate" type="date"/> <f:errors path="completionDate"/>
+    <f:input path="completionDate" type="date"/> <f:errors cssClass="error" path="completionDate"/>
     <br><br>
     Priority: <f:select path="priority" items="${priorityList}"/>
     <br><br>

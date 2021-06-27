@@ -6,21 +6,26 @@
 <html>
 <head>
     <title>${addOrEdit} Project</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <%@include file="../_menu.jsp" %>
 
 <f:form method="post" action="${pageContext.request.contextPath}${action}" modelAttribute="project">
 
-    Project Name: <f:input path="name"/> <f:errors path="name" cssClass="error"/>
+    Project Name: <f:input path="name"/> <f:errors cssClass="error" path="name"/>
     <br><br>
-    Description: <f:textarea path="description"/> <f:errors path="description"/>
+    Description: <f:textarea path="description"/> <f:errors cssClass="error" path="description"/>
     <br><br>
     Start Date:
-    <f:input path="startDate" type="date"/> <f:errors path="startDate"/> ${startDateMessage}
+    <f:input path="startDate" type="date"/> <f:errors cssClass="error" path="startDate"/> <nobr class="error">${startDateMessage}</nobr>
     <br><br>
     End Date:
-    <f:input path="endDate" type="date"/> <f:errors path="endDate"/> ${endDateMessage}
+    <f:input path="endDate" type="date"/> <f:errors cssClass="error" path="endDate"/> <nobr class="error">${endDateMessage}</nobr>
     <br><br>
     Leader:
     <f:select path="leader">
