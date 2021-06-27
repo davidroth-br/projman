@@ -29,8 +29,6 @@ public class MainController {
     @Autowired
     private ProjectsService projectsService;
 
-    private final Constants constants = new Constants();
-
     @GetMapping(value = "/welcome")
     public String welcomePage(Model model) {
 
@@ -83,7 +81,7 @@ public class MainController {
         model.addAttribute("pendingOnTime", totalTasks - completed - overdue);
         model.addAttribute("pendingOverdue", overdue);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("stateList", constants.stateList);
+        model.addAttribute("stateList", Constants.stateList);
         return "users/dashboard";
     }
 

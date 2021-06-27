@@ -5,6 +5,7 @@ import com.montrealcollege.projman.model.Tasks;
 import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.ProjectsService;
 import com.montrealcollege.projman.service.UsersService;
+import com.montrealcollege.projman.utils.Constants;
 import com.montrealcollege.projman.utils.UsersConverter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,16 +60,14 @@ public class ProjectsController {
 
         project.getUsers().add(project.getLeader());
 
-        boolean isEndDateBeforeStartDate = project.getEndDate() != null &&
-                project.getStartDate() != null &&
-                !project.getEndDate().after(project.getStartDate());
-        boolean isStartDateInPast = project.getStartDate() != null && project.getStartDate().before(today());
-        boolean isEndDateInPast = project.getEndDate() != null && !project.getEndDate().after(today());
+        boolean isEndDateBeforeStartDate = checkEndBeforeStart(project);
+        boolean isStartDateInPast = checkStartInPast(project, true);
+        boolean isEndDateInPast = checkEndInPast(project, true);
 
         if (errors.hasErrors() || isEndDateBeforeStartDate || isEndDateInPast || isStartDateInPast) {
             model.addAttribute("userList", usersService.showUsers());
-            model.addAttribute("startDateMessage", isStartDateInPast ? "Start date must not be in the past." : "");
-            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? "End date must be after start date." : isEndDateInPast ? "End date must be in the future." : "");
+            model.addAttribute("startDateMessage", isStartDateInPast ? Constants.startInPast : "");
+            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? Constants.endBeforeStart : isEndDateInPast ? Constants.endInPast : "");
             model.addAttribute("addOrEdit", "New");
             model.addAttribute("action", "/projects/admin/validateNew");
             return "projects/projectForm";
@@ -77,6 +76,7 @@ public class ProjectsController {
         projectsService.addProject(project);
 
         model.addAttribute("message", project.getName() + " was successfully added!");
+        model.addAttribute("messageColor", Constants.blue);
         model.addAttribute("projectList", projectsService.showProjects());
         return "projects/projectList";
     }
@@ -95,20 +95,14 @@ public class ProjectsController {
     @PostMapping("/admin/validateEdit")
     public Object validateEdit(@ModelAttribute("project") @Valid Projects project, BindingResult errors, Model model) {
 
-        boolean isEndDateBeforeStartDate = project.getEndDate() != null &&
-                project.getStartDate() != null &&
-                !project.getEndDate().after(project.getStartDate());
-        boolean isStartDateInPast = project.getStartDate() != null &&
-                !project.getStartDate().equals(projectsService.getProjectById(project.getId()).getStartDate()) &&
-                project.getStartDate().before(today());
-        boolean isEndDateInPast = project.getEndDate() != null &&
-                !project.getEndDate().equals(projectsService.getProjectById(project.getId()).getEndDate()) &&
-                !project.getEndDate().after(today());
+        boolean isEndDateBeforeStartDate = checkEndBeforeStart(project);
+        boolean isStartDateInPast = checkStartInPast(project, false);
+        boolean isEndDateInPast = checkEndInPast(project, false);
 
         if (errors.hasErrors() || isEndDateBeforeStartDate || isEndDateInPast || isStartDateInPast) {
             model.addAttribute("userList", usersService.showUsers());
-            model.addAttribute("startDateMessage", isStartDateInPast ? "Start date must not be in the past." : "");
-            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? "End date must be after start date." : isEndDateInPast ? "End date must be in the future." : "");
+            model.addAttribute("startDateMessage", isStartDateInPast ? Constants.startInPast : "");
+            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? Constants.endBeforeStart : isEndDateInPast ? Constants.endInPast : "");
             model.addAttribute("addOrEdit", "Edit");
             model.addAttribute("action", "/projects/admin/validateEdit");
             return "projects/projectForm";
@@ -120,22 +114,43 @@ public class ProjectsController {
         projectsService.editProject(project);
 
         model.addAttribute("message", project.getName() + " was successfully edited!");
+        model.addAttribute("messageColor", Constants.blue);
         model.addAttribute("projectList", projectsService.showProjects());
         return "projects/projectList";
+    }
+
+    private boolean checkEndInPast(Projects project, boolean isNew) {
+        return isNew ? project.getEndDate() != null && !project.getEndDate().after(today()) : project.getEndDate() != null &&
+                !project.getEndDate().equals(projectsService.getProjectById(project.getId()).getEndDate()) &&
+                !project.getEndDate().after(today());
+    }
+
+    private boolean checkStartInPast(Projects project, boolean isNew) {
+        return isNew ? project.getStartDate() != null && project.getStartDate().before(today()) : project.getStartDate() != null &&
+                !project.getStartDate().equals(projectsService.getProjectById(project.getId()).getStartDate()) &&
+                project.getStartDate().before(today());
+    }
+
+    private boolean checkEndBeforeStart(Projects project) {
+        return project.getEndDate() != null &&
+                project.getStartDate() != null &&
+                !project.getEndDate().after(project.getStartDate());
     }
 
     // DELETE
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
-        String message = projectsService.getProjectById(id).getName() + " was successfully deleted!";
+        String projectName = projectsService.getProjectById(id).getName();
+        String message = projectName + " was successfully deleted!";
 
         try {
             projectsService.removeProject(id);
+            model.addAttribute("messageColor", Constants.blue);
         } catch (DataIntegrityViolationException e) {
-            message = "Unable to delete.<br>" + projectsService.getProjectById(id).getName() + " has tasks associated to it.";
+            message =  "Unable to delete.<br>" + projectName + " has tasks associated to it.";
+            model.addAttribute("messageColor", Constants.red);
         }
-
 
         model.addAttribute("message", message);
         model.addAttribute("projectList", projectsService.showProjects());
@@ -206,6 +221,7 @@ public class ProjectsController {
             projectsService.editProject(project);
         }
 
+        model.addAttribute("messageColor", Constants.red);
         model.addAttribute("availableUserList", getAvailableUsers(project));
         model.addAttribute("project", project);
         return "projects/manageMembers";

@@ -12,7 +12,7 @@
 
 <f:form method="post" action="${pageContext.request.contextPath}${action}" modelAttribute="project">
 
-    Project Name: <f:input path="name"/> <f:errors path="name"/>
+    Project Name: <f:input path="name"/> <f:errors path="name" cssClass="error"/>
     <br><br>
     Description: <f:textarea path="description"/> <f:errors path="description"/>
     <br><br>

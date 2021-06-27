@@ -34,8 +34,6 @@ public class TasksController {
     @Autowired
     private ProjectsService projectsService;
 
-    private final Constants constants = new Constants();
-
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Projects.class, new ProjectsConverter(projectsService));
@@ -174,7 +172,7 @@ public class TasksController {
     }
 
     private void addPriorityAndStateAttributes(Model model) {
-        model.addAttribute("priorityList", constants.priorityList);
-        model.addAttribute("stateList", constants.stateList);
+        model.addAttribute("priorityList", Constants.priorityList);
+        model.addAttribute("stateList", Constants.stateList);
     }
 }

@@ -5,18 +5,24 @@ import java.util.Map;
 
 public class Constants {
 
-    public Map<Integer, String> priorityList = new LinkedHashMap<>();
-    public Map<Integer, String> stateList = new LinkedHashMap<>();
+    public static final Map<Integer, String> priorityList = new LinkedHashMap<Integer, String>() {{
+        put(0, "Low");
+        put(1, "Medium");
+        put(2, "High");
+    }};
+    public static final Map<Integer, String> stateList = new LinkedHashMap<Integer, String>() {{
+        put(0, "Not Assigned");
+        put(1, "To Do");
+        put(2, "In progress");
+        put(3, "Quality Assurance");
+        put(4, "Completed");
+    }};
 
-    public Constants() {
-        priorityList.put(0, "Low");
-        priorityList.put(1, "Medium");
-        priorityList.put(2, "High");
+    public static final String red = "color: red";
+    public static final String blue = "color: blue";
 
-        stateList.put(0, "Not Assigned");
-        stateList.put(1, "To Do");
-        stateList.put(2, "In progress");
-        stateList.put(3, "Quality Assurance");
-        stateList.put(4, "Completed");
-    }
+    public static final String startInPast = "Start date must not be in the past.";
+    public static final String endInPast = "End date must be in the future.";
+    public static final String endBeforeStart = "End date must be after start date.";
+
 }
