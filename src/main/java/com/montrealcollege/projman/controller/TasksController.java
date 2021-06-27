@@ -48,7 +48,6 @@ public class TasksController {
             return "403Page";
         }
 
-//        model.addAttribute("message", message);
         model.addAttribute("action", "/tasks/leader/changeState");
         model.addAttribute("taskList", tasksService.showLeaderTasks());
         addPriorityAndStateAttributes(model);
@@ -109,6 +108,7 @@ public class TasksController {
 
         tasksService.addTask(task);
 
+        model.addAttribute("messageColor", Constants.blue);
         model.addAttribute("message", task.getName() + " was successfully added!");
         model.addAttribute("taskList", tasksService.showLeaderTasks());
         addPriorityAndStateAttributes(model);
@@ -138,6 +138,7 @@ public class TasksController {
 
         tasksService.editTask(task);
 
+        model.addAttribute("messageColor", Constants.blue);
         model.addAttribute("message", task.getName() + " was successfully edited!");
         model.addAttribute("taskList", tasksService.showLeaderTasks());
         addPriorityAndStateAttributes(model);
@@ -152,6 +153,7 @@ public class TasksController {
 
         tasksService.removeTask(id);
 
+        model.addAttribute("messageColor", Constants.blue);
         model.addAttribute("message", message);
         model.addAttribute("taskList", tasksService.showLeaderTasks());
         addPriorityAndStateAttributes(model);

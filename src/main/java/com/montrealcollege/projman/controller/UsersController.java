@@ -2,6 +2,7 @@ package com.montrealcollege.projman.controller;
 
 import com.montrealcollege.projman.model.Users;
 import com.montrealcollege.projman.service.UsersService;
+import com.montrealcollege.projman.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.checkPassword;
-import static com.montrealcollege.projman.utils.EncryptedPasswordUtils.encryptPassword;
 
 @Controller
 @RequestMapping("/users")
@@ -51,6 +51,7 @@ public class UsersController {
 
         usersService.addUser(user);
 
+        model.addAttribute("messageColor", Constants.blue);
         model.addAttribute("message", user.getFullName() + " was successfully added as " + user.getUserName() + "!");
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
@@ -86,6 +87,7 @@ public class UsersController {
 
         usersService.editUser(user);
 
+        model.addAttribute("messageColor", Constants.blue);
         model.addAttribute("message", user.getFullName() + " was successfully edited!");
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
@@ -123,6 +125,7 @@ public class UsersController {
 
         usersService.editUser(user, newPassword);
 
+        model.addAttribute("messageColor", Constants.blue);
         model.addAttribute("message", user.getFullName() + "'s password was successfully changed!");
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
@@ -132,12 +135,15 @@ public class UsersController {
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
-        String message = usersService.getUserById(id).getFullName() + " was successfully deleted!";
+        String userFullName = usersService.getUserById(id).getFullName();
+        String message = userFullName + " was successfully deleted!";
 
         try {
             usersService.removeUser(id);
+            model.addAttribute("messageColor", Constants.blue);
         } catch (DataIntegrityViolationException e) {
-            message = "Unable to delete.<br>" + usersService.getUserById(id).getFullName() + " is associated to projects.";
+            model.addAttribute("messageColor", Constants.red);
+            message = "Unable to delete.<br>" + userFullName + " is associated to projects.";
         }
 
         model.addAttribute("message", message);
