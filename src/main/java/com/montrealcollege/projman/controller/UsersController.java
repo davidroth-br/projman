@@ -133,20 +133,25 @@ public class UsersController {
 
     // DELETE
     @GetMapping("/admin/remove/{id}")
-    public String removeUser(@PathVariable Long id, Model model) {
+    public String removeUser(@SessionAttribute("currentUser") Users currentUser,
+                             @PathVariable Long id, Model model) {
 
-        String userFullName = usersService.getUserById(id).getFullName();
-        String message = userFullName + " was successfully deleted!";
+        Users user = usersService.getUserById(id);
 
-        try {
-            usersService.removeUser(id);
-            model.addAttribute("messageColor", Constants.blue);
-        } catch (DataIntegrityViolationException e) {
+        if (id == currentUser.getId()) {
             model.addAttribute("messageColor", Constants.red);
-            message = "Unable to delete.<br>" + userFullName + " is associated to projects.";
+            model.addAttribute("message", "Unable to delete.<br>You can't delete yourself.");
+        } else {
+            try {
+                usersService.removeUser(id);
+                model.addAttribute("messageColor", Constants.blue);
+                model.addAttribute("message", user.getFullName() + Constants.deleteSuccess);
+            } catch (DataIntegrityViolationException e) {
+                model.addAttribute("messageColor", Constants.red);
+                model.addAttribute("message", "Unable to delete.<br>" + user.getFullName() + " is associated to projects.");
+            }
         }
 
-        model.addAttribute("message", message);
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }

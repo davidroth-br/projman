@@ -13,7 +13,7 @@
 <body>
 <%@include file="../_menu.jsp" %>
 <h2>${sessionScope.currentUser.fullName}'s Dashboard</h2>
-<c:set var="today" value="<%= new java.util.Date()%>"/>
+<%--<c:set var="today" value="<%= new java.util.Date()%>"/>--%>
 <c:if test="${sessionScope.currentUser.isLeader() || sessionScope.currentUser.isAdmin()}">
     <h3>${projectsMessage}</h3>
     <table>
@@ -26,7 +26,7 @@
             </tr>
             <tr style="text-align:left">
                 <th></th>
-                <th class="underline">Member</th>
+                <th class="underline">Members</th>
                 <th class="center underline">On Time</th>
                 <th class="center underline">Overdue</th>
                 <th class="center underline">On Time</th>

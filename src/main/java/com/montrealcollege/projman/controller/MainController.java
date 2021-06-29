@@ -36,7 +36,7 @@ public class MainController {
         if (currentUser.isLeader() || currentUser.isAdmin()) {
             int projectAmount = currentUser.getProjectsLead().size();
             List<ProjectStats> projectStats = new ArrayList<>();
-            for (Projects project : currentUser.isLeader() ? currentUser.getProjectsLead() : projectsService.showProjects()) {
+            for (Projects project : currentUser.isAdmin() ? projectsService.showProjects() : currentUser.getProjectsLead()) {
                 List<MemberStats> memberStats = new ArrayList<>();
                 for (Users member : project.getUsers()) {
                     int pendingTasksOnTime = 0;
@@ -59,7 +59,7 @@ public class MainController {
                 }
                 projectStats.add(new ProjectStats(project.getName(), memberStats));
             }
-            model.addAttribute("projectsMessage", currentUser.isLeader() ? "Stats of the " + projectAmount + " projects you lead:" : "All projects stats:");
+            model.addAttribute("projectsMessage", currentUser.isAdmin() ? "All projects stats:" : "Stats of the " + projectAmount + " projects you lead:");
             model.addAttribute("projectStats", projectStats);
         }
         Set<Tasks> tasks = currentUser.getTasks();

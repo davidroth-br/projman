@@ -33,7 +33,10 @@
                 <td>${user.userName}</td>
                 <td>${user.email}</td>
                 <td>${user.phone}</td>
-                <td>${fn:substring(user.role.roleName, 5, fn:length(user.role.roleName))}
+                <td>
+                    <c:if test="${user.role.roleId == 1}">Admin</c:if>
+                    <c:if test="${user.role.roleId == 2}">User</c:if>
+                </td>
                 <td>${user.enabled}</td>
                 <td><a href="<c:url value="/users/admin/newPass/${user.id}"/>">Change Password</a></td>
                 <td><a href="<c:url value="/users/admin/edit/${user.id}"/>">Edit</a></td>
