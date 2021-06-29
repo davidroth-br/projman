@@ -23,9 +23,14 @@
                 </tr>
             </c:if>
             <tr>
-                <th><h3>${project.name}</h3></th>
-                <th colspan="3"><h3>- <a href="<c:url value="/tasks/leader/new/${project.id}"/>">Add New Task</a>
-                    | <a href="<c:url value="/projects/leader/manageMembers/${project.id}"/>">Manage Members</a></h3>
+                <th>
+                    <h3 style="text-align:right">${project.name} -</h3>
+                </th>
+                <th colspan="3">
+                    <h3 style="text-align:left">
+                        <a href="<c:url value="/tasks/leader/new/${project.id}"/>">Add New Task</a> |
+                        <a href="<c:url value="/projects/leader/manageMembers/${project.id}"/>">Manage Members</a>
+                    </h3>
                 </th>
             </tr>
             <c:set var="projectName" value="${project.name}"/>

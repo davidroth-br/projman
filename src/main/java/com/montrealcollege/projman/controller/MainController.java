@@ -29,7 +29,7 @@ public class MainController {
     @Autowired
     private ProjectsService projectsService;
 
-    @GetMapping(value = "/welcome")
+    @GetMapping(value = "/dashboard")
     public String welcomePage(Model model) {
 
         Users currentUser = usersService.getCurrentUser();
@@ -92,8 +92,7 @@ public class MainController {
 
     @GetMapping(value = "/logoutSuccessful")
     public String logoutSuccessfulPage(Model model) {
-        model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
+        return "loginPage";
     }
 
     @GetMapping(value = "/403")
