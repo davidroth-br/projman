@@ -40,42 +40,36 @@ public class TasksController {
         binder.registerCustomEditor(Users.class, new UsersConverter(usersService));
     }
 
-    //LIST ALL TASKS IN ALL PROJECTS LEAD BY CURRENT USER
-    @GetMapping("/leader/list")
-    public String showAllTasks(@SessionAttribute("currentUser") Users currentUser, Model model) {
-
-        if (!currentUser.isLeader()){
-            return "403Page";
-        }
-
-        model.addAttribute("action", "/tasks/leader/changeState");
-        model.addAttribute("taskList", tasksService.showLeaderTasks());
-        addPriorityAndStateAttributes(model);
-        return "tasks/leaderTaskList";
-    }
-
-    //LIST USER'S TASKS AND CHANGE TASK'S STATE
+    //LIST USER'S TASKS
     @GetMapping("/user/list")
     public String showUserTasks(Model model) {
 
-        model.addAttribute("action", "/tasks/user/changeState");
+        model.addAttribute("action", Constants.userChangeState);
         model.addAttribute("taskList", tasksService.showUserTasks());
         addPriorityAndStateAttributes(model);
         return "tasks/userTaskList";
     }
 
-    @PostMapping("/{from}/changeState")
-    public Object changeState(@PathVariable("from") String from, @RequestParam("id") Long id, @RequestParam("state") int state, Model model) {
+    //CHANGE TASK'S STATE
+    @PostMapping("/{from}/changeState/{id}")
+    public Object changeState(@SessionAttribute("currentUser") Users currentUser,
+                              @PathVariable("from") String from,
+                              @PathVariable("id") Long id,
+                              @RequestParam("state") int state, Model model) {
 
         tasksService.editTask(id, state);
 
-        addPriorityAndStateAttributes(model);
-
-        String returnString = "tasks/" + from + "TaskList";
+        model.addAttribute("messageColor", Constants.blue);
+        model.addAttribute("message", tasksService.getTaskById(id).getName() + "'s state" + Constants.editSuccess);
         model.addAttribute("action", "/tasks/" + from + "/changeState" );
-        model.addAttribute("taskList", from.equals("user") ? tasksService.showUserTasks() : tasksService.showLeaderTasks());
-        System.out.println(returnString);
-        return returnString;
+        addPriorityAndStateAttributes(model);
+        if (from.equals("user")) {
+            model.addAttribute("taskList", tasksService.showUserTasks());
+            return "tasks/userTaskList";
+        } else {
+            model.addAttribute("projectList", projectsService.showLeaderProjects(currentUser));
+            return "projects/leaderProjectList";
+        }
      }
 
     //NEW
@@ -87,19 +81,21 @@ public class TasksController {
         task.setProject(project);
         model.addAttribute("task", task);
         model.addAttribute("addOrEdit", "New");
-        model.addAttribute("action", "/tasks/leader/validateNew");
+        model.addAttribute("action", Constants.validateNewTask);
         addPriorityAndStateAttributes(model);
         return "tasks/taskForm";
     }
 
     @PostMapping("/leader/validateNew")
-    public String validateForm(@ModelAttribute("task") @Valid Tasks task, BindingResult errors, Model model) {
+    public String validateForm(@SessionAttribute("currentUser") Users currentUser,
+                               @ModelAttribute("task") @Valid Tasks task,
+                               BindingResult errors, Model model) {
 
         boolean isDeadlineInPast = task.getDeadline() != null && !task.getDeadline().after(today());
 
         if (errors.hasErrors() || isDeadlineInPast) {
             model.addAttribute("deadlineMessage", isDeadlineInPast ? "Deadline must be in the future." : "");
-            model.addAttribute("action", "/tasks/leader/validateNew");
+            model.addAttribute("action", Constants.validateNewTask);
             model.addAttribute("project", task.getProject());
             model.addAttribute("addOrEdit", "New");
             addPriorityAndStateAttributes(model);
@@ -109,10 +105,11 @@ public class TasksController {
         tasksService.addTask(task);
 
         model.addAttribute("messageColor", Constants.blue);
-        model.addAttribute("message", task.getName() + " was successfully added!");
-        model.addAttribute("taskList", tasksService.showLeaderTasks());
+        model.addAttribute("message", task.getName() + Constants.newSuccess);
+        model.addAttribute("action", Constants.leaderChangeState);
+        model.addAttribute("projectList", projectsService.showLeaderProjects(currentUser));
         addPriorityAndStateAttributes(model);
-        return "tasks/leaderTaskList";
+        return "projects/leaderProjectList";
     }
 
     // EDIT
@@ -120,17 +117,19 @@ public class TasksController {
     public String editProject(@PathVariable Long id, Model model) {
 
         model.addAttribute("task", tasksService.getTaskById(id));
-        model.addAttribute("action", "/tasks/leader/validateEdit");
+        model.addAttribute("action", Constants.validateEditTask);
         model.addAttribute("addOrEdit", "Edit");
         addPriorityAndStateAttributes(model);
         return "tasks/taskForm";
     }
 
     @PostMapping("/leader/validateEdit")
-    public Object validateEdit(@ModelAttribute("task") @Valid Tasks task, BindingResult errors, Model model) {
+    public Object validateEdit(@SessionAttribute("currentUser") Users currentUser,
+                               @ModelAttribute("task") @Valid Tasks task,
+                               BindingResult errors, Model model) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("action", "/tasks/leader/validateEdit");
+            model.addAttribute("action", Constants.validateEditTask);
             model.addAttribute("addOrEdit", "Edit");
             addPriorityAndStateAttributes(model);
             return "tasks/taskForm";
@@ -139,25 +138,27 @@ public class TasksController {
         tasksService.editTask(task);
 
         model.addAttribute("messageColor", Constants.blue);
-        model.addAttribute("message", task.getName() + " was successfully edited!");
-        model.addAttribute("taskList", tasksService.showLeaderTasks());
+        model.addAttribute("message", task.getName() + Constants.editSuccess);
+        model.addAttribute("action", Constants.leaderChangeState);
+        model.addAttribute("projectList", projectsService.showLeaderProjects(currentUser));
         addPriorityAndStateAttributes(model);
-        return "tasks/leaderTaskList";
+        return "projects/leaderProjectList";
     }
 
     // DELETE
     @GetMapping("/leader/remove/{id}")
-    public String removeUser(@PathVariable Long id, Model model) {
+    public String removeUser(@SessionAttribute("currentUser") Users currentUser, @PathVariable Long id, Model model) {
 
-        String message = tasksService.getTaskById(id).getName() + " was successfully removed!";
+        String message = tasksService.getTaskById(id).getName() + Constants.deleteSuccess;
 
         tasksService.removeTask(id);
 
         model.addAttribute("messageColor", Constants.blue);
         model.addAttribute("message", message);
-        model.addAttribute("taskList", tasksService.showLeaderTasks());
+        model.addAttribute("action", Constants.leaderChangeState);
+        model.addAttribute("projectList", projectsService.showLeaderProjects(currentUser));
         addPriorityAndStateAttributes(model);
-        return "tasks/leaderTaskList";
+        return "projects/leaderProjectList";
     }
 
     // DETAILS

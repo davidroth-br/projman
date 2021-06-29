@@ -9,6 +9,9 @@
 </head>
 <body>
 <%@include file="../_menu.jsp" %>
+<c:if test="${message != null}">
+    <h3 style="${messageColor}">${message}</h3>
+</c:if>
 <h2>Your Tasks</h2>
 <c:choose>
     <c:when test="${!empty taskList}">
@@ -41,7 +44,7 @@
                         <th>Completion Date</th>
                     </tr>
                 </c:if>
-                <form method="post" action="${pageContext.request.contextPath}${action}" name="changeState">
+                <form method="post" action="${pageContext.request.contextPath}${action}/${task.id}" name="changeState">
                     <tr style="vertical-align:top">
                         <td></td>
                         <td><a href="<c:url value="/tasks/details/${task.id}/user"/>">${task.name}</a></td>

@@ -25,4 +25,12 @@ public class Constants {
     public static final String endInPast = "End date must be in the future.";
     public static final String endBeforeStart = "End date must be after start date.";
 
+    public static final String newSuccess = " was successfully edited!";
+    public static final String editSuccess = " was successfully edited!";
+    public static final String deleteSuccess = " was successfully removed!";
+
+    public static final String validateNewTask = "/tasks/leader/validateNew";
+    public static final String validateEditTask = "/tasks/leader/validateEdit";
+    public static final String leaderChangeState = "/tasks/leader/changeState";
+    public static final String userChangeState = "/tasks/user/changeState";
 }

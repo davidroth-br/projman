@@ -44,6 +44,21 @@ public class ProjectsController {
         return "projects/projectList";
     }
 
+    //LIST ALL TASKS IN ALL PROJECTS LEAD BY CURRENT USER (LEADER)
+    @GetMapping("/leader/list")
+    public String showAllTasks(@SessionAttribute("currentUser") Users currentUser, Model model) {
+
+        if (!currentUser.isLeader()){
+            return "403Page";
+        }
+
+        model.addAttribute("action", Constants.leaderChangeState);
+        model.addAttribute("projectList", projectsService.showLeaderProjects(currentUser));
+        model.addAttribute("priorityList", Constants.priorityList);
+        model.addAttribute("stateList", Constants.stateList);
+        return "projects/leaderProjectList";
+    }
+
     //NEW
     @GetMapping("/admin/new")
     public String showForm(Model model) {
@@ -75,7 +90,7 @@ public class ProjectsController {
 
         projectsService.addProject(project);
 
-        model.addAttribute("message", project.getName() + " was successfully added!");
+        model.addAttribute("message", project.getName() + Constants.newSuccess);
         model.addAttribute("messageColor", Constants.blue);
         model.addAttribute("projectList", projectsService.showProjects());
         return "projects/projectList";
@@ -113,7 +128,7 @@ public class ProjectsController {
 
         projectsService.editProject(project);
 
-        model.addAttribute("message", project.getName() + " was successfully edited!");
+        model.addAttribute("message", project.getName() + Constants.editSuccess);
         model.addAttribute("messageColor", Constants.blue);
         model.addAttribute("projectList", projectsService.showProjects());
         return "projects/projectList";
@@ -142,7 +157,7 @@ public class ProjectsController {
     public String removeUser(@PathVariable Long id, Model model) {
 
         String projectName = projectsService.getProjectById(id).getName();
-        String message = projectName + " was successfully deleted!";
+        String message = projectName + Constants.deleteSuccess;
 
         try {
             projectsService.removeProject(id);
