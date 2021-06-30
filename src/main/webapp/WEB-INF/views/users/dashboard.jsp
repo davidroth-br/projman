@@ -4,72 +4,88 @@
 <html>
 <head>
     <title>Dashboard</title>
-    <style>
-        .bottom {vertical-align: bottom;}
-        .center {text-align: center;}
-        .underline {text-decoration: underline;}
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
 </head>
 <body>
-<%@include file="../_menu.jsp" %>
-<h2>${sessionScope.currentUser.fullName}'s Dashboard</h2>
-<%--<c:set var="today" value="<%= new java.util.Date()%>"/>--%>
-<c:if test="${sessionScope.currentUser.isLeader() || sessionScope.currentUser.isAdmin()}">
-    <h3>${projectsMessage}</h3>
-    <table>
-        <c:forEach var="project" items="${projectStats}">
-            <tr style="text-align:left">
-                <th><br>${project.projectName}</th>
-                <th></th>
-                <th colspan="2" class="center bottom">Pending Tasks</th>
-                <th colspan="2" class="center bottom">Completed Tasks</th>
-            </tr>
-            <tr style="text-align:left">
-                <th></th>
-                <th class="underline">Members</th>
-                <th class="center underline">On Time</th>
-                <th class="center underline">Overdue</th>
-                <th class="center underline">On Time</th>
-                <th class="center underline">Late</th>
-                <th class="underline">Total Assigned</th>
-            </tr>
-            <c:forEach var="member" items="${project.memberStats}">
-                <c:if test="${member.totalTasks != 0}">
-                    <tr>
-                        <td></td>
-                        <td>${member.memberName}</td>
-                        <td class="center">${member.pendingTasksOnTime}</td>
-                        <td class="center">${member.pendingTasksOverdue}</td>
-                        <td class="center">${member.completedTasksOnTime}</td>
-                        <td class="center">${member.completedTasksLate}</td>
-                        <td class="center">${member.totalTasks}</td>
-                    </tr>
-                </c:if>
-            </c:forEach>
-        </c:forEach>
+<div class="menu text-center">
+    <%@include file="../_menu.jsp" %>
+</div>
+<div class="content">
+    <h2 class="h3 text-center fw-bold">${sessionScope.currentUser.firstName}'s Dashboard</h2>
+    <h3 class="h4 text-center text-decoration-underline fw-bold">Your Tasks</h3>
+    <table class="table table-sm table-striped caption-top">
+        <thead>
+        <tr>
+            <th class="text-center align-bottom">Tasks</th>
+            <th colspan="2" class="text-center align-bottom">Pending</th>
+            <th colspan="2" class="text-center align-bottom">Completed</th>
+        </tr>
+        <tr>
+            <th class="text-center">Assigned</th>
+            <th class="text-center">On Time</th>
+            <th class="text-center">Overdue</th>
+            <th class="text-center">On Time</th>
+            <th class="text-center">Late</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="text-center">${totalTasks}</td>
+            <td class="text-center">${pendingOnTime}</td>
+            <td class="text-center">${pendingOverdue}</td>
+            <td class="text-center">${completedOnTime}</td>
+            <td class="text-center">${completedLate}</td>
+        </tr>
+        </tbody>
     </table>
     <br>
-</c:if>
-<h3>Your tasks stats:</h3>
-<table>
-    <tr>
-        <th colspan="2" class="center">Pending</th>
-        <th colspan="2" class="center">Completed</th>
-    </tr>
-    <tr>
-        <th class="center underline">On Time</th>
-        <th class="center underline">Overdue</th>
-        <th class="center underline">On Time</th>
-        <th class="center underline">Late</th>
-        <th class="underline">Total Assigned</th>
-    </tr>
-    <tr>
-        <td class="center">${pendingOnTime}</td>
-        <td class="center">${pendingOverdue}</td>
-        <td class="center">${completedOnTime}</td>
-        <td class="center">${completedLate}</td>
-        <td class="center">${totalTasks}</td>
-    </tr>
-</table>
+    <c:if test="${sessionScope.currentUser.isLeader() || sessionScope.currentUser.isAdmin()}">
+        <h3 class="h4 text-center text-decoration-underline fw-bold">${projectsMessage}</h3>
+        <c:forEach var="project" items="${projectStats}">
+            <table class="table table-sm table-striped caption-top">
+                <caption class="fs-5 text-dark fw-bold text-decoration-underline">
+                        ${project.projectName}</caption>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th class="text-center align-bottom">Tasks</th>
+                    <th colspan="2" class="text-center align-bottom">Pending</th>
+                    <th colspan="2" class="text-center align-bottom">Completed</th>
+                </tr>
+                <tr class="left">
+                    <th>Member</th>
+                    <th class="text-center">Assigned</th>
+                    <th class="text-center">On Time</th>
+                    <th class="text-center">Overdue</th>
+                    <th class="text-center">On Time</th>
+                    <th class="text-center">Late</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:choose>
+                    <c:when test="${project.tasksInProject == 0}">
+                        <td class="text-center" colspan="6">No tasks yet</td>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="member" items="${project.memberStats}">
+                            <tr>
+                                <td>${member.memberName}</td>
+                                <td class="text-center">${member.totalTasks}</td>
+                                <td class="text-center">${member.pendingTasksOnTime}</td>
+                                <td class="text-center">${member.pendingTasksOverdue}</td>
+                                <td class="text-center">${member.completedTasksOnTime}</td>
+                                <td class="text-center">${member.completedTasksLate}</td>
+                            </tr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+                </tbody>
+            </table>
+        </c:forEach>
+        <br>
+    </c:if>
+</div>
 </body>
 </html>

@@ -1,0 +1,23 @@
+.content {
+    max-width: 550px;
+    margin: auto;
+    background: #f5f5f5;
+    padding: 10px 10px 2px;
+}
+
+.menu {
+    max-width: 550px;
+    margin: auto;
+    background: white;
+    padding: 10px 10px 2px;
+}
+
+/*.bottom {vertical-align: bottom;}*/
+
+/*.top {vertical-align: top;}*/
+
+/*.center {text-align: center;}*/
+
+/*.left {text-align: left;}*/
+
+/*.underline {text-decoration: underline;}*/

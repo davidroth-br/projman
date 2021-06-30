@@ -37,6 +37,7 @@ public class MainController {
             int projectAmount = currentUser.getProjectsLead().size();
             List<ProjectStats> projectStats = new ArrayList<>();
             for (Projects project : currentUser.isAdmin() ? projectsService.showProjects() : currentUser.getProjectsLead()) {
+                int tasksInProject = 0;
                 List<MemberStats> memberStats = new ArrayList<>();
                 for (Users member : project.getUsers()) {
                     int pendingTasksOnTime = 0;
@@ -53,13 +54,14 @@ public class MainController {
                                 if (memberTask.getDeadline().before(Helpers.today())) pendingTasksOverdue++;
                                 else pendingTasksOnTime++;
                             }
+                            tasksInProject++;
                         }
                     }
                     memberStats.add(new MemberStats(member.getFullName(), pendingTasksOnTime, pendingTasksOverdue, completedTasksOnTime, completedTasksLate));
                 }
-                projectStats.add(new ProjectStats(project.getName(), memberStats));
+                projectStats.add(new ProjectStats(project.getName(), memberStats, tasksInProject));
             }
-            model.addAttribute("projectsMessage", currentUser.isAdmin() ? "All projects stats:" : "Stats of the " + projectAmount + " projects you lead:");
+            model.addAttribute("projectsMessage", currentUser.isAdmin() ? "All Projects" : "Projects You Lead");
             model.addAttribute("projectStats", projectStats);
         }
         Set<Tasks> tasks = currentUser.getTasks();
