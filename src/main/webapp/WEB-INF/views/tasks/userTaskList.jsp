@@ -6,50 +6,54 @@
 <html>
 <head>
     <title>Tasks</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
 </head>
 <body>
-<%@include file="../_menu.jsp" %>
+<div class="menu text-center">
+    <%@include file="../_menu.jsp" %>
+</div>
+<div class="content">
 <c:if test="${message != null}">
-    <h3 style="${messageColor}">${message}</h3>
+    <h3 class="fs-5 text-center" style="${messageColor}">${message}</h3>
 </c:if>
-<h2>Your Tasks</h2>
+<h2 class="h3 text-center fw-bold">Your Tasks</h2>
 <c:choose>
     <c:when test="${!empty taskList}">
         <c:set var="projectName" value=""/>
-        <table>
+        <table class="table table-sm caption-top table-borderless">
             <c:forEach items="${taskList}" var="task">
                 <c:if test="${projectName != task.project.name}">
-                    <tr style="text-align:left">
-                        <th>
-                            <h3>
+                    <tr class="fs-5 fw-bold text-decoration-underline">
+                        <th colspan="6" class="fs-5 fw-bold text-decoration-underline">
                             <c:if test="${projectName != ''}"><br></c:if>
                                 ${task.project.name}
-                            </h3>
                         </th>
-                        <th colspan="5" style="vertical-align:bottom">
-                            <h3>
-                            (Project Leader: ${task.project.leader.fullName})
+                    </tr>
+                    <tr class="fs-5">
+                        <th colspan="5" class="fw-normal">
+                            Leader: ${task.project.leader.fullName}
+                        </th>
+                        <th class="fw-normal text-nowrap">
                             <a href="<c:url value="/projects/user/members/${task.project.id}"/>">Show members</a>
-                            </h3>
                         </th>
                     </tr>
                     <c:set var="projectName" value="${task.project.name}"/>
                     <tr style="text-align:left">
-                        <th></th>
                         <th>Task</th>
-                        <th>Deadline</th>
-                        <th>Priority</th>
+                        <th class=" text-center">Deadline</th>
+                        <th class=" text-center">Priority</th>
                         <th>State</th>
                         <th></th>
-                        <th>Completion Date</th>
+                        <th class=" text-center">Completion Date</th>
                     </tr>
                 </c:if>
                 <form method="post" action="${pageContext.request.contextPath}${action}/${task.id}" name="changeState">
                     <tr style="vertical-align:top">
-                        <td></td>
                         <td><a href="<c:url value="/tasks/details/${task.id}/user"/>">${task.name}</a></td>
-                        <td><fmt:formatDate value="${task.deadline}" type="date"/></td>
-                        <td>${priorityList[task.priority]}</td>
+                        <td class=" text-center text-nowrap"><fmt:formatDate value="${task.deadline}" type="date"/></td>
+                        <td class=" text-center">${priorityList[task.priority]}</td>
                         <td>
                             <select name="state">
                                 <c:forEach items="${stateList}" var="stateOption">
@@ -61,8 +65,8 @@
                                 </c:forEach>
                             </select>
                         </td>
-                        <td><input name="submit" type="submit" value="update"/></td>
-                        <td><fmt:formatDate value="${task.completionDate}" type="date"/></td>
+                        <td class="align-top"><input name="submit" type="submit" value="update" class="btn-sm btn-info"/></td>
+                        <td class=" text-center"><fmt:formatDate value="${task.completionDate}" type="date"/></td>
                         <input type="hidden" name="id" value="${task.id}"/>
                     </tr>
                 </form>
@@ -73,5 +77,6 @@
         <h3>You don't have any tasks assigned to you</h3>
     </c:otherwise>
 </c:choose>
+</div>
 </body>
 </html>

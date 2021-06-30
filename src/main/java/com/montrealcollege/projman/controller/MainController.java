@@ -83,7 +83,7 @@ public class MainController {
         model.addAttribute("pendingOnTime", totalTasks - completed - overdue);
         model.addAttribute("pendingOverdue", overdue);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("stateList", Constants.stateList);
+        model.addAttribute("stateList", Constants.STATE_LIST);
         return "users/dashboard";
     }
 

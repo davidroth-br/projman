@@ -4,3 +4,4 @@
 - When trying to remove a user that doesn't exist show user friendly error message.
 - After change state in list and going into edit, when pressing back button in browser catch error
 - Check browser back button behavior in everything
+- Set size limits for text input

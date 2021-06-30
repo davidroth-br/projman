@@ -51,7 +51,7 @@ public class UsersController {
 
         usersService.addUser(user);
 
-        model.addAttribute("messageColor", Constants.blue);
+        model.addAttribute("messageColor", Constants.GREEN);
         model.addAttribute("message", user.getFullName() + " was successfully added as " + user.getUserName() + "!");
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
@@ -87,7 +87,7 @@ public class UsersController {
 
         usersService.editUser(user);
 
-        model.addAttribute("messageColor", Constants.blue);
+        model.addAttribute("messageColor", Constants.GREEN);
         model.addAttribute("message", user.getFullName() + " was successfully edited!");
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
@@ -125,7 +125,7 @@ public class UsersController {
 
         usersService.editUser(user, newPassword);
 
-        model.addAttribute("messageColor", Constants.blue);
+        model.addAttribute("messageColor", Constants.GREEN);
         model.addAttribute("message", user.getFullName() + "'s password was successfully changed!");
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
@@ -139,15 +139,15 @@ public class UsersController {
         Users user = usersService.getUserById(id);
 
         if (id == currentUser.getId()) {
-            model.addAttribute("messageColor", Constants.red);
+            model.addAttribute("messageColor", Constants.RED);
             model.addAttribute("message", "Unable to delete.<br>You can't delete yourself.");
         } else {
             try {
                 usersService.removeUser(id);
-                model.addAttribute("messageColor", Constants.blue);
-                model.addAttribute("message", user.getFullName() + Constants.deleteSuccess);
+                model.addAttribute("messageColor", Constants.GREEN);
+                model.addAttribute("message", user.getFullName() + Constants.DELETE_SUCCESS);
             } catch (DataIntegrityViolationException e) {
-                model.addAttribute("messageColor", Constants.red);
+                model.addAttribute("messageColor", Constants.RED);
                 model.addAttribute("message", "Unable to delete.<br>" + user.getFullName() + " is associated to projects.");
             }
         }

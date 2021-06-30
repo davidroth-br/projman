@@ -52,10 +52,10 @@ public class ProjectsController {
             return "403Page";
         }
 
-        model.addAttribute("action", Constants.leaderChangeState);
+        model.addAttribute("action", Constants.LEADER_CHANGE_STATE);
         model.addAttribute("projectList", projectsService.showLeaderProjects(currentUser));
-        model.addAttribute("priorityList", Constants.priorityList);
-        model.addAttribute("stateList", Constants.stateList);
+        model.addAttribute("priorityList", Constants.PRIORITY_LIST);
+        model.addAttribute("stateList", Constants.STATE_LIST);
         return "projects/leaderProjectList";
     }
 
@@ -81,8 +81,8 @@ public class ProjectsController {
 
         if (errors.hasErrors() || isEndDateBeforeStartDate || isEndDateInPast || isStartDateInPast) {
             model.addAttribute("userList", usersService.showUsers());
-            model.addAttribute("startDateMessage", isStartDateInPast ? Constants.startInPast : "");
-            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? Constants.endBeforeStart : isEndDateInPast ? Constants.endInPast : "");
+            model.addAttribute("startDateMessage", isStartDateInPast ? Constants.START_IN_PAST : "");
+            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? Constants.END_BEFORE_START : isEndDateInPast ? Constants.END_IN_PAST : "");
             model.addAttribute("addOrEdit", "New");
             model.addAttribute("action", "/projects/admin/validateNew");
             return "projects/projectForm";
@@ -90,8 +90,8 @@ public class ProjectsController {
 
         projectsService.addProject(project);
 
-        model.addAttribute("message", project.getName() + Constants.newSuccess);
-        model.addAttribute("messageColor", Constants.blue);
+        model.addAttribute("message", project.getName() + Constants.NEW_SUCCESS);
+        model.addAttribute("messageColor", Constants.GREEN);
         model.addAttribute("projectList", projectsService.showProjects());
         return "projects/projectList";
     }
@@ -116,8 +116,8 @@ public class ProjectsController {
 
         if (errors.hasErrors() || isEndDateBeforeStartDate || isEndDateInPast || isStartDateInPast) {
             model.addAttribute("userList", usersService.showUsers());
-            model.addAttribute("startDateMessage", isStartDateInPast ? Constants.startInPast : "");
-            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? Constants.endBeforeStart : isEndDateInPast ? Constants.endInPast : "");
+            model.addAttribute("startDateMessage", isStartDateInPast ? Constants.START_IN_PAST : "");
+            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? Constants.END_BEFORE_START : isEndDateInPast ? Constants.END_IN_PAST : "");
             model.addAttribute("addOrEdit", "Edit");
             model.addAttribute("action", "/projects/admin/validateEdit");
             return "projects/projectForm";
@@ -128,8 +128,8 @@ public class ProjectsController {
 
         projectsService.editProject(project);
 
-        model.addAttribute("message", project.getName() + Constants.editSuccess);
-        model.addAttribute("messageColor", Constants.blue);
+        model.addAttribute("message", project.getName() + Constants.EDIT_SUCCESS);
+        model.addAttribute("messageColor", Constants.GREEN);
         model.addAttribute("projectList", projectsService.showProjects());
         return "projects/projectList";
     }
@@ -157,14 +157,14 @@ public class ProjectsController {
     public String removeUser(@PathVariable Long id, Model model) {
 
         String projectName = projectsService.getProjectById(id).getName();
-        String message = projectName + Constants.deleteSuccess;
+        String message = projectName + Constants.DELETE_SUCCESS;
 
         try {
             projectsService.removeProject(id);
-            model.addAttribute("messageColor", Constants.blue);
+            model.addAttribute("messageColor", Constants.GREEN);
         } catch (DataIntegrityViolationException e) {
             message =  "Unable to delete.<br>" + projectName + " has tasks associated to it.";
-            model.addAttribute("messageColor", Constants.red);
+            model.addAttribute("messageColor", Constants.RED);
         }
 
         model.addAttribute("message", message);
@@ -236,7 +236,7 @@ public class ProjectsController {
             projectsService.editProject(project);
         }
 
-        model.addAttribute("messageColor", Constants.red);
+        model.addAttribute("messageColor", Constants.RED);
         model.addAttribute("availableUserList", getAvailableUsers(project));
         model.addAttribute("project", project);
         return "projects/manageMembers";
