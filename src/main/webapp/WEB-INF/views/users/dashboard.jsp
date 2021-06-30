@@ -13,6 +13,7 @@
     <%@include file="../_menu.jsp" %>
 </div>
 <div class="content">
+    <div class="dashboard">
     <h2 class="h3 text-center fw-bold">${sessionScope.currentUser.firstName}'s Dashboard</h2>
     <h3 class="h4 text-center text-decoration-underline fw-bold">Your Tasks</h3>
     <table class="table table-sm table-striped caption-top">
@@ -86,6 +87,7 @@
         </c:forEach>
         <br>
     </c:if>
+    </div>
 </div>
 </body>
 </html>
