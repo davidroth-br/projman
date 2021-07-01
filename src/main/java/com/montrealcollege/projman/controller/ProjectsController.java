@@ -180,14 +180,6 @@ public class ProjectsController {
         return "projects/projectDetails";
     }
 
-    // SHOW PROJECT MEMBERS
-//    @GetMapping("/user/members/{id}")
-//    public String showMembers(@PathVariable Long id, Model model) {
-//
-//        model.addAttribute("project", projectsService.getProjectById(id));
-//        return "projects/projectMembers";
-//    }
-
     // MANAGE PROJECT MEMBERS
     @GetMapping("/leader/manageMembers/{id}")
     public String manageMembers(@PathVariable Long id, Model model) {
