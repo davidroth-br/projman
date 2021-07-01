@@ -61,7 +61,10 @@
                         </td>
                         <td>
                             <c:forEach items="${task.users}" var="user">
-                                <a href="<c:url value="/users/projects/details/${user.id}"/>">${user.firstName} ${user.lastName}</a>
+                                <a href="#userModal" data-bs-toggle="modal" data-bs-target="#userModal"
+                                   data-bs-userFullName="${user.fullName}"
+                                   data-bs-userEmail="${user.email}"
+                                   data-bs-userPhone="${user.phone}">${user.fullName}</a>
                                 <br>
                             </c:forEach>
                         </td>
@@ -97,5 +100,7 @@
 </div>
 <%@include file="../modals/taskDetails.html" %>
 <script src="${pageContext.request.contextPath}/js/taskDetails.js"></script>
+<%@include file="../modals/userDetails.html" %>
+<script src="${pageContext.request.contextPath}/js/userDetails.js"></script>
 </body>
 </html>
