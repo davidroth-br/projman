@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="menu text-center">
@@ -53,7 +54,11 @@
             <c:forEach items="${project.tasks}" var="task">
                 <form method="post" action="${pageContext.request.contextPath}${action}/${task.id}" name="changeState">
                     <tr>
-                        <td><a href="<c:url value="/tasks/details/${task.id}/leader"/>">${task.name}</a></td>
+                        <td>
+                            <a href="#taskModal" data-bs-toggle="modal" data-bs-target="#taskModal"
+                               data-bs-taskName="${task.name}"
+                               data-bs-taskDescription="${task.description}">${task.name}</a>
+                        </td>
                         <td>
                             <c:forEach items="${task.users}" var="user">
                                 <a href="<c:url value="/users/projects/details/${user.id}"/>">${user.firstName} ${user.lastName}</a>
@@ -90,5 +95,7 @@
         </c:forEach>
     </table>
 </div>
+<%@include file="../modals/taskDetails.html" %>
+<script src="${pageContext.request.contextPath}/js/taskDetails.js"></script>
 </body>
 </html>

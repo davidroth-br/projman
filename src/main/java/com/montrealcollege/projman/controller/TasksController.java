@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.montrealcollege.projman.utils.Helpers.today;
 
@@ -43,6 +46,13 @@ public class TasksController {
     //LIST USER'S TASKS
     @GetMapping("/user/list")
     public String showUserTasks(Model model) {
+
+//        List<Tasks> taskList = tasksService.showUserTasks();
+//        Map<String, String[]> projectMembers = new LinkedHashMap<>();
+//        for (Tasks task : taskList) {
+//            for (Users member)
+//            projectMembers.put();
+//        }
 
         model.addAttribute("action", Constants.USER_CHANGE_STATE);
         model.addAttribute("taskList", tasksService.showUserTasks());
@@ -162,17 +172,17 @@ public class TasksController {
     }
 
     // DETAILS
-    @GetMapping("/details/{id}/{from}")
-    public String showTask(@PathVariable Long id, @PathVariable("from") String from, Model model) {
-
-        Tasks task = tasksService.getTaskById(id);
-
-        model.addAttribute("from", from);
-        model.addAttribute("task", task);
-        model.addAttribute("completionDate", task.getCompletionDate() == null ? "" : new SimpleDateFormat("MMM dd, yyyy").format(task.getCompletionDate()));
-        addPriorityAndStateAttributes(model);
-        return "tasks/taskDetails";
-    }
+//    @GetMapping("/details/{id}/{from}")
+//    public String showTask(@PathVariable Long id, @PathVariable("from") String from, Model model) {
+//
+//        Tasks task = tasksService.getTaskById(id);
+//
+//        model.addAttribute("from", from);
+//        model.addAttribute("task", task);
+//        model.addAttribute("completionDate", task.getCompletionDate() == null ? "" : new SimpleDateFormat("MMM dd, yyyy").format(task.getCompletionDate()));
+//        addPriorityAndStateAttributes(model);
+//        return "tasks/taskDetails";
+//    }
 
     private void addPriorityAndStateAttributes(Model model) {
         model.addAttribute("priorityList", Constants.PRIORITY_LIST);
