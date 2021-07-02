@@ -140,7 +140,7 @@ public class UsersController {
 
         if (id == currentUser.getId()) {
             model.addAttribute("messageColor", Constants.RED);
-            model.addAttribute("message", "Unable to delete.<br>You can't delete yourself.");
+            model.addAttribute("message", "Unable to delete. You can't delete yourself.");
         } else {
             try {
                 usersService.removeUser(id);
@@ -148,7 +148,7 @@ public class UsersController {
                 model.addAttribute("message", user.getFullName() + Constants.DELETE_SUCCESS);
             } catch (DataIntegrityViolationException e) {
                 model.addAttribute("messageColor", Constants.RED);
-                model.addAttribute("message", "Unable to delete.<br>" + user.getFullName() + " is associated to projects.");
+                model.addAttribute("message", "Unable to delete. " + user.getFullName() + " is associated to projects.");
             }
         }
 

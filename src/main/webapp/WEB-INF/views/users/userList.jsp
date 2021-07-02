@@ -6,46 +6,54 @@
 <html>
 <head>
     <title>Users</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
 </head>
 <body>
-<%@include file="../_menu.jsp" %>
-
-<c:if test="${message != null}">
-    <h3 style="${messageColor}">${message}</h3>
-</c:if>
-<a href="<c:url value="/users/admin/new"/>"><h2>Add New User</h2></a>
-<h2>User List</h2>
-<c:if test="${!empty userList}">
-    <table>
-        <tr>
-            <th class="text-success">Collaborator</th>
-            <th>User Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Role</th>
-            <th>Enabled</th>
-        </tr>
-        <c:forEach items="${userList}" var="user">
-            <tr>
-                <td>
-                    <a href="<c:url value="/users/admin/details/${user.id}"/>">${user.firstName} ${user.lastName}</a>
-                </td>
-                <td>${user.userName}</td>
-                <td>${user.email}</td>
-                <td>${user.phone}</td>
-                <td>
-                    <c:if test="${user.role.roleId == 1}">Admin</c:if>
-                    <c:if test="${user.role.roleId == 2}">User</c:if>
-                </td>
-                <td>${user.enabled}</td>
-                <td><a href="<c:url value="/users/admin/newPass/${user.id}"/>">Change Password</a></td>
-                <td><a href="<c:url value="/users/admin/edit/${user.id}"/>">Edit</a></td>
-                <td><a href="<c:url value="/users/admin/remove/${user.id}"/>">Delete</a></td>
+<div class="menu text-center">
+    <%@include file="../_menu.jsp" %>
+</div>
+<div class="content">
+    <c:if test="${message != null}">
+        <h3 class="fs-5 text-center" style="${messageColor}">${message}</h3>
+    </c:if>
+    <h3 class="h3 text-center fw-bold">User List</h3>
+    <a href="<c:url value="/users/admin/new"/>"><h5 class="h5 text-center">Add User</h5></a>
+    <c:if test="${!empty userList}">
+        <table class="table table-sm table-borderless">
+            <tr class="text-nowrap">
+                <th>Collaborator</th>
+                <th>User Name</th>
+                <th class="text-center">Role</th>
+                <th class="text-center">Enabled</th>
             </tr>
-        </c:forEach>
-    </table>
-</c:if>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+            <c:forEach items="${userList}" var="user">
+                <tr>
+                    <td>
+                        <a href="#userModal" data-bs-toggle="modal" data-bs-target="#userModal"
+                           data-bs-userFullName="${user.fullName}"
+                           data-bs-userEmail="${user.email}"
+                           data-bs-userPhone="${user.phone}">${user.fullName}</a>
+                    </td>
+                    <td>${user.userName}</td>
+                    <td class="text-center">
+                        <c:if test="${user.role.roleId == 1}">Admin</c:if>
+                        <c:if test="${user.role.roleId == 2}">User</c:if>
+                    </td>
+                    <td class="text-center">${user.enabled}</td>
+                    <td><a href="<c:url value="/users/admin/newPass/${user.id}"/>">Change Password</a></td>
+                    <td><a href="<c:url value="/users/admin/edit/${user.id}"/>">Edit</a></td>
+                    <td><a href="<c:url value="/users/admin/remove/${user.id}"/>">Delete</a></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
+</div>
+<%@include file="../modals/userDetails.html" %>
+<script src="${pageContext.request.contextPath}/js/userDetails.js"></script>
 </body>
 </html>
