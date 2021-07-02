@@ -5,6 +5,13 @@
     padding: 10px 10px 2px;
 }
 
+.content-sm {
+    max-width: 550px;
+    margin: auto;
+    background: #f5f5f5;
+    padding: 10px 10px 2px;
+}
+
 .menu {
     max-width: 550px;
     margin: auto;

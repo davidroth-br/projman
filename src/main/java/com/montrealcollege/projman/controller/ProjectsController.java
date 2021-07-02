@@ -163,7 +163,7 @@ public class ProjectsController {
             projectsService.removeProject(id);
             model.addAttribute("messageColor", Constants.GREEN);
         } catch (DataIntegrityViolationException e) {
-            message =  "Unable to delete.<br>" + projectName + " has tasks associated to it.";
+            message =  "Unable to delete" + projectName + ".<br>There are tasks associated to it.";
             model.addAttribute("messageColor", Constants.RED);
         }
 
