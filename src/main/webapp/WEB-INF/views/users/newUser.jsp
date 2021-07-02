@@ -75,7 +75,8 @@
         <div class="row mb-3">
             <div class="col text-center">
                 <button class="btn btn-sm btn-info text-center me-2" type="submit">Submit</button>
-                <a href="<c:url value="/users/admin/list"/>" class="btn btn-sm btn-secondary text-center ms-2">Cancel</a>
+                <a href="<c:url value="/users/admin/list"/>"
+                   class="btn btn-sm btn-secondary text-center ms-2">Cancel</a>
             </div>
         </div>
         </f:form>
