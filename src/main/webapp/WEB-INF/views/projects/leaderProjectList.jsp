@@ -55,13 +55,13 @@
                 <form method="post" action="${pageContext.request.contextPath}${action}/${task.id}" name="changeState">
                     <tr>
                         <td>
-                            <a href="#taskModal" data-bs-toggle="modal" data-bs-target="#taskModal"
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#taskModal"
                                data-bs-taskName="${task.name}"
                                data-bs-taskDescription="${task.description}">${task.name}</a>
                         </td>
                         <td>
                             <c:forEach items="${task.users}" var="user">
-                                <a href="#userModal" data-bs-toggle="modal" data-bs-target="#userModal"
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#userModal"
                                    data-bs-userFullName="${user.fullName}"
                                    data-bs-userEmail="${user.email}"
                                    data-bs-userPhone="${user.phone}">${user.fullName}</a>

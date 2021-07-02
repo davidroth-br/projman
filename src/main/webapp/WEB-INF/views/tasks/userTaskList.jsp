@@ -22,7 +22,7 @@
     <c:if test="${message != null}">
         <h3 class="fs-5 text-center" style="${messageColor}">${message}</h3>
     </c:if>
-    <h2 class="h3 text-center fw-bold">Your Tasks</h2>
+    <h3 class="h3 text-center fw-bold">Your Tasks</h3>
     <c:choose>
         <c:when test="${!empty taskList}">
             <c:set var="projectName" value=""/>
@@ -45,7 +45,7 @@
                                     <c:set var="memberName" value="${member.fullName} / "/>
                                     <c:set var="members" value="${members}${memberName}"/>
                                 </c:forEach>
-                                <a href="#membersModal" data-bs-toggle="modal" data-bs-target="#membersModal"
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#membersModal"
                                    data-bs-projectName="${task.project.name}"
                                    data-bs-projectMembers="${fn:substring(members, 0, fn:length(members) - 3)}"
                                    data-bs-projectLeader="${task.project.leader.fullName}">Show members</a>
@@ -65,7 +65,7 @@
                           name="changeState">
                         <tr class="align-top">
                             <td>
-                                <a href="#taskModal" data-bs-toggle="modal" data-bs-target="#taskModal"
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#taskModal"
                                    data-bs-taskName="${task.name}"
                                    data-bs-taskDescription="${task.description}">${task.name}</a>
                             </td>

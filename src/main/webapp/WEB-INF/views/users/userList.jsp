@@ -22,7 +22,7 @@
         <h3 class="fs-5 text-center" style="${messageColor}">${message}</h3>
     </c:if>
     <h3 class="h3 text-center fw-bold">User List</h3>
-    <a href="<c:url value="/users/admin/new"/>"><h5 class="h5 text-center">Add User</h5></a>
+    <h5 class="h5 text-center"><a href="<c:url value="/users/admin/new"/>">Add User</a></h5>
     <c:if test="${!empty userList}">
         <table class="table table-sm table-borderless">
             <tr class="text-nowrap">
@@ -34,7 +34,7 @@
             <c:forEach items="${userList}" var="user">
                 <tr>
                     <td>
-                        <a href="#userModal" data-bs-toggle="modal" data-bs-target="#userModal"
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#userModal"
                            data-bs-userFullName="${user.fullName}"
                            data-bs-userEmail="${user.email}"
                            data-bs-userPhone="${user.phone}">${user.fullName}</a>
