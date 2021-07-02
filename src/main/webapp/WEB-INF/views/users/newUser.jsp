@@ -29,7 +29,7 @@
                 <f:errors cssClass="text-danger label" path="encryptedPassword"/><br>
                 <f:input path="encryptedPassword" type="password" size="35"/>
                 <br>
-                <label for="passCheck" class="label ${empty repeatMessage ? "" : "text-danger label"}">Confirm
+                <label for="passCheck" class="label ${empty repeatMessage ? "" : "text-danger"}">Confirm
                     Password:</label>
                 <span class="text-danger label">${repeatMessage}</span><br>
                 <input id="passCheck" name="passCheck" type="password" size="35"/>
@@ -74,7 +74,7 @@
         </div>
         <div class="row mb-3">
             <div class="col text-center">
-                <button class="btn btn-sm btn-info text-center me-2" type="submit">Submit</button>
+                <button class="btn btn-sm btn-info text-center me-2" type="submit">Save</button>
                 <a href="<c:url value="/users/admin/list"/>"
                    class="btn btn-sm btn-secondary text-center ms-2">Cancel</a>
             </div>

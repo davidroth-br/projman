@@ -48,7 +48,7 @@
         <f:hidden path="phone" value="${user.phone}"/>
         <div class="row mb-3">
             <div class="col text-center">
-                <button class="btn btn-sm btn-info text-center me-2" type="submit">Submit</button>
+                <button class="btn btn-sm btn-info text-center me-2" type="submit">Save</button>
                 <a href="<c:url value="/users/admin/list"/>"
                    class="btn btn-sm btn-secondary text-center ms-2">Cancel</a>
             </div>

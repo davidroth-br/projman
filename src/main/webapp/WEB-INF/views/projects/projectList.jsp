@@ -48,8 +48,8 @@
                     <td class="text-center"><fmt:formatDate value="${project.startDate}" type="date"/></td>
                     <td class="text-center"><fmt:formatDate value="${project.endDate}" type="date"/></td>
                     <td>${project.leader.firstName} ${project.leader.lastName}</td>
-                    <td><a href="<c:url value="/projects/admin/edit/${project.id}"/>">Edit</a></td>
                     <td><a href="<c:url value="/projects/leader/manageMembers/${project.id}"/>">Manage Members</a></td>
+                    <td><a href="<c:url value="/projects/admin/edit/${project.id}"/>">Edit</a></td>
                     <td><a href="<c:url value="/projects/admin/remove/${project.id}"/>">Delete</a></td>
                 </tr>
             </c:forEach>
