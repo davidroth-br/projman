@@ -7,7 +7,7 @@
 <head>
     <title>${addOrEdit} Task</title>
     <style>
-        .error {
+        .text-danger {
             color: red;
         }
     </style>

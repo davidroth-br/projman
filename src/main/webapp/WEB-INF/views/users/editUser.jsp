@@ -6,7 +6,7 @@
 <head>
     <title>Edit User</title>
     <style>
-        .error {
+        .text-danger {
             color: red;
         }
     </style>

@@ -7,7 +7,7 @@
 <head>
     <title>${addOrEdit} Project</title>
     <style>
-        .error {
+        .text-danger {
             color: red;
         }
     </style>

@@ -23,31 +23,31 @@ public class Users {
     private Long id;
 
     @Column(name = "USER_NAME", length = 36, nullable = false)
-    @NotBlank(message="Please enter a user name.")
+    @NotBlank(message="(Please enter a user name)")
     private String userName;
 
     @Column(name = "ENCRYPTED_PASSWORD", length = 128, nullable = false)
-    @NotBlank(message="Please enter a password.")
+    @NotBlank(message="(Please enter a password)")
     private String encryptedPassword;
 
     @Column(name = "ENABLED", length = 1, nullable = false)
     private boolean enabled;
 
     @Column(name = "FIRST_NAME")
-    @NotBlank(message="Please enter a first name.")
+    @NotBlank(message="(Please enter a first name)")
     private String firstName;
 
     @Column(name = "LAST_NAME")
-    @NotBlank(message="Please enter a last name.")
+    @NotBlank(message="(Please enter a last name)")
     private String lastName;
 
     @Column(name = "EMAIL")
-    @Email(message = "Please enter a valid email address.")
+    @Email(message = "(Please enter a valid email address)")
     private String email;
 
     @Column(name = "PHONE")
     @Pattern(regexp= "\\(\\d{3}\\) \\d{3}-\\d{4}|",
-            message="Please enter a valid phone number. (999) 999-9999")
+            message="(Please enter a valid phone number. (999) 999-9999)")
     private String phone;
 
     @ManyToMany(mappedBy = "users")
