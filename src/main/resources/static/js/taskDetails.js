@@ -7,4 +7,6 @@ taskModal.addEventListener('show.bs.modal', function (event) {
 // Extract info from data-bs-* attributes and update the modal's content.
     taskModal.querySelector('.modal-taskName').textContent = task.getAttribute('data-bs-taskName')
     taskModal.querySelector('.modal-taskDescription').textContent = task.getAttribute('data-bs-taskDescription')
+    taskModal.querySelector('.modal-taskDeadline').textContent = task.getAttribute('data-bs-taskDeadline')
+    taskModal.querySelector('.modal-taskCompletionDate').textContent = task.getAttribute('data-bs-taskCompletionDate')
 })

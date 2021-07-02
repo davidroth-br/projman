@@ -8,7 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="menu text-center">
@@ -29,8 +31,8 @@
                     </tr>
                 </c:if>
                 <tr class="fs-5">
-                    <th colspan="4" class="fw-bold text-decoration-underline">${project.name}</th>
-                    <th colspan="3" class="fw-normal text-nowrap" style="text-align: right">
+                    <th colspan="3" class="fw-bold text-decoration-underline">${project.name}</th>
+                    <th colspan="4" class="fw-normal text-nowrap" style="text-align: right">
                         <a href="<c:url value="/tasks/leader/new/${project.id}"/>">Add Task</a><span> | </span>
                         <a href="<c:url value="/projects/leader/manageMembers/${project.id}"/>">Manage Members</a>
                     </th>
@@ -39,11 +41,9 @@
                 <tr class="text-nowrap">
                     <th>Task</th>
                     <th>Allocated To</th>
-                    <th class="text-center">Deadline</th>
                     <th class="text-center">Priority</th>
                     <th>State</th>
                     <th></th>
-                    <th class="text-center text-nowrap">Completed On</th>
                 </tr>
             </c:if>
             <c:if test="${empty project.tasks}">
@@ -57,9 +57,11 @@
                         <td>
                             <a href="#" data-bs-toggle="modal" data-bs-target="#taskModal"
                                data-bs-taskName="${task.name}"
-                               data-bs-taskDescription="${task.description}">${task.name}</a>
+                               data-bs-taskDescription="${task.description}"
+                               data-bs-taskDeadline="${task.deadline}"
+                               data-bs-taskCompletionDate="${not empty task.completionDate ? task.completionDate : 'Task has not been completed'}">${task.name}</a>
                         </td>
-                        <td>
+                        <td class="text-nowrap">
                             <c:forEach items="${task.users}" var="user">
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#userModal"
                                    data-bs-userFullName="${user.fullName}"
@@ -68,7 +70,6 @@
                                 <br>
                             </c:forEach>
                         </td>
-                        <td class="text-center text-nowrap"><fmt:formatDate value="${task.deadline}" type="date"/></td>
                         <td class="text-center">${priorityList[task.priority]}</td>
                         <td>
                             <select name="state">
@@ -81,18 +82,14 @@
                                 </c:forEach>
                             </select>
                         </td>
-                        <td><input name="submit" type="submit" value="update" class="btn-sm btn-info"/></td>
-                        <td class="text-center"><fmt:formatDate value="${task.completionDate}" type="date"/></td>
-
+                        <td>
+                            <button type="submit" value="update" class="btn-sm btn-info">Update</button>
+                        </td>
                         <input type="hidden" name="id" value="${task.id}"/>
-                    </tr>
-                    <tr>
-                        <td colspan="6"></td>
-                        <td style="text-align: right">
+                        <td class="text-right text-nowrap">
                             <a href="<c:url value="/tasks/leader/edit/${task.id}"/>">Edit</a><span> | </span>
                             <a href="<c:url value="/tasks/leader/remove/${task.id}"/>">Delete</a>
                         </td>
-                    </tr>
                 </form>
             </c:forEach>
         </c:forEach>

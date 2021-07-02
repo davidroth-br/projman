@@ -11,10 +11,10 @@ public class Constants {
         put(2, "High");
     }};
     public static final Map<Integer, String> STATE_LIST = new LinkedHashMap<Integer, String>() {{
-        put(0, "Not Assigned");
+        put(0, "Pending");
         put(1, "To Do");
         put(2, "In progress");
-        put(3, "Quality Assurance");
+        put(3, "QA");
         put(4, "Completed");
     }};
 

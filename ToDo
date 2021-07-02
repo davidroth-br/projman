@@ -4,3 +4,5 @@
 - Check browser back button behavior in everything
 - Set size limits for text input (models)
 - Confirmation pop-up for all deletes
+- Style edit task and new task
+- Fix back button for manage members
