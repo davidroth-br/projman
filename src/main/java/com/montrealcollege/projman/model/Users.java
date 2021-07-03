@@ -1,12 +1,11 @@
 package com.montrealcollege.projman.model;
 
+import com.montrealcollege.projman.utils.Constants;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +23,8 @@ public class Users {
 
     @Column(name = "USER_NAME", length = 36, nullable = false)
     @NotBlank(message="Please enter a user name")
+    @Min(value = 6, message = "6 characters minimum")
+    @Max(value = 36, message = Constants.CHAR_MAX_36)
     private String userName;
 
     @Column(name = "ENCRYPTED_PASSWORD", length = 128, nullable = false)
@@ -35,19 +36,23 @@ public class Users {
 
     @Column(name = "FIRST_NAME")
     @NotBlank(message="Please enter a first name")
+    @Max(value = 20, message = Constants.CHAR_MAX_20)
     private String firstName;
 
     @Column(name = "LAST_NAME")
     @NotBlank(message="Please enter a last name")
+    @Max(value = 20, message = Constants.CHAR_MAX_20)
     private String lastName;
 
     @Column(name = "EMAIL")
     @Email(message = "Please enter a valid email address")
+    @Max(value = 40, message = Constants.CHAR_MAX_40)
     private String email;
 
     @Column(name = "PHONE")
     @Pattern(regexp= "\\(\\d{3}\\) \\d{3}-\\d{4}|",
             message="Please enter a valid phone number. (999) 999-9999")
+    @Max(value = 20, message = Constants.CHAR_MAX_15)
     private String phone;
 
     @ManyToMany(mappedBy = "users")

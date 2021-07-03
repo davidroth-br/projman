@@ -33,4 +33,10 @@ public class Constants {
     public static final String VALIDATE_EDIT_TASK = "/tasks/leader/validateEdit";
     public static final String LEADER_CHANGE_STATE = "/tasks/leader/changeState";
     public static final String USER_CHANGE_STATE = "/tasks/user/changeState";
+
+    public static final String CHAR_MAX_15 = "15 characters maximum";
+    public static final String CHAR_MAX_20 = "20 characters maximum";
+    public static final String CHAR_MAX_36 = "36 characters maximum";
+    public static final String CHAR_MAX_40 = "40 characters maximum";
+    public static final String CHAR_MAX_400 = "400 characters maximum";
 }

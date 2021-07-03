@@ -1,10 +1,12 @@
 package com.montrealcollege.projman.model;
 
+import com.montrealcollege.projman.utils.Constants;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -24,15 +26,16 @@ public class Tasks {
 
     @Column(name = "NAME")
     @NotBlank(message = "Please enter a task name")
+    @Max(value = 40, message = Constants.CHAR_MAX_40)
     private String name;
 
     @Column(name = "DESCRIPTION")
+    @Max(value = 400, message = Constants.CHAR_MAX_400)
     private String description;
 
     @Column(name = "DEADLINE")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Please enter a deadline")
-//    @Future(message="Deadline must be in the future.")
     private Date deadline;
 
     @Column(name = "PRIORITY")
