@@ -47,7 +47,10 @@
                     </td>
                     <td class="text-center"><fmt:formatDate value="${project.startDate}" type="date"/></td>
                     <td class="text-center"><fmt:formatDate value="${project.endDate}" type="date"/></td>
-                    <td>${project.leader.fullName}</td>
+                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#userModal"
+                           data-bs-userFullName="${project.leader.fullName}"
+                           data-bs-userEmail="${project.leader.email}"
+                           data-bs-userPhone="${project.leader.phone}">${project.leader.fullName}</a></td>
                     <td><a href="<c:url value="/projects/leader/manageMembers/admin/${project.id}"/>">Manage Members</a></td>
                     <td><a href="<c:url value="/projects/admin/edit/${project.id}"/>">Edit</a></td>
                     <td><a href="<c:url value="/projects/admin/remove/${project.id}"/>">Delete</a></td>
@@ -58,5 +61,7 @@
 </div>
 <%@include file="../modals/projectDetails.html" %>
 <script src="${pageContext.request.contextPath}/js/projectDetails.js"></script>
+<%@include file="../modals/userDetails.html" %>
+<script src="${pageContext.request.contextPath}/js/userDetails.js"></script>
 </body>
 </html>
