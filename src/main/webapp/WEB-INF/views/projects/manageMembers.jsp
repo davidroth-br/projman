@@ -46,7 +46,7 @@
             </c:forEach>
             <div class="row mt-3 mb-3">
                 <div class="col text-center">
-                    <a href="<c:url value="/projects/admin/list"/>"
+                    <a href="<c:url value="/projects/${from}/list"/>"
                        class="btn btn-sm btn-secondary text-center ms-2">Back</a>
                 </div>
             </div>

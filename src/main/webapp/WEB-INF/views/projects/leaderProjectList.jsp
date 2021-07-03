@@ -34,7 +34,7 @@
                     <th colspan="3" class="fw-bold text-decoration-underline">${project.name}</th>
                     <th colspan="4" class="fw-normal text-nowrap" style="text-align: right">
                         <a href="<c:url value="/tasks/leader/new/${project.id}"/>">Add Task</a><span> | </span>
-                        <a href="<c:url value="/projects/leader/manageMembers/${project.id}"/>">Manage Members</a>
+                        <a href="<c:url value="/projects/leader/manageMembers/leader/${project.id}"/>">Manage Members</a>
                     </th>
                 </tr>
                 <c:set var="projectName" value="${project.name}"/>

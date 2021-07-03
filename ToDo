@@ -1,7 +1,7 @@
-- If user is on the dashboard and clicks on the back button on the browser, go back to dashboard
-- When trying to remove a user that doesn't exist show user friendly error message.
-- After change state in list and going into edit, when pressing back button in browser catch error
-- Check browser back button behavior in everything
-- Set size limits for text input (models)
-- Confirmation pop-up for all deletes
-- Fix back button for manage members
+TODO - If user is on the dashboard and clicks on the back button on the browser, go back to dashboard
+TODO - When trying to remove a user that doesn't exist show user friendly error message.
+TODO - After change state in list and going into edit, when pressing back button in browser catch error
+TODO - Check browser back button behavior in everything
+TODO - Set size limits for text input (models)
+TODO - Confirmation pop-up for all deletes
+TODO - Add link to User Details for leaders in project list
