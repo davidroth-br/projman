@@ -163,7 +163,7 @@ public class ProjectsController {
             projectsService.removeProject(id);
             model.addAttribute("messageColor", Constants.GREEN);
         } catch (DataIntegrityViolationException e) {
-            message =  "Unable to delete" + projectName + ".<br>There are tasks associated to it.";
+            message =  "Unable to delete " + projectName + ".<br>There are tasks associated to it.";
             model.addAttribute("messageColor", Constants.RED);
         }
 
@@ -184,26 +184,26 @@ public class ProjectsController {
         return "projects/manageMembers";
     }
 
-    @PostMapping("/leader/addMember")
-    public Object addMember(@RequestParam("projectId") Long id, @RequestParam("availableUsers") Long newMemberId, Model model) {
+    @PostMapping("/leader/addMember/{from}")
+    public Object addMember(@PathVariable String from, @RequestParam("projectId") Long id, @RequestParam("availableUsers") Long newMemberId, Model model) {
         Projects project = projectsService.getProjectById(id);
         project.getUsers().add(usersService.getUserById(newMemberId));
 
         projectsService.editProject(project);
 
+        model.addAttribute("from", from);
         model.addAttribute("availableUserList", getAvailableUsers(project));
         model.addAttribute("project", project);
         return "projects/manageMembers";
     }
 
-    @GetMapping("/leader/removeMember/{userId}/{projectId}")
-    public String removeMember(@PathVariable Long userId, @PathVariable Long projectId, Model model) {
+    @GetMapping("/leader/removeMember/{from}/{userId}/{projectId}")
+    public String removeMember(@PathVariable String from, @PathVariable Long userId, @PathVariable Long projectId, Model model) {
         Projects project = projectsService.getProjectById(projectId);
         Users member = usersService.getUserById(userId);
 
         boolean canRemove = true;
         for (Tasks task : project.getTasks()) {
-            System.out.println(task.toString());
             if (task.getUsers().contains(member)) {
                 canRemove = false;
                 model.addAttribute("message", "Unable to remove " + member.getFullName() + ".<br>There are tasks associated to this member.");
@@ -221,6 +221,7 @@ public class ProjectsController {
             projectsService.editProject(project);
         }
 
+        model.addAttribute("from", from);
         model.addAttribute("messageColor", Constants.RED);
         model.addAttribute("availableUserList", getAvailableUsers(project));
         model.addAttribute("project", project);

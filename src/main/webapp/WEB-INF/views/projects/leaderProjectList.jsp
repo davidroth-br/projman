@@ -34,7 +34,8 @@
                     <th colspan="3" class="fw-bold text-decoration-underline">${project.name}</th>
                     <th colspan="4" class="fw-normal text-nowrap" style="text-align: right">
                         <a href="<c:url value="/tasks/leader/new/${project.id}"/>">Add Task</a><span> | </span>
-                        <a href="<c:url value="/projects/leader/manageMembers/leader/${project.id}"/>">Manage Members</a>
+                        <a href="<c:url value="/projects/leader/manageMembers/leader/${project.id}"/>">Manage
+                            Members</a>
                     </th>
                 </tr>
                 <c:set var="projectName" value="${project.name}"/>
@@ -88,9 +89,14 @@
                         <input type="hidden" name="id" value="${task.id}"/>
                         <td class="text-right text-nowrap">
                             <a href="<c:url value="/tasks/leader/edit/${task.id}"/>">Edit</a><span> | </span>
-                            <a href="<c:url value="/tasks/leader/remove/${task.id}"/>">Delete</a>
+                            <c:set var="deleteId" value="${task.id}"/>
+                            <c:set var="deleteMessage" value="task"/>
+                            <c:set var="deleteName" value="${task.name}"/>
+                            <c:set var="deleteUri" value="/tasks/leader/remove/"/>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal_${deleteId}">Delete</a>
                         </td>
                 </form>
+                <%@include file="../modals/confirmDelete.html" %>
             </c:forEach>
         </c:forEach>
     </table>

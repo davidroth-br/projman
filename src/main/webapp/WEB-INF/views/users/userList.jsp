@@ -47,8 +47,16 @@
                     <td class="text-center">${user.enabled}</td>
                     <td><a href="<c:url value="/users/admin/newPass/${user.id}"/>">Change Password</a></td>
                     <td><a href="<c:url value="/users/admin/edit/${user.id}"/>">Edit</a></td>
-                    <td><a href="<c:url value="/users/admin/remove/${user.id}"/>">Delete</a></td>
+
+                    <td>
+                        <c:set var="deleteId" value="${user.id}"/>
+                        <c:set var="deleteMessage" value="user"/>
+                        <c:set var="deleteName" value="${user.fullName}"/>
+                        <c:set var="deleteUri" value="/users/admin/remove/"/>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal_${deleteId}">Delete</a>
+                    </td>
                 </tr>
+                <%@include file="../modals/confirmDelete.html" %>
             </c:forEach>
         </table>
     </c:if>

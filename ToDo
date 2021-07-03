@@ -3,4 +3,3 @@ TODO - When trying to remove a user that doesn't exist show user friendly error 
 TODO - After change state in list and going into edit, when pressing back button in browser catch error
 TODO - Check browser back button behavior in everything
 TODO - Set size limits for text input (models)
-TODO - Confirmation pop-up for all deletes

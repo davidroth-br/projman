@@ -20,7 +20,7 @@
         <h3 class="h3 text-center fw-bold">Manage Members</h3>
         <h4 class="h4 text-center fw-bold mb-3">${project.name}</h4>
         <div class="container">
-            <form method="post" action="${pageContext.request.contextPath}/projects/leader/addMember" name="addMember">
+            <form method="post" action="${pageContext.request.contextPath}/projects/leader/addMember/${from}" name="addMember">
                 <div class="row mb-3">
                     <div class="col text-center">
                         <c:if test="${not empty availableUserList}">
@@ -40,7 +40,7 @@
                 <div class="row">
                     <div class="col">
                         <span>${user.fullName} ${user == project.leader ? '(Leader)' : ''}</span>
-                        <a href="<c:url value="/projects/leader/removeMember/${user.id}/${project.id}"/>">Remove</a>
+                        <a href="<c:url value="/projects/leader/removeMember/${from}/${user.id}/${project.id}"/>">Remove</a>
                     </div>
                 </div>
             </c:forEach>

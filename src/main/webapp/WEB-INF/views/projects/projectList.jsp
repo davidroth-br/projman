@@ -51,10 +51,18 @@
                            data-bs-userFullName="${project.leader.fullName}"
                            data-bs-userEmail="${project.leader.email}"
                            data-bs-userPhone="${project.leader.phone}">${project.leader.fullName}</a></td>
-                    <td><a href="<c:url value="/projects/leader/manageMembers/admin/${project.id}"/>">Manage Members</a></td>
+                    <td><a href="<c:url value="/projects/leader/manageMembers/admin/${project.id}"/>">Manage Members</a>
+                    </td>
                     <td><a href="<c:url value="/projects/admin/edit/${project.id}"/>">Edit</a></td>
-                    <td><a href="<c:url value="/projects/admin/remove/${project.id}"/>">Delete</a></td>
+                    <td>
+                        <c:set var="deleteId" value="${project.id}"/>
+                        <c:set var="deleteMessage" value="project"/>
+                        <c:set var="deleteName" value="${project.name}"/>
+                        <c:set var="deleteUri" value="/projects/admin/remove/"/>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal_${deleteId}">Delete</a>
+                    </td>
                 </tr>
+                <%@include file="../modals/confirmDelete.html" %>
             </c:forEach>
         </table>
     </c:if>
