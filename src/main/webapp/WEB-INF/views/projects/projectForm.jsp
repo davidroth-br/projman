@@ -24,6 +24,22 @@
                 <f:errors cssClass="text-danger label" path="name"/><br>
                 <f:input path="name" size="35"/>
             </div>
+            <div class="col">
+                <f:label path="leader" cssClass="label" cssErrorClass="text-danger label">Leader:</f:label><br>
+                <f:select path="leader">
+                    <f:option value="0" label="--- Select Leader ---"/>
+                    <c:forEach items="${userList}" var="user">
+                        <c:choose>
+                            <c:when test="${user.id == project.leader.id}">
+                                <f:option value="${user.id}" label="${user.fullName}" selected="true"/>
+                            </c:when>
+                            <c:otherwise>
+                                <f:option value="${user.id}" label="${user.fullName}"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </f:select>
+            </div>
         </div>
         <div class="row mb-3">
             <div class="col">
@@ -46,24 +62,6 @@
                 <f:errors cssClass="text-danger label" path="endDate"/>
                 <span class="text-danger label">${endDateMessage}</span><br>
                 <f:input path="endDate" type="date"/>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col">
-                <f:label path="description" cssClass="label" cssErrorClass="text-danger label">Leader:</f:label><br>
-                <f:select path="leader">
-                    <f:option value="0" label="--- Select Leader ---"/>
-                    <c:forEach items="${userList}" var="user">
-                        <c:choose>
-                            <c:when test="${user.id == project.leader.id}">
-                                <f:option value="${user.id}" label="${user.fullName}" selected="true"/>
-                            </c:when>
-                            <c:otherwise>
-                                <f:option value="${user.id}" label="${user.fullName}"/>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-                </f:select>
             </div>
         </div>
         <f:hidden path="id" value="${project.id}"/>
