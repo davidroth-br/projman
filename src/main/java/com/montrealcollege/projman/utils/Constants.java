@@ -18,8 +18,8 @@ public class Constants {
         put(4, "Completed");
     }};
 
-    public static final String RED = "color: red";
-    public static final String GREEN = "color: green";
+    public static final String RED = "text-danger";
+    public static final String GREEN = "text-success";
 
     public static final String NOT_IN_PAST = "Must not be in the past.";
     public static final String IN_FUTURE = "Must be in the future.";

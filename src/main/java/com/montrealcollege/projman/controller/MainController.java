@@ -97,7 +97,6 @@ public class MainController {
         }
 
         return "redirect:/dashboard";
-//        return "loginPage";
     }
 
     @GetMapping(value = "/logoutSuccessful")

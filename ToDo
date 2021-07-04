@@ -1,4 +1,2 @@
 TODO - After change state in list and going into edit, when pressing back button in browser catch error
 TODO - Check browser back button behavior in everything
-TODO - Change 'String RED = "color: red";' to text-danger
-TODO - Change 'String GREEN = "color: red";' to text-success

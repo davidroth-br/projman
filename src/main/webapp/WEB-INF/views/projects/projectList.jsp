@@ -12,7 +12,18 @@
     <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+            crossorigin="anonymous">
+    </script>
+    <script>
+        sessionStorage.setItem("previousPageURL", sessionStorage.getItem("currentPageURL"));
+        sessionStorage.setItem("currentPageURL", "${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}/projects/admin/list");
+        history.pushState({page: 1}, "", "");
+        onbeforeunload = function(event) {
+            if(event){
+                location.href = sessionStorage.getItem("previousPageURL");
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="menu text-center">
@@ -20,7 +31,7 @@
 </div>
 <div class="content">
     <c:if test="${message != null}">
-        <h3 class="fs-5 text-center" style="${messageColor}">${message}</h3>
+        <h3 class="fs-5 text-center ${messageColor}">${message}</h3>
     </c:if>
     <h3 class="h3 text-center fw-bold">Project List</h3>
     <h5 class="h5 text-center"><a href="<c:url value="/projects/admin/new"/>">Add Project</a></h5>
