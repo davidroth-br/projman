@@ -6,9 +6,9 @@ import org.hibernate.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,11 +27,11 @@ public class Projects {
 
     @Column(name = "NAME")
     @NotBlank(message = Constants.REQUIRED)
-    @Max(value = 40, message = Constants.CHAR_MAX_40)
+    @Size(max = 40, message = Constants.CHAR_MAX_40)
     private String name;
 
     @Column(name = "DESCRIPTION")
-    @Max(value = 400, message = Constants.CHAR_MAX_400)
+    @Size(max = 400, message = Constants.CHAR_MAX_400)
     private String description;
 
     @Column(name = "START_DATE")
