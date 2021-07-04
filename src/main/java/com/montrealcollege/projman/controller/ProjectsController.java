@@ -66,7 +66,7 @@ public class ProjectsController {
         model.addAttribute("project", new Projects());
         model.addAttribute("userList", usersService.showUsers());
         model.addAttribute("addOrEdit", "New");
-        model.addAttribute("action", "/projects/admin/validateNew");
+        model.addAttribute("action", Constants.VALIDATE_NEW_PROJECT);
         return "projects/projectForm";
     }
 
@@ -81,10 +81,10 @@ public class ProjectsController {
 
         if (errors.hasErrors() || isEndDateBeforeStartDate || isEndDateInPast || isStartDateInPast) {
             model.addAttribute("userList", usersService.showUsers());
-            model.addAttribute("startDateMessage", isStartDateInPast ? Constants.START_IN_PAST : "");
-            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? Constants.END_BEFORE_START : isEndDateInPast ? Constants.END_IN_PAST : "");
+            model.addAttribute("startDateMessage", isStartDateInPast ? Constants.NOT_IN_PAST : "");
+            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? Constants.END_BEFORE_START : isEndDateInPast ? Constants.IN_FUTURE : "");
             model.addAttribute("addOrEdit", "New");
-            model.addAttribute("action", "/projects/admin/validateNew");
+            model.addAttribute("action", Constants.VALIDATE_NEW_PROJECT);
             return "projects/projectForm";
         }
 
@@ -103,7 +103,7 @@ public class ProjectsController {
         model.addAttribute("project", projectsService.getProjectById(id));
         model.addAttribute("userList", usersService.showUsers());
         model.addAttribute("addOrEdit", "Edit");
-        model.addAttribute("action", "/projects/admin/validateEdit");
+        model.addAttribute("action", Constants.VALIDATE_EDIT_PROJECT);
         return "projects/projectForm";
     }
 
@@ -116,10 +116,10 @@ public class ProjectsController {
 
         if (errors.hasErrors() || isEndDateBeforeStartDate || isEndDateInPast || isStartDateInPast) {
             model.addAttribute("userList", usersService.showUsers());
-            model.addAttribute("startDateMessage", isStartDateInPast ? Constants.START_IN_PAST : "");
-            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? Constants.END_BEFORE_START : isEndDateInPast ? Constants.END_IN_PAST : "");
+            model.addAttribute("startDateMessage", isStartDateInPast ? Constants.NOT_IN_PAST : "");
+            model.addAttribute("endDateMessage", isEndDateBeforeStartDate ? Constants.END_BEFORE_START : isEndDateInPast ? Constants.IN_FUTURE : "");
             model.addAttribute("addOrEdit", "Edit");
-            model.addAttribute("action", "/projects/admin/validateEdit");
+            model.addAttribute("action", Constants.VALIDATE_EDIT_PROJECT);
             return "projects/projectForm";
         }
 
@@ -163,7 +163,7 @@ public class ProjectsController {
             projectsService.removeProject(id);
             model.addAttribute("messageColor", Constants.GREEN);
         } catch (DataIntegrityViolationException e) {
-            message =  "Unable to delete " + projectName + ".<br>There are tasks associated to it.";
+            message =  Constants.DELETE_ERROR + "There are tasks associated to the project.";
             model.addAttribute("messageColor", Constants.RED);
         }
 
@@ -206,14 +206,14 @@ public class ProjectsController {
         for (Tasks task : project.getTasks()) {
             if (task.getUsers().contains(member)) {
                 canRemove = false;
-                model.addAttribute("message", "Unable to remove " + member.getFullName() + ".<br>There are tasks associated to this member.");
+                model.addAttribute("message", Constants.REMOVE_ERROR + "There are tasks associated to the member.");
                 break;
             }
         }
 
         if (project.getLeader().getId().equals(userId)) {
             canRemove = false;
-            model.addAttribute("message", member.getFullName() + " is the project leader and cannot be removed.");
+            model.addAttribute("message", Constants.REMOVE_ERROR + "Member is the project leader.");
         }
 
         if(canRemove) {

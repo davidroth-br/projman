@@ -93,7 +93,7 @@ public class TasksController {
         boolean isDeadlineInPast = task.getDeadline() != null && !task.getDeadline().after(today());
 
         if (errors.hasErrors() || isDeadlineInPast) {
-            model.addAttribute("deadlineMessage", isDeadlineInPast ? "Deadline must be in the future." : "");
+            model.addAttribute("deadlineMessage", isDeadlineInPast ? Constants.IN_FUTURE : "");
             model.addAttribute("action", Constants.VALIDATE_NEW_TASK);
             model.addAttribute("project", task.getProject());
             model.addAttribute("addOrEdit", "New");

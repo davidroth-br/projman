@@ -22,25 +22,25 @@ public class Users {
     private Long id;
 
     @Column(name = "USER_NAME", length = 36, nullable = false)
-    @NotBlank(message="Please enter a user name")
+    @NotBlank(message = Constants.REQUIRED)
     @Min(value = 6, message = "6 characters minimum")
     @Max(value = 36, message = Constants.CHAR_MAX_36)
     private String userName;
 
     @Column(name = "ENCRYPTED_PASSWORD", length = 128, nullable = false)
-    @NotBlank(message="Please enter a password")
+    @NotBlank(message = Constants.REQUIRED)
     private String encryptedPassword;
 
     @Column(name = "ENABLED", length = 1, nullable = false)
     private boolean enabled;
 
     @Column(name = "FIRST_NAME")
-    @NotBlank(message="Please enter a first name")
+    @NotBlank(message = Constants.REQUIRED)
     @Max(value = 20, message = Constants.CHAR_MAX_20)
     private String firstName;
 
     @Column(name = "LAST_NAME")
-    @NotBlank(message="Please enter a last name")
+    @NotBlank(message = Constants.REQUIRED)
     @Max(value = 20, message = Constants.CHAR_MAX_20)
     private String lastName;
 

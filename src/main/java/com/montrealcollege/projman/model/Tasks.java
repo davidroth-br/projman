@@ -5,7 +5,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -35,15 +34,15 @@ public class Tasks {
 
     @Column(name = "DEADLINE")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "Please enter a deadline")
+    @NotNull(message = Constants.REQUIRED)
     private Date deadline;
 
     @Column(name = "PRIORITY")
-    @NotNull(message = "Please select a priority")
+    @NotNull(message = Constants.REQUIRED)
     private Integer priority;
 
     @Column(name = "STATE")
-    @NotNull(message = "Please select a state")
+    @NotNull(message = Constants.REQUIRED)
     private Integer state;
 
     @Column(name = "COMPLETION_DATE")
@@ -52,7 +51,7 @@ public class Tasks {
 
     @ManyToOne
     @JoinColumn(name = "PROJECT_ID")
-    @NotNull(message = "Please select a project")
+    @NotNull(message = Constants.REQUIRED)
     private Projects project;
 
     @ManyToMany

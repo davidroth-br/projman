@@ -34,7 +34,6 @@ public class MainController {
 
         Users currentUser = usersService.getCurrentUser();
         if (currentUser.isLeader() || currentUser.isAdmin()) {
-            int projectAmount = currentUser.getProjectsLead().size();
             List<ProjectStats> projectStats = new ArrayList<>();
             for (Projects project : currentUser.isAdmin() ? projectsService.showProjects() : currentUser.getProjectsLead()) {
                 int tasksInProject = 0;

@@ -45,14 +45,14 @@ public class UsersController {
         boolean isNotMatch = !user.getEncryptedPassword().equals(passCheck);
 
         if (errors.hasErrors() || isNotMatch) {
-            model.addAttribute("repeatMessage", isNotMatch ? "Passwords did not match." : "");
+            model.addAttribute("repeatMessage", isNotMatch ? Constants.PASSWORD_MISMATCH : "");
             return "users/newUser";
         }
 
         usersService.addUser(user);
 
         model.addAttribute("messageColor", Constants.GREEN);
-        model.addAttribute("message", user.getFullName() + " was successfully added as " + user.getUserName() + "!");
+        model.addAttribute("message", user.getFullName() + Constants.NEW_SUCCESS);
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
@@ -88,7 +88,7 @@ public class UsersController {
         usersService.editUser(user);
 
         model.addAttribute("messageColor", Constants.GREEN);
-        model.addAttribute("message", user.getFullName() + " was successfully edited!");
+        model.addAttribute("message", user.getFullName() + Constants.EDIT_SUCCESS);
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
@@ -118,8 +118,8 @@ public class UsersController {
 
         if (isNotPassword || isBlank || isSamePassword || isNotMatch) {
             model.addAttribute("currentPasswordMessage", isNotPassword ? "Incorrect password." : "");
-            model.addAttribute("newPasswordMessage", isBlank ? "New password can't be blank." : isSamePassword ? "New password can't be the same as old one." : "");
-            model.addAttribute("repeatMessage", isNotMatch ? "Passwords did not match." : "");
+            model.addAttribute("newPasswordMessage", isBlank ? Constants.REQUIRED : isSamePassword ? "New password can't be the same as old one." : "");
+            model.addAttribute("repeatMessage", isNotMatch ? Constants.PASSWORD_MISMATCH : "");
             return "users/changePassword";
         }
 
@@ -140,7 +140,7 @@ public class UsersController {
 
         if (id == currentUser.getId()) {
             model.addAttribute("messageColor", Constants.RED);
-            model.addAttribute("message", "Unable to delete. You can't delete yourself.");
+            model.addAttribute("message", Constants.DELETE_ERROR + "You cannot delete yourself.");
         } else {
             try {
                 usersService.removeUser(id);
@@ -148,7 +148,7 @@ public class UsersController {
                 model.addAttribute("message", user.getFullName() + Constants.DELETE_SUCCESS);
             } catch (DataIntegrityViolationException e) {
                 model.addAttribute("messageColor", Constants.RED);
-                model.addAttribute("message", "Unable to delete. " + user.getFullName() + " is associated to projects.");
+                model.addAttribute("message", Constants.DELETE_ERROR + user.getFullName() + " is associated to projects.");
             }
         }
 

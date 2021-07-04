@@ -26,7 +26,7 @@ public class Projects {
     private Long id;
 
     @Column(name = "NAME")
-    @NotBlank(message="Please enter a project name.")
+    @NotBlank(message = Constants.REQUIRED)
     @Max(value = 40, message = Constants.CHAR_MAX_40)
     private String name;
 
@@ -36,12 +36,12 @@ public class Projects {
 
     @Column(name = "START_DATE")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message="Please enter a start date.")
+    @NotNull(message = Constants.REQUIRED)
     private Date startDate;
 
     @Column(name = "END_DATE")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message="Please enter an end date.")
+    @NotNull(message = Constants.REQUIRED)
     private Date endDate;
 
     @ManyToOne
