@@ -10,6 +10,9 @@ import com.montrealcollege.projman.service.UsersService;
 import com.montrealcollege.projman.utils.Constants;
 import com.montrealcollege.projman.utils.Helpers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,7 +91,13 @@ public class MainController {
 
     @GetMapping(value = {"/", "/login"})
     public String loginPage() {
-        return "loginPage";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "loginPage";
+        }
+
+        return "redirect:/dashboard";
+//        return "loginPage";
     }
 
     @GetMapping(value = "/logoutSuccessful")
