@@ -135,10 +135,12 @@ public class UsersController {
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@SessionAttribute("currentUser") Users currentUser,
                              @PathVariable Long id, Model model) {
-
         Users user = usersService.getUserById(id);
 
-        if (id == currentUser.getId()) {
+        if (user == null) {
+            model.addAttribute("messageColor", Constants.RED);
+            model.addAttribute("message", Constants.DELETE_ERROR + "User does not exist.");
+        } else if (id == currentUser.getId()) {
             model.addAttribute("messageColor", Constants.RED);
             model.addAttribute("message", Constants.DELETE_ERROR + "You cannot delete yourself.");
         } else {
