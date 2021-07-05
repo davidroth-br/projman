@@ -156,18 +156,19 @@ public class ProjectsController {
     @GetMapping("/admin/remove/{id}")
     public String removeUser(@PathVariable Long id, Model model) {
 
-        String projectName = projectsService.getProjectById(id).getName();
-        String message = projectName + Constants.DELETE_SUCCESS;
+        Projects project = projectsService.getProjectById(id);
 
-        try {
-            projectsService.removeProject(id);
-            model.addAttribute("messageColor", Constants.GREEN);
-        } catch (DataIntegrityViolationException e) {
-            message =  Constants.DELETE_ERROR + "There are tasks associated to the project.";
-            model.addAttribute("messageColor", Constants.RED);
+        if (project != null) {
+            try {
+                projectsService.removeProject(id);
+                model.addAttribute("messageColor", Constants.GREEN);
+                model.addAttribute("message", project.getName() + Constants.DELETE_SUCCESS);
+            } catch (DataIntegrityViolationException e) {
+                model.addAttribute("message", Constants.DELETE_ERROR + "There are tasks associated to the project.");
+                model.addAttribute("messageColor", Constants.RED);
+            }
         }
 
-        model.addAttribute("message", message);
         model.addAttribute("projectList", projectsService.showProjects());
         return "projects/projectList";
     }

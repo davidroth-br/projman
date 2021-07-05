@@ -148,12 +148,14 @@ public class TasksController {
     @GetMapping("/leader/remove/{id}")
     public String removeUser(@SessionAttribute("currentUser") Users currentUser, @PathVariable Long id, Model model) {
 
-        String message = tasksService.getTaskById(id).getName() + Constants.DELETE_SUCCESS;
+        Tasks task = tasksService.getTaskById(id);
 
-        tasksService.removeTask(id);
+        if (task != null) {
+            tasksService.removeTask(id);
+            model.addAttribute("messageColor", Constants.GREEN);
+            model.addAttribute("message", task.getName() + Constants.DELETE_SUCCESS);
+        }
 
-        model.addAttribute("messageColor", Constants.GREEN);
-        model.addAttribute("message", message);
         model.addAttribute("action", Constants.LEADER_CHANGE_STATE);
         model.addAttribute("projectList", projectsService.showLeaderProjects(currentUser));
         addPriorityAndStateAttributes(model);

@@ -14,16 +14,6 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous">
     </script>
-    <script>
-        sessionStorage.setItem("previousPageURL", sessionStorage.getItem("currentPageURL"));
-        sessionStorage.setItem("currentPageURL", "${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}/projects/admin/list");
-        history.pushState({page: 1}, "", "");
-        onbeforeunload = function(event) {
-            if(event){
-                location.href = sessionStorage.getItem("previousPageURL");
-            }
-        }
-    </script>
 </head>
 <body>
 <div class="menu text-center">

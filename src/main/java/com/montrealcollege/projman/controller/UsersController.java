@@ -137,24 +137,24 @@ public class UsersController {
                              @PathVariable Long id, Model model) {
         Users user = usersService.getUserById(id);
 
-        if (user == null) {
-            model.addAttribute("messageColor", Constants.RED);
-            model.addAttribute("message", Constants.DELETE_ERROR + "User does not exist.");
-        } else if (id == currentUser.getId()) {
-            model.addAttribute("messageColor", Constants.RED);
-            model.addAttribute("message", Constants.DELETE_ERROR + "You cannot delete yourself.");
-        } else {
-            try {
-                usersService.removeUser(id);
-                model.addAttribute("messageColor", Constants.GREEN);
-                model.addAttribute("message", user.getFullName() + Constants.DELETE_SUCCESS);
-            } catch (DataIntegrityViolationException e) {
+        if (user != null) {
+            if (id.equals(currentUser.getId())) {
                 model.addAttribute("messageColor", Constants.RED);
-                model.addAttribute("message", Constants.DELETE_ERROR + user.getFullName() + " is associated to projects.");
+                model.addAttribute("message", Constants.DELETE_ERROR + "You cannot delete yourself.");
+            } else {
+                try {
+                    usersService.removeUser(id);
+                    model.addAttribute("messageColor", Constants.GREEN);
+                    model.addAttribute("message", user.getFullName() + Constants.DELETE_SUCCESS);
+                } catch (DataIntegrityViolationException e) {
+                    model.addAttribute("messageColor", Constants.RED);
+                    model.addAttribute("message", Constants.DELETE_ERROR + user.getFullName() + " is associated to projects.");
+                }
             }
         }
 
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
+
 }
