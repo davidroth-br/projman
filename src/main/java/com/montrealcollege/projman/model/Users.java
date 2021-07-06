@@ -66,6 +66,7 @@ public class Users {
     private Roles role;
 
     @OneToMany(mappedBy = "leader")
+    @OrderBy(value = "name")
     private Set<Projects> projectsLead;
 
     public Long getId() {

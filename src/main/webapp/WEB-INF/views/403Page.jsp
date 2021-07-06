@@ -4,15 +4,19 @@
 <html>
 <head>
     <title>Access Denied</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
 </head>
 
 <body>
-<%@include file="_menu.jsp" %>
-
-<h3 style="color: red;">
-    Hi ${sessionScope.currentUser.fullName}.
-    <br> You do not have permission to access this page!
-</h3>
-
+<div class="menu text-center">
+    <%@include file="_menu.jsp" %>
+</div>
+<div class="content">
+    <h3 class="h3 text-danger">
+        You do not have permission to access this page!
+    </h3>
+</div>
 </body>
 </html>

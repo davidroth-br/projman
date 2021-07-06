@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <head>
@@ -21,7 +22,7 @@
     <c:if test="${message != null}">
         <h3 class="fs-5 text-center ${messageColor}">${message}</h3>
     </c:if>
-    <h2 class="h3 text-center fw-bold">Projects You Lead</h2>
+    <h3 class="h3 text-center fw-bold">Projects You Lead</h3>
     <c:set var="projectName" value=""/>
     <table class="table table-sm table-borderless">
         <c:forEach items="${projectList}" var="project">
@@ -31,9 +32,21 @@
                         <td><br></td>
                     </tr>
                 </c:if>
-                <tr class="fs-5">
-                    <th colspan="3" class="fw-bold text-decoration-underline">${project.name}</th>
-                    <th colspan="4" class="fw-normal text-nowrap" style="text-align: right">
+                <tr>
+                    <th colspan="3" class="fs-5 fw-bold">
+                        <c:set var="members" value=""/>
+                        <c:forEach var="member" items="${project.users}">
+                            <c:set var="memberName" value="${member.fullName} / "/>
+                            <c:set var="members" value="${members}${memberName}"/>
+                        </c:forEach>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#projectModal"
+                           data-bs-projectName="${project.name}"
+                           data-bs-projectMembers="${fn:substring(members, 0, fn:length(members) - 3)}"
+                           data-bs-projectDescription="${project.description}"
+                           data-bs-projectStartDate="<fmt:formatDate value="${project.startDate}" type="date"/>"
+                           data-bs-projectEndDate="<fmt:formatDate value="${project.endDate}" type="date"/>">${project.name}</a>
+                    </th>
+                    <th colspan="4" class="fs-5 fw-bold text-nowrap text-right">
                         <a href="<c:url value="/tasks/leader/new/${project.id}"/>">Add Task</a><span> | </span>
                         <a href="<c:url value="/projects/leader/manageMembers/leader/${project.id}"/>">Manage
                             Members</a>
@@ -56,14 +69,15 @@
             <c:forEach items="${project.tasks}" var="task">
                 <form method="post" action="${pageContext.request.contextPath}${action}/${task.id}" name="changeState">
                     <tr>
-                        <td>
+                        <td class="align-middle">
+                            <fmt:formatDate value="${task.completionDate}" type="date" var="formattedCompletion"/>
                             <a href="#" data-bs-toggle="modal" data-bs-target="#taskModal"
                                data-bs-taskName="${task.name}"
                                data-bs-taskDescription="${task.description}"
-                               data-bs-taskDeadline="${task.deadline}"
-                               data-bs-taskCompletionDate="${not empty task.completionDate ? task.completionDate : 'Task has not been completed'}">${task.name}</a>
+                               data-bs-taskDeadline="<fmt:formatDate value="${task.deadline}" type="date"/>"
+                               data-bs-taskCompletionDate="${task.completionDate != null ? formattedCompletion : "Task has not been completed"}">${task.name}</a>
                         </td>
-                        <td class="text-nowrap">
+                        <td class="align-middle text-nowrap">
                             <c:forEach items="${task.users}" var="user">
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#userModal"
                                    data-bs-userFullName="${user.fullName}"
@@ -72,8 +86,8 @@
                                 <br>
                             </c:forEach>
                         </td>
-                        <td class="text-center">${priorityList[task.priority]}</td>
-                        <td>
+                        <td class="text-center align-middle">${priorityList[task.priority]}</td>
+                        <td class="align-middle">
                             <select name="state">
                                 <c:forEach items="${stateList}" var="stateOption">
                                     <c:set var="selected" value=""/>
@@ -84,24 +98,28 @@
                                 </c:forEach>
                             </select>
                         </td>
-                        <td>
-                            <button type="submit" value="update" class="btn-sm btn-info">Update</button>
+                        <td class="align-middle">
+                            <button type="submit" value="update" class="btn btn-sm btn-info text-center">Update</button>
                         </td>
                         <input type="hidden" name="id" value="${task.id}"/>
-                        <td class="text-right text-nowrap">
+                        <td class="text-right align-middle text-nowrap">
                             <a href="<c:url value="/tasks/leader/edit/${task.id}"/>">Edit</a><span> | </span>
                             <c:set var="deleteId" value="${task.id}"/>
                             <c:set var="deleteMessage" value="task"/>
                             <c:set var="deleteName" value="${task.name}"/>
                             <c:set var="deleteUri" value="/tasks/leader/remove/"/>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal_${deleteId}">Delete</a>
+                            <a href="#" data-bs-toggle="modal"
+                               data-bs-target="#confirmDeleteModal_${deleteId}">Delete</a>
                         </td>
+                    </tr>
                 </form>
                 <%@include file="../modals/confirmDelete.html" %>
             </c:forEach>
         </c:forEach>
     </table>
 </div>
+<%@include file="../modals/projectDetails.html" %>
+<script src="${pageContext.request.contextPath}/js/projectDetails.js"></script>
 <%@include file="../modals/taskDetails.html" %>
 <script src="${pageContext.request.contextPath}/js/taskDetails.js"></script>
 <%@include file="../modals/userDetails.html" %>

@@ -14,16 +14,6 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous">
     </script>
-<%--    <script>--%>
-<%--        sessionStorage.setItem("previousPageURL", sessionStorage.getItem("currentPageURL"));--%>
-<%--        sessionStorage.setItem("currentPageURL", "${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}/tasks/user/list");--%>
-<%--        history.pushState({page: 1}, "", "");--%>
-<%--        onbeforeunload = function(event) {--%>
-<%--            if(event){--%>
-<%--                location.href = sessionStorage.getItem("previousPageURL");--%>
-<%--            }--%>
-<%--        }--%>
-<%--    </script>--%>
 </head>
 <body>
 <div class="menu text-center">
@@ -46,11 +36,11 @@
                                     ${task.project.name}
                             </th>
                         </tr>
-                        <tr class="fs-5">
-                            <th colspan="5" class="fw-normal">
+                        <tr>
+                            <th colspan="5" class="fs-5 fw-normal">
                                 Leader: ${task.project.leader.fullName}
                             </th>
-                            <th class="fw-normal text-nowrap" style="text-align: right">
+                            <th class="fs-5 fw-normal text-nowrap" style="text-align: right">
                                 <c:set var="members" value=""/>
                                 <c:forEach var="member" items="${task.project.users}">
                                     <c:set var="memberName" value="${member.fullName} / "/>
@@ -75,16 +65,21 @@
                     <form method="post" action="${pageContext.request.contextPath}${action}/${task.id}"
                           name="changeState">
                         <tr class="align-top">
-                            <td>
+                            <td class="align-middle">
+                                <fmt:formatDate value="${task.completionDate}" type="date" var="formattedCompletion"/>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#taskModal"
                                    data-bs-taskName="${task.name}"
-                                   data-bs-taskDescription="${task.description}">${task.name}</a>
+                                   data-bs-taskDescription="${task.description}"
+                                   data-bs-taskDeadline="<fmt:formatDate value="${task.deadline}" type="date"/>"
+                                   data-bs-taskCompletionDate="${task.completionDate != null ? formattedCompletion : "Task has not been completed"}">${task.name}</a>
                             </td>
-                            <td class="text-center text-nowrap"><fmt:formatDate value="${task.deadline}"
-                                                                                type="date"/></td>
-                            <td class="text-center">${priorityList[task.priority]}</td>
-                            <td>
-                                <select name="state">
+                            <td class="text-center align-middle text-nowrap">
+                                <fmt:formatDate value="${task.deadline}" type="date"/>
+                            </td>
+                            <td class="text-center align-middle">${priorityList[task.priority]}</td>
+                            <td class="align-middle">
+                                <label for="state"></label>
+                                <select id="state" name="state">
                                     <c:forEach items="${stateList}" var="stateOption">
                                         <c:set var="selected" value=""/>
                                         <c:if test="${stateOption.key == task.state}">
@@ -94,9 +89,12 @@
                                     </c:forEach>
                                 </select>
                             </td>
-                            <td class="align-top"><input name="submit" type="submit" value="update"
-                                                         class="btn-sm btn-info"/></td>
-                            <td class="text-center"><fmt:formatDate value="${task.completionDate}" type="date"/></td>
+                            <td class="align-middle">
+                                <button class="btn btn-sm btn-info text-center" type="submit">Update</button>
+                            </td>
+                            <td class="text-center align-middle">
+                                <fmt:formatDate value="${task.completionDate}" type="date"/>
+                            </td>
                             <input type="hidden" name="id" value="${task.id}"/>
                         </tr>
                     </form>

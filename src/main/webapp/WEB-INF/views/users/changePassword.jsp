@@ -15,7 +15,8 @@
 </div>
 <div class="content">
     <h3 class="h3 text-center fw-bold">Change Password</h3>
-    <f:form method="POST" action="${pageContext.request.contextPath}/users/admin/validateNewPass" modelAttribute="user">
+    <f:form method="POST" action="${pageContext.request.contextPath}/users/${from}/validateNewPass"
+            modelAttribute="user">
         <div class="container">
             <div class="row mb-3">
                 <div class="col">
@@ -49,7 +50,7 @@
         <div class="row mb-3">
             <div class="col text-center">
                 <button class="btn btn-sm btn-info text-center me-2" type="submit">Save</button>
-                <a href="<c:url value="/users/admin/list"/>"
+                <a href="<c:url value="/users/${from}/${from == 'admin' ? 'list' : 'show'}"/>"
                    class="btn btn-sm btn-secondary text-center ms-2">Cancel</a>
             </div>
         </div>

@@ -8,8 +8,6 @@ public interface TasksDAO {
 
     void createTask(Tasks task);
 
-    List<Tasks> listTasks();
-
     List<Tasks> listUserTasks();
 
     Tasks findTaskById(Long id);
@@ -17,6 +15,4 @@ public interface TasksDAO {
     void updateTask(Tasks task);
 
     void deleteTask(Long id);
-
-    List<Tasks> listLeaderTasks();
 }

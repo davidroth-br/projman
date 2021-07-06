@@ -44,15 +44,20 @@
                         <a href="#" data-bs-toggle="modal" data-bs-target="#projectModal"
                            data-bs-projectName="${project.name}"
                            data-bs-projectMembers="${fn:substring(members, 0, fn:length(members) - 3)}"
-                           data-bs-projectDescription="${project.description}">${project.name}</a>
+                           data-bs-projectDescription="${project.description}"
+                           data-bs-projectStartDate="<fmt:formatDate value="${project.startDate}" type="date"/>"
+                           data-bs-projectEndDate="<fmt:formatDate value="${project.endDate}" type="date"/>">${project.name}</a>
                     </td>
-                    <td class="text-center"><fmt:formatDate value="${project.startDate}" type="date"/></td>
-                    <td class="text-center"><fmt:formatDate value="${project.endDate}" type="date"/></td>
-                    <td><a href="#" data-bs-toggle="modal" data-bs-target="#userModal"
-                           data-bs-userFullName="${project.leader.fullName}"
-                           data-bs-userEmail="${project.leader.email}"
-                           data-bs-userPhone="${project.leader.phone}">${project.leader.fullName}</a></td>
-                    <td><a href="<c:url value="/projects/leader/manageMembers/admin/${project.id}"/>">Manage Members</a>
+                    <td class="text-center text-nowrap"><fmt:formatDate value="${project.startDate}" type="date"/></td>
+                    <td class="text-center text-nowrap"><fmt:formatDate value="${project.endDate}" type="date"/></td>
+                    <td class="text-nowrap"><a href="#" data-bs-toggle="modal" data-bs-target="#userModal"
+                                               data-bs-userFullName="${project.leader.fullName}"
+                                               data-bs-userEmail="${project.leader.email}"
+                                               data-bs-userPhone="${project.leader.phone}">${project.leader.fullName}</a>
+                    </td>
+                    <td class="text-nowrap"><a
+                            href="<c:url value="/projects/leader/manageMembers/admin/${project.id}"/>">Manage
+                        Members</a>
                     </td>
                     <td><a href="<c:url value="/projects/admin/edit/${project.id}"/>">Edit</a></td>
                     <td>

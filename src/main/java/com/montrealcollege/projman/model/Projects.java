@@ -49,6 +49,7 @@ public class Projects {
     private Users leader;
 
     @OneToMany(mappedBy = "project")
+    @OrderBy(value = "name ASC")
     private Set<Tasks> tasks;
 
     @ManyToMany

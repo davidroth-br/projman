@@ -1,17 +1,30 @@
 <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" style="margin: 0 auto;">
-        <h4 class="modal-taskName"></h4>
-      </div>
-      <div class="modal-body">
-        <p class="modal-taskDescription"></p>
-        <p class="modal-taskDeadline"></p>
-        <p class="modal-taskCompletionDate"></p>
-      </div>
-      <div class="modal-footer" style="margin: 0 auto;">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-text-center">
+                <h4 class="modal-taskName"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <span class="fs-5 fw-bold">Description:</span>
+                        <p class="modal-taskDescription"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <span class="fs-5 fw-bold">Deadline:</span>
+                        <p class="modal-taskDeadline"></p>
+                    </div>
+                    <div class="col">
+                        <span class="fs-5 fw-bold">Completed On:</span>
+                        <p class="modal-taskCompletionDate"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modal-text-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

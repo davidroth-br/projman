@@ -100,7 +100,7 @@ public class MainController {
     }
 
     @GetMapping(value = "/logoutSuccessful")
-    public String logoutSuccessfulPage(Model model) {
+    public String logoutSuccessfulPage() {
         return "loginPage";
     }
 

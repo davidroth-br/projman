@@ -29,3 +29,7 @@
 .label {
     font-size: smaller;
 }
+
+.modal-text-center {
+    margin: 0 auto;
+}

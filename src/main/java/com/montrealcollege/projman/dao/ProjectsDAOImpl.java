@@ -69,5 +69,4 @@ public class ProjectsDAOImpl implements ProjectsDAO{
         Projects project = entityManager.find(Projects.class, id);
         entityManager.remove(project);
     }
-
 }

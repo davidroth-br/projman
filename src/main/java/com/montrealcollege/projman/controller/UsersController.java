@@ -75,6 +75,7 @@ public class UsersController {
     @GetMapping("/profile/changePassword")
     public String editProfilePassword(@SessionAttribute("currentUser") Users currentUser, Model model) {
 
+        model.addAttribute("from", "profile");
         model.addAttribute("user", usersService.getUserById(currentUser.getId()));
         return "users/changePassword";
     }
@@ -86,6 +87,7 @@ public class UsersController {
                                    @ModelAttribute("user") Users user, Model model) {
 
         if (isNotValidPassword(currentPassword, newPassword, passCheck, user, model)) {
+            model.addAttribute("from", "profile");
             return "users/changePassword";
         }
 
@@ -163,6 +165,7 @@ public class UsersController {
     @GetMapping("/admin/newPass/{id}")
     public String editPassword(@PathVariable Long id, Model model) {
 
+        model.addAttribute("from", "admin");
         model.addAttribute("user", usersService.getUserById(id));
         return "users/changePassword";
     }
@@ -174,6 +177,7 @@ public class UsersController {
                                    @ModelAttribute("user") Users user, Model model) {
 
         if (isNotValidPassword(currentPassword, newPassword, passCheck, user, model)) {
+            model.addAttribute("from", "admin");
             return "users/changePassword";
         }
 
@@ -194,7 +198,7 @@ public class UsersController {
         if (isNotPassword || isBlank || isSamePassword || isNotMatch) {
             model.addAttribute("currentPasswordMessage", isNotPassword ? "Incorrect password." : "");
             model.addAttribute("newPasswordMessage", isBlank ? Constants.REQUIRED : isSamePassword ? "New password can't be the same as old one." : "");
-            model.addAttribute("repeatMessage", isNotMatch ? Constants.PASSWORD_MISMATCH : "");
+            model.addAttribute("repeatMessage", isNotMatch ? Constants.PASSWORD_MISMATCH : isBlank ? Constants.REQUIRED : "");
             return true;
         }
         return false;

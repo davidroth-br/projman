@@ -21,10 +21,6 @@ public class TasksService {
         tasksDAO.createTask(task);
     }
 
-    public List<Tasks> showTasks() {
-        return tasksDAO.listTasks();
-    }
-
     public List<Tasks> showUserTasks() {
         return tasksDAO.listUserTasks();
     }
@@ -47,9 +43,5 @@ public class TasksService {
 
     public void removeTask(Long id) {
         tasksDAO.deleteTask(id);
-    }
-
-    public List<Tasks> showLeaderTasks() {
-        return tasksDAO.listLeaderTasks();
     }
 }

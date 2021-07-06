@@ -31,13 +31,10 @@ public class UsersService {
         return usersDAO.findUserById(id);
     }
 
-    public Users getUserByName(String userName) {
-        return usersDAO.findUserAccount(userName);
-    }
-
     public void editUser(Users user) {
         editUser(user, "");
     }
+
     public void editUser(Users user, String newPassword) {
         user.setFirstName(capitalizeFirstLetter(user.getFirstName()));
         user.setLastName(capitalizeFirstLetter(user.getLastName()));
@@ -55,5 +52,4 @@ public class UsersService {
     public Users getCurrentUser() {
         return usersDAO.findCurrentUser();
     }
-
 }

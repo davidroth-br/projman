@@ -28,18 +28,6 @@ public class TasksDAOImpl implements TasksDAO{
     }
 
     @Override
-    public List<Tasks> listTasks() {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tasks> criteria = criteriaBuilder.createQuery(Tasks.class);
-        Root<Tasks> tasksRoot = criteria.from(Tasks.class);
-        criteria.select(tasksRoot).orderBy(
-                criteriaBuilder.asc(tasksRoot.get("project").get("name")),
-                criteriaBuilder.asc(tasksRoot.get("name")));
-
-        return entityManager.createQuery(criteria).getResultList();
-    }
-
-    @Override
     public List<Tasks> listUserTasks() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tasks> criteria = criteriaBuilder.createQuery(Tasks.class);
@@ -51,20 +39,6 @@ public class TasksDAOImpl implements TasksDAO{
                         criteriaBuilder.asc(tasksRoot.get("project").get("name")),
                         criteriaBuilder.asc(tasksRoot.get("name")));
 
-        return entityManager.createQuery(criteria).getResultList();
-    }
-
-    @Override
-    public List<Tasks> listLeaderTasks() {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tasks> criteria = criteriaBuilder.createQuery(Tasks.class);
-        Root<Tasks> tasksRoot = criteria.from(Tasks.class);
-        criteria.select(tasksRoot)
-                .where(criteriaBuilder.equal(tasksRoot.get("project").get("leader").get("userName"), getCurrentUser()))
-                .orderBy(
-                        criteriaBuilder.asc(tasksRoot.get("project").get("name")),
-                        criteriaBuilder.asc(tasksRoot.get("name"))
-                        );
         return entityManager.createQuery(criteria).getResultList();
     }
 

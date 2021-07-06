@@ -16,11 +16,12 @@
     <c:if test="${message != null}">
         <h3 class="fs-5 text-center ${messageColor}">${message}</h3>
     </c:if>
+    <h3 class="h3 text-center fw-bold">Manage Members</h3>
     <div class="content-sm">
-        <h3 class="h3 text-center fw-bold">Manage Members</h3>
         <h4 class="h4 text-center fw-bold mb-3">${project.name}</h4>
         <div class="container">
-            <form method="post" action="${pageContext.request.contextPath}/projects/leader/addMember/${from}" name="addMember">
+            <form method="post" action="${pageContext.request.contextPath}/projects/leader/addMember/${from}"
+                  name="addMember">
                 <div class="row mb-3">
                     <div class="col text-center">
                         <c:if test="${not empty availableUserList}">
