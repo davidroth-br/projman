@@ -35,7 +35,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Setting Service to find User in the database.
         // And Setting PasswordEncoder
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
     }
 
     @Override
@@ -77,7 +76,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().and()
                 .rememberMe().tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(7 * 24 * 60 * 60); // 1 week
-
     }
 
     @Bean
@@ -86,5 +84,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         db.setDataSource(this.dataSource);
         return db;
     }
-
 }
