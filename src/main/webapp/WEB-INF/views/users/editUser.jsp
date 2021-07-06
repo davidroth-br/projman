@@ -8,16 +8,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
-<%--    <script>--%>
-<%--        sessionStorage.setItem("previousPageURL", sessionStorage.getItem("currentPageURL"));--%>
-<%--        sessionStorage.setItem("currentPageURL", "${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}/users/admin/list");--%>
-<%--        history.pushState({page: 1}, "", "");--%>
-<%--        onbeforeunload = function(event) {--%>
-<%--            if(event){--%>
-<%--                location.href = sessionStorage.getItem("previousPageURL");--%>
-<%--            }--%>
-<%--        }--%>
-<%--    </script>--%>
 </head>
 <body>
 <div class="menu text-center">
@@ -25,7 +15,7 @@
 </div>
 <div class="content">
     <h3 class="h3 text-center fw-bold">Edit User</h3>
-    <f:form method="POST" action="${pageContext.request.contextPath}/users/admin/validateEdit" modelAttribute="user">
+    <f:form method="POST" action="${pageContext.request.contextPath}/users/${from}/validateEdit" modelAttribute="user">
     <div class="container">
         <div class="row mb-3">
             <div class="col">
@@ -58,28 +48,33 @@
                 <f:input path="phone" type="tel" placeholder="(999) 999-9999"/>
             </div>
         </div>
-        <div class="row mb-3">
-            <div class="col">
-                <f:label path="role.roleId" cssClass="label ${empty roleMessage ? '' : 'text-danger'}">Role:</f:label>
-                <span class="text-danger label">${roleMessage}</span>
-                <br>
-                <span>User: </span><f:radiobutton path="role.roleId" value="2" checked="checked"
-                                                  cssClass="align-middle"/>
-                <br>
-                <span>Admin: </span><f:radiobutton path="role.roleId" value="1" cssClass="align-middle"/>
-            </div>
-            <div class="col">
-                <f:label path="enabled" cssClass="${empty roleMessage ? '' : 'text-danger'}">Enabled:</f:label>
-                <f:checkbox path="enabled" cssClass="align-middle"/>
-                <span class="text-danger label">${enabledMessage}</span>
-            </div>
-        </div>
+        <c:choose>
+            <c:when test="${user.id != sessionScope.currentUser.id}">
+                <div class="row mb-3">
+                    <div class="col">
+                        <f:label path="role.roleId" cssClass="label">Role:</f:label><br>
+                        <span>User: </span><f:radiobutton path="role.roleId" value="2" checked="checked"
+                                                          cssClass="align-middle"/>
+                        <br>
+                        <span>Admin: </span><f:radiobutton path="role.roleId" value="1" cssClass="align-middle"/>
+                    </div>
+                    <div class="col">
+                        <f:label path="enabled">Enabled:</f:label>
+                        <f:checkbox path="enabled" cssClass="align-middle"/>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <f:hidden path="role.roleId" value="${user.role.roleId}"/>
+                <f:hidden path="enabled" value="${user.enabled}"/>
+            </c:otherwise>
+        </c:choose>
         <f:hidden path="id" value="${user.id}"/>
         <f:hidden path="encryptedPassword" value="${user.encryptedPassword}"/>
         <div class="row mb-3">
             <div class="col text-center">
                 <button class="btn btn-sm btn-info text-center me-2" type="submit">Save</button>
-                <a href="<c:url value="/users/admin/list"/>"
+                <a href="<c:url value="/users/${from}/${from == 'admin' ? 'list' : 'show'}"/>"
                    class="btn btn-sm btn-secondary text-center ms-2">Cancel</a>
             </div>
         </div>

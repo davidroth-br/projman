@@ -25,11 +25,15 @@ public class Constants {
     public static final String IN_FUTURE = "Must be in the future.";
     public static final String END_BEFORE_START = "End date must be after start date.";
     public static final String PASSWORD_MISMATCH = "Passwords did not match.";
+    public static final String EDIT_ERROR = "Unable to edit. '";
+    public static final String ADD_ERROR = "Unable to add. '";
     public static final String DELETE_ERROR = "Unable to delete. ";
     public static final String REMOVE_ERROR = "Unable to remove. ";
+    public static final String BEING_USED = "' is already being used.";
 
     public static final String NEW_SUCCESS = " was successfully created!";
     public static final String EDIT_SUCCESS = " was successfully edited!";
+    public static final String CHANGE_PASSWORD_SUCCESS = " password was successfully changed!";
     public static final String DELETE_SUCCESS = " was successfully removed!";
 
     public static final String VALIDATE_NEW_TASK = "/tasks/leader/validateNew";

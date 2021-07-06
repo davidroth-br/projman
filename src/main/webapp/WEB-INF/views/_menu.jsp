@@ -4,6 +4,7 @@
 <div class="mb-1 btn-group-sm">
     <c:if test="${pageContext.request.userPrincipal != null}">
         <a href="<c:url value="/dashboard"/>" class="btn btn-primary">Dashboard</a>
+        <a href="<c:url value="/users/profile/show"/>" class="btn btn-primary">Profile</a>
         <a href="<c:url value="/tasks/user/list"/>" class="btn btn-primary">Your Tasks</a>
         <c:if test="${sessionScope.currentUser.isLeader()}">
             <a href="<c:url value="/projects/leader/list"/>" class="btn btn-primary">Your Projects</a>

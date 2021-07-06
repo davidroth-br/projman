@@ -29,6 +29,73 @@ public class UsersController {
         return "users/userList";
     }
 
+    // PROFILE
+    @GetMapping("/profile/show")
+    public String showProfile() {
+        return "users/profile";
+    }
+
+    @GetMapping("/profile/edit")
+    public String editUser(@SessionAttribute("currentUser") Users currentUser, Model model) {
+
+        model.addAttribute("from", "profile");
+        model.addAttribute("user", usersService.getUserById(currentUser.getId()));
+        return "users/editUser";
+    }
+
+    @PostMapping("/profile/validateEdit")
+    public Object validateEditProfile(@SessionAttribute("currentUser") Users currentUser,
+                                      @ModelAttribute("user") @Valid Users user,
+                                      BindingResult errors, Model model) {
+
+        if (errors.hasErrors()) {
+            model.addAttribute("from", "profile");
+            return "users/editUser";
+        }
+
+        try {
+            usersService.editUser(user);
+            if (user.getId().equals(currentUser.getId())) {
+                currentUser.setUserName(user.getUserName());
+                currentUser.setFirstName(user.getFirstName());
+                currentUser.setLastName(user.getLastName());
+                currentUser.setEmail(user.getEmail());
+                currentUser.setPhone(user.getPhone());
+            }
+            model.addAttribute("messageColor", Constants.GREEN);
+            model.addAttribute("message", user.getFullName() + Constants.EDIT_SUCCESS);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("messageColor", Constants.RED);
+            model.addAttribute("message", Constants.EDIT_ERROR + user.getUserName() + Constants.BEING_USED);
+        }
+
+        return "users/profile";
+    }
+
+    @GetMapping("/profile/changePassword")
+    public String editProfilePassword(@SessionAttribute("currentUser") Users currentUser, Model model) {
+
+        model.addAttribute("user", usersService.getUserById(currentUser.getId()));
+        return "users/changePassword";
+    }
+
+    @PostMapping("/profile/validateNewPass")
+    public String validateProfilePassword(@RequestParam("currentPassword") String currentPassword,
+                                   @RequestParam("newPassword") String newPassword,
+                                   @RequestParam("passCheck") String passCheck,
+                                   @ModelAttribute("user") Users user, Model model) {
+
+        if (isNotValidPassword(currentPassword, newPassword, passCheck, user, model)) {
+            return "users/changePassword";
+        }
+
+        usersService.editUser(user, newPassword);
+
+        model.addAttribute("messageColor", Constants.GREEN);
+        model.addAttribute("message", "Your" + Constants.CHANGE_PASSWORD_SUCCESS);
+        return "users/profile";
+    }
+
     // NEW
     @GetMapping("/admin/new")
     public String showForm(Model model) {
@@ -49,10 +116,15 @@ public class UsersController {
             return "users/newUser";
         }
 
-        usersService.addUser(user);
+        try {
+            usersService.addUser(user);
+            model.addAttribute("messageColor", Constants.GREEN);
+            model.addAttribute("message", user.getFullName() + Constants.NEW_SUCCESS);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("messageColor", Constants.RED);
+            model.addAttribute("message", Constants.ADD_ERROR + user.getUserName() + Constants.BEING_USED);
+        }
 
-        model.addAttribute("messageColor", Constants.GREEN);
-        model.addAttribute("message", user.getFullName() + Constants.NEW_SUCCESS);
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
     }
@@ -61,6 +133,7 @@ public class UsersController {
     @GetMapping("/admin/edit/{id}")
     public String editUser(@PathVariable Long id, Model model) {
 
+        model.addAttribute("from", "admin");
         model.addAttribute("user", usersService.getUserById(id));
         return "users/editUser";
     }
@@ -69,32 +142,21 @@ public class UsersController {
     public Object validateEdit(@ModelAttribute("user") @Valid Users user, BindingResult errors, Model model) {
 
         if (errors.hasErrors()) {
+            model.addAttribute("from", "admin");
             return "users/editUser";
         }
 
-        if (isEditingSelf(user)) {
-            boolean isChangingOwnRole = user.getRole().getRoleId() != 1;
-            boolean isDisablingSelf = !user.isEnabled();
-
-            if (isChangingOwnRole || isDisablingSelf) {
-                user.getRole().setRoleId(1L);
-                user.setEnabled(true);
-                model.addAttribute("roleMessage", isChangingOwnRole ? "You cannot change your own role" : "");
-                model.addAttribute("enabledMessage", isDisablingSelf ? "You cannot disable yourself" : "");
-                return "users/editUser";
-            }
+        try {
+            usersService.editUser(user);
+            model.addAttribute("messageColor", Constants.GREEN);
+            model.addAttribute("message", user.getFullName() + Constants.EDIT_SUCCESS);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("messageColor", Constants.RED);
+            model.addAttribute("message", Constants.EDIT_ERROR + user.getUserName() + Constants.BEING_USED);
         }
 
-        usersService.editUser(user);
-
-        model.addAttribute("messageColor", Constants.GREEN);
-        model.addAttribute("message", user.getFullName() + Constants.EDIT_SUCCESS);
         model.addAttribute("userList", usersService.showUsers());
         return "users/userList";
-    }
-
-    private boolean isEditingSelf(Users user) {
-        return user.getUserName().equals(usersService.getCurrentUser().getUserName());
     }
 
     // CHANGE PASSWORD
@@ -111,6 +173,19 @@ public class UsersController {
                                    @RequestParam("passCheck") String passCheck,
                                    @ModelAttribute("user") Users user, Model model) {
 
+        if (isNotValidPassword(currentPassword, newPassword, passCheck, user, model)) {
+            return "users/changePassword";
+        }
+
+        usersService.editUser(user, newPassword);
+
+        model.addAttribute("messageColor", Constants.GREEN);
+        model.addAttribute("message", user.getFullName() + "'s" + Constants.CHANGE_PASSWORD_SUCCESS);
+        model.addAttribute("userList", usersService.showUsers());
+        return "users/userList";
+    }
+
+    private boolean isNotValidPassword(String currentPassword, String newPassword, String passCheck, Users user, Model model) {
         boolean isNotPassword = !checkPassword(currentPassword, user.getEncryptedPassword());
         boolean isBlank = newPassword.isEmpty();
         boolean isSamePassword = !isBlank && currentPassword.equals(newPassword);
@@ -120,15 +195,9 @@ public class UsersController {
             model.addAttribute("currentPasswordMessage", isNotPassword ? "Incorrect password." : "");
             model.addAttribute("newPasswordMessage", isBlank ? Constants.REQUIRED : isSamePassword ? "New password can't be the same as old one." : "");
             model.addAttribute("repeatMessage", isNotMatch ? Constants.PASSWORD_MISMATCH : "");
-            return "users/changePassword";
+            return true;
         }
-
-        usersService.editUser(user, newPassword);
-
-        model.addAttribute("messageColor", Constants.GREEN);
-        model.addAttribute("message", user.getFullName() + "'s password was successfully changed!");
-        model.addAttribute("userList", usersService.showUsers());
-        return "users/userList";
+        return false;
     }
 
     // DELETE

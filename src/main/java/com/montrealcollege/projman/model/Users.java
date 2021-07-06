@@ -23,7 +23,7 @@ public class Users {
 
     @Column(name = "USER_NAME", length = 36, nullable = false)
     @NotBlank(message = Constants.REQUIRED)
-    @Size(min = 6, message = "6 characters minimum")
+    @Size(min = 5, message = "5 characters minimum")
     @Size(max = 36, message = Constants.CHAR_MAX_36)
     private String userName;
 
