@@ -40,7 +40,8 @@
                 <f:textarea path="description" rows="6" cols="70"/>
             </div>
             <div class="col">
-                <f:label path="users" cssClass="label" cssErrorClass="text-danger label">Assigned to:</f:label><br>
+                <f:label path="users" cssClass="label" cssErrorClass="text-danger label">Assigned to:</f:label>
+                <f:errors cssClass="text-danger label" path="users"/><br>
                 <f:select path="users" multiple="true">
                     <c:forEach items="${task.project.users}" var="user">
                         <c:set var="isSelected" value="false"/>
@@ -70,7 +71,7 @@
                 <f:input path="deadline" type="date"/>
             </div>
             <div class="col">
-                <f:label path="deadline" cssClass="label" cssErrorClass="text-danger label">Completion Date:</f:label>
+                <f:label path="completionDate" cssClass="label" cssErrorClass="text-danger label">Completion Date:</f:label>
                 <f:errors cssClass="text-danger label" path="completionDate"/><br>
                 <f:input path="completionDate" type="date"/>
             </div>

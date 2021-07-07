@@ -50,7 +50,6 @@ public class Users {
     private String email;
 
     @Column(name = "PHONE")
-    @Pattern(regexp= "\\(\\d{3}\\) \\d{3}-\\d{4}|", message = "Please enter a valid phone number. (999) 999-9999")
     @Size(max = 20, message = Constants.CHAR_MAX_15)
     private String phone;
 

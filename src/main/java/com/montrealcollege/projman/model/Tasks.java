@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -55,6 +56,7 @@ public class Tasks {
     private Projects project;
 
     @ManyToMany
+    @NotEmpty(message = Constants.REQUIRED)
     @JoinTable(name = "USERS_TASKS",
             joinColumns = {@JoinColumn(name = "TASK_ID")},
             inverseJoinColumns = {@JoinColumn(name = "USER_ID")})

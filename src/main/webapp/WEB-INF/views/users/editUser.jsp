@@ -45,7 +45,7 @@
             <div class="col">
                 <f:label path="phone" cssClass="label" cssErrorClass="text-danger label">Phone:</f:label>
                 <f:errors cssClass="text-danger label" path="phone"/><br>
-                <f:input path="phone" type="tel" placeholder="(999) 999-9999"/>
+                <f:input path="phone" type="text"/>
             </div>
         </div>
         <c:choose>
@@ -80,5 +80,7 @@
         </div>
         </f:form>
     </div>
+</div>
+<script src="${pageContext.request.contextPath}/js/formatPhoneNumber.js"></script>
 </body>
 </html>

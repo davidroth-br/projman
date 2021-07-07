@@ -21,7 +21,7 @@
         <div class="form-floating">
             <input type="text" class="form-control" id="floatingInput" placeholder="Login" name='username' value=''
                    autofocus>
-            <label for="floatingInput">User Name</label>
+            <label for="floatingInput">Username</label>
         </div>
         <div class="form-floating">
             <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name='password'>

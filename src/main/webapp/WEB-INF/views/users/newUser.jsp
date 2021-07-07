@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
-</head>
+    </head>
 <body>
 <div class="menu text-center">
     <%@include file="../_menu.jsp" %>
@@ -56,7 +56,7 @@
             <div class="col">
                 <f:label path="phone" cssClass="label" cssErrorClass="text-danger label">Phone:</f:label>
                 <f:errors cssClass="text-danger label" path="phone"/><br>
-                <f:input path="phone" type="tel" placeholder="(999) 999-9999"/>
+                <f:input id="phone" path="phone" type="text"/>
             </div>
         </div>
         <div class="row mb-3">
@@ -82,5 +82,6 @@
         </f:form>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/js/formatPhoneNumber.js"></script>
 </body>
 </html>
