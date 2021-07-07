@@ -45,45 +45,47 @@
         <c:if test="${sessionScope.currentUser.isLeader() || sessionScope.currentUser.isAdmin()}">
             <h3 class="h4 text-center text-decoration-underline fw-bold">${projectsMessage}</h3>
             <c:forEach var="project" items="${projectStats}">
-                <table class="table table-sm table-striped caption-top">
-                    <caption class="fs-5 text-dark fw-bold text-decoration-underline">
-                            ${project.projectName}</caption>
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th class="text-center align-bottom">Tasks</th>
-                        <th colspan="2" class="text-center align-bottom">Pending</th>
-                        <th colspan="2" class="text-center align-bottom">Completed</th>
-                    </tr>
-                    <tr class="left">
-                        <th>Member</th>
-                        <th class="text-center">Assigned</th>
-                        <th class="text-center">On Time</th>
-                        <th class="text-center">Overdue</th>
-                        <th class="text-center">On Time</th>
-                        <th class="text-center">Late</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:choose>
-                        <c:when test="${project.tasksInProject == 0}">
-                            <td class="text-center" colspan="6">No tasks yet</td>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="member" items="${project.memberStats}">
-                                <tr>
-                                    <td>${member.memberName}</td>
-                                    <td class="text-center">${member.totalTasks}</td>
-                                    <td class="text-center">${member.pendingTasksOnTime}</td>
-                                    <td class="text-center">${member.pendingTasksOverdue}</td>
-                                    <td class="text-center">${member.completedTasksOnTime}</td>
-                                    <td class="text-center">${member.completedTasksLate}</td>
-                                </tr>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                    </tbody>
-                </table>
+                <c:if test="${project.projectName != null}">
+                    <table class="table table-sm table-striped caption-top">
+                        <caption class="fs-5 text-dark fw-bold text-decoration-underline">
+                                ${project.projectName}</caption>
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th class="text-center align-bottom">Tasks</th>
+                            <th colspan="2" class="text-center align-bottom">Pending</th>
+                            <th colspan="2" class="text-center align-bottom">Completed</th>
+                        </tr>
+                        <tr class="left">
+                            <th>Member</th>
+                            <th class="text-center">Assigned</th>
+                            <th class="text-center">On Time</th>
+                            <th class="text-center">Overdue</th>
+                            <th class="text-center">On Time</th>
+                            <th class="text-center">Late</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:choose>
+                            <c:when test="${project.tasksInProject == 0}">
+                                <td class="text-center" colspan="6">No tasks yet</td>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="member" items="${project.memberStats}">
+                                    <tr>
+                                        <td>${member.memberName}</td>
+                                        <td class="text-center">${member.totalTasks}</td>
+                                        <td class="text-center">${member.pendingTasksOnTime}</td>
+                                        <td class="text-center">${member.pendingTasksOverdue}</td>
+                                        <td class="text-center">${member.completedTasksOnTime}</td>
+                                        <td class="text-center">${member.completedTasksLate}</td>
+                                    </tr>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+                        </tbody>
+                    </table>
+                </c:if>
             </c:forEach>
             <br>
         </c:if>
