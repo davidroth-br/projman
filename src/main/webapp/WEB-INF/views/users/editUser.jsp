@@ -45,7 +45,7 @@
             <div class="col">
                 <f:label path="phone" cssClass="label" cssErrorClass="text-danger label">Phone:</f:label>
                 <f:errors cssClass="text-danger label" path="phone"/><br>
-                <f:input path="phone" type="text"/>
+                <f:input id="phone" path="phone" type="text"/>
             </div>
         </div>
         <c:choose>
