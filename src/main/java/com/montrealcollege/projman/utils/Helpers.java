@@ -19,10 +19,6 @@ public class Helpers {
         return calendar.getTime();
     }
 
-    public static String capitalizeFirstLetter(String str) {
-        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
-    }
-
     public static List<ProjectStats> getAllStats(Users currentUser, Collection<Projects> projectsList) {
         List<ProjectStats> projectsStatsList = projectsList == null ? new ArrayList<>() : getProjectStatList(projectsList);
         projectsStatsList.add(new ProjectStats(null, getCurrentUserStats(currentUser), 0));

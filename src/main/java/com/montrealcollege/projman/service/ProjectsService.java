@@ -3,12 +3,11 @@ package com.montrealcollege.projman.service;
 import com.montrealcollege.projman.dao.ProjectsDAO;
 import com.montrealcollege.projman.model.Projects;
 import com.montrealcollege.projman.model.Users;
+import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.montrealcollege.projman.utils.Helpers.capitalizeFirstLetter;
 
 @Service
 public class ProjectsService {
@@ -17,7 +16,7 @@ public class ProjectsService {
     ProjectsDAO projectsDAO;
 
     public void addProject(Projects project) {
-        project.setName(capitalizeFirstLetter(project.getName()));
+        project.setName(WordUtils.capitalizeFully(project.getName()));
         projectsDAO.createProject(project);
     }
 
@@ -30,7 +29,7 @@ public class ProjectsService {
     }
 
     public void editProject(Projects project) {
-        project.setName(capitalizeFirstLetter(project.getName()));
+        project.setName(WordUtils.capitalizeFully(project.getName()));
         projectsDAO.updateProject(project);
     }
 

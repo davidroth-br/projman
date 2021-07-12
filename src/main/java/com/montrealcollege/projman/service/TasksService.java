@@ -3,12 +3,11 @@ package com.montrealcollege.projman.service;
 import com.montrealcollege.projman.dao.TasksDAO;
 import com.montrealcollege.projman.model.Tasks;
 import com.montrealcollege.projman.utils.Helpers;
+import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.montrealcollege.projman.utils.Helpers.capitalizeFirstLetter;
 
 @Service
 public class TasksService {
@@ -17,7 +16,7 @@ public class TasksService {
     TasksDAO tasksDAO;
 
     public void addTask(Tasks task) {
-        task.setName(capitalizeFirstLetter(task.getName()));
+        task.setName(WordUtils.capitalizeFully(task.getName()));
         tasksDAO.createTask(task);
     }
 
@@ -37,7 +36,7 @@ public class TasksService {
     }
 
     public void editTask(Tasks task) {
-        task.setName(capitalizeFirstLetter(task.getName()));
+        task.setName(WordUtils.capitalizeFully(task.getName()));
         tasksDAO.updateTask(task);
     }
 

@@ -213,12 +213,12 @@ public class ProjectsController {
             }
         }
 
-        if (project.getLeader().getId().equals(userId)) {
+        if (project.getLeader() != null && project.getLeader().getId().equals(userId)) {
             canRemove = false;
             model.addAttribute("message", Constants.REMOVE_ERROR + "Member is the project leader.");
         }
 
-        if(canRemove) {
+        if (canRemove) {
             project.getUsers().remove(member);
             projectsService.editProject(project);
         }

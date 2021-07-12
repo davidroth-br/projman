@@ -7,6 +7,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,6 +53,7 @@ public class Users {
     private String email;
 
     @Column(name = "PHONE")
+    @Pattern(regexp= "\\(\\d{3}\\) \\d{3}-\\d{4}|", message = "Please enter a valid phone number. (999) 999-9999")
     @Size(max = 20, message = Constants.CHAR_MAX_15)
     private String phone;
 
