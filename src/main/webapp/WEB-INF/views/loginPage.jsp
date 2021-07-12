@@ -14,7 +14,7 @@
         <h1 class="h1 mb-3 fw-bold">Project Manager</h1>
         <h2 class="h3 mb-3 fw-normal">Please sign in</h2>
         <c:if test="${param.error == 'true'}">
-            <div style="color:red; margin:10px 0;">
+            <div class="text-danger" style="margin:10px 0;">
                 <h3 class="h5 mb-3 fw-normal">Invalid user name or password</h3>
             </div>
         </c:if>
