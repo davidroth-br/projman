@@ -72,22 +72,21 @@ public class UsersController {
         return "users/profile";
     }
 
+    // CHANGE PASSWORD
     @GetMapping("/profile/changePassword")
     public String editProfilePassword(@SessionAttribute("currentUser") Users currentUser, Model model) {
 
-        model.addAttribute("from", "profile");
         model.addAttribute("user", usersService.getUserById(currentUser.getId()));
         return "users/changePassword";
     }
 
     @PostMapping("/profile/validateNewPass")
     public String validateProfilePassword(@RequestParam("currentPassword") String currentPassword,
-                                   @RequestParam("newPassword") String newPassword,
-                                   @RequestParam("passCheck") String passCheck,
-                                   @ModelAttribute("user") Users user, Model model) {
+                                          @RequestParam("newPassword") String newPassword,
+                                          @RequestParam("passCheck") String passCheck,
+                                          @ModelAttribute("user") Users user, Model model) {
 
         if (isNotValidPassword(currentPassword, newPassword, passCheck, user, model)) {
-            model.addAttribute("from", "profile");
             return "users/changePassword";
         }
 
@@ -161,33 +160,33 @@ public class UsersController {
         return "users/userList";
     }
 
-    // CHANGE PASSWORD
-    @GetMapping("/admin/newPass/{id}")
-    public String editPassword(@PathVariable Long id, Model model) {
-
-        model.addAttribute("from", "admin");
-        model.addAttribute("user", usersService.getUserById(id));
-        return "users/changePassword";
-    }
-
-    @PostMapping("/admin/validateNewPass")
-    public String validatePassword(@RequestParam("currentPassword") String currentPassword,
-                                   @RequestParam("newPassword") String newPassword,
-                                   @RequestParam("passCheck") String passCheck,
-                                   @ModelAttribute("user") Users user, Model model) {
-
-        if (isNotValidPassword(currentPassword, newPassword, passCheck, user, model)) {
-            model.addAttribute("from", "admin");
-            return "users/changePassword";
-        }
-
-        usersService.editUser(user, newPassword);
-
-        model.addAttribute("messageColor", Constants.GREEN);
-        model.addAttribute("message", user.getFullName() + "'s" + Constants.CHANGE_PASSWORD_SUCCESS);
-        model.addAttribute("userList", usersService.showUsers());
-        return "users/userList";
-    }
+//    // CHANGE PASSWORD
+//    @GetMapping("/admin/newPass/{id}")
+//    public String editPassword(@PathVariable Long id, Model model) {
+//
+//        model.addAttribute("from", "admin");
+//        model.addAttribute("user", usersService.getUserById(id));
+//        return "users/changePassword";
+//    }
+//
+//    @PostMapping("/admin/validateNewPass")
+//    public String validatePassword(@RequestParam("currentPassword") String currentPassword,
+//                                   @RequestParam("newPassword") String newPassword,
+//                                   @RequestParam("passCheck") String passCheck,
+//                                   @ModelAttribute("user") Users user, Model model) {
+//
+//        if (isNotValidPassword(currentPassword, newPassword, passCheck, user, model)) {
+//            model.addAttribute("from", "admin");
+//            return "users/changePassword";
+//        }
+//
+//        usersService.editUser(user, newPassword);
+//
+//        model.addAttribute("messageColor", Constants.GREEN);
+//        model.addAttribute("message", user.getFullName() + "'s" + Constants.CHANGE_PASSWORD_SUCCESS);
+//        model.addAttribute("userList", usersService.showUsers());
+//        return "users/userList";
+//    }
 
     private boolean isNotValidPassword(String currentPassword, String newPassword, String passCheck, Users user, Model model) {
         boolean isNotPassword = !checkPassword(currentPassword, user.getEncryptedPassword());

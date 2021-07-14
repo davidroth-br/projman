@@ -70,11 +70,19 @@
                 <span class="text-danger label"> ${deadlineMessage}</span><br>
                 <f:input path="deadline" type="date"/>
             </div>
-            <div class="col">
-                <f:label path="completionDate" cssClass="label" cssErrorClass="text-danger label">Completion Date:</f:label>
-                <f:errors cssClass="text-danger label" path="completionDate"/><br>
-                <f:input path="completionDate" type="date"/>
-            </div>
+<%--            <c:choose>--%>
+                <c:if test="${addOrEdit == 'Edit'}">
+                    <div class="col">
+                        <f:label path="completionDate" cssClass="label"
+                                 cssErrorClass="text-danger label">Completion Date:</f:label>
+                        <f:errors cssClass="text-danger label" path="completionDate"/><br>
+                        <f:input path="completionDate" type="date"/>
+                    </div>
+                </c:if>
+<%--                <c:otherwise>--%>
+<%--                    <f:hidden path="completionDate" value="${task.completionDate}"/>--%>
+<%--                </c:otherwise>--%>
+<%--            </c:choose>--%>
         </div>
         <f:hidden path="id" value="${task.id}"/>
         <f:hidden path="project" value="${task.project.id}"/>

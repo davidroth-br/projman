@@ -46,7 +46,7 @@
                         <c:if test="${user.role.roleId == 2}">User</c:if>
                     </td>
                     <td class="text-center">${user.enabled}</td>
-                    <td><a href="<c:url value="/users/admin/newPass/${user.id}"/>">Change Password</a></td>
+<%--                    <td><a href="<c:url value="/users/admin/newPass/${user.id}"/>">Change Password</a></td>--%>
                     <td><a href="<c:url value="/users/admin/edit/${user.id}"/>">Edit</a></td>
 
                     <td>
