@@ -1,3 +1,2 @@
 # projman
-MCIT - Final Project
-Simple Project Manager
+MCIT - Final Project - Simple Project Manager
